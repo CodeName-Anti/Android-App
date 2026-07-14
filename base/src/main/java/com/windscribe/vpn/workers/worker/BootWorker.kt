@@ -25,7 +25,7 @@ class BootWorker
         private val logger = LoggerFactory.getLogger("worker")
 
         override suspend fun doWork(): Result {
-            if (vpnConnectionStateManager.state.value.status != VPNState.Status.Disconnected){
+            if (vpnConnectionStateManager.state.value.status != VPNState.Status.Disconnected) {
                 return Result.success()
             }
             // Check if this is a boot or app upgrade reconnection

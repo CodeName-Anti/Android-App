@@ -1,7 +1,5 @@
 package com.windscribe.mobile.ui.serverlist
 
-import android.icu.text.LocaleDisplayNames.UiListItem.getComparator
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.windscribe.vpn.apppreference.PreferencesHelper
