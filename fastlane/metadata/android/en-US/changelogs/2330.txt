@@ -1,6 +1,7 @@
 v4.3(Mobile)
 * Fixed unnecessary reconnect with always on VPN + start on boot.
 * Fixed serverlist not sorting after swipe to refresh.
+* Added custom SNI support for wstunnel & stealth.
 * Relaxed haptic feedback for serverlist scroll.
 * Trim hashed login input whitespace.
 * Ctlrd library upgraded to v1.5.4
