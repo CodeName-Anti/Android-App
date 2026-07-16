@@ -67,8 +67,10 @@ object Ext {
             else -> "$this B"
         }
 
-
-    fun String.maskMiddle(front: Int = 4, back: Int = 6): String {
+    fun String.maskMiddle(
+        front: Int = 4,
+        back: Int = 6,
+    ): String {
         if (length <= front + back) return "***"
         return "${take(front)}***${takeLast(back)}"
     }

@@ -46,7 +46,12 @@ class ProxyTunnelManager(
                     tunnelLib.initialise(BuildConfig.DEV, logFile)
                     val protocolTweaksEnabled = appContext.preference.isProtocolTweaksEnabled
                     val tlsServerName = appContext.preference.tlsServerName
-                    logger.debug("Running proxy on local port: $localPort Protocol Tweaks: $protocolTweaksEnabled SNI: ${tlsServerName.maskMiddle(4,4)}")
+                    logger.debug(
+                        "Running proxy on local port: $localPort Protocol Tweaks: $protocolTweaksEnabled SNI: ${tlsServerName.maskMiddle(
+                            4,
+                            4,
+                        )}",
+                    )
                     if (isWSTunnel) {
                         val remote =
                             "wss://$ip:$port/$PROXY_TUNNEL_PROTOCOL/$PROXY_TUNNEL_ADDRESS/$WS_TUNNEL_PORT"

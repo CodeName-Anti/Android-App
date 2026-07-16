@@ -180,11 +180,11 @@ fun AntiCensorshipContent(
                     actions.onExtraTlsPaddingToggled,
                 )
 
-                 Spacer(modifier = Modifier.height(16.dp))
-                 TlsServerNameSection(
-                     state.tlsServerName,
-                     actions.onTlsServerNameChanged,
-                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                TlsServerNameSection(
+                    state.tlsServerName,
+                    actions.onTlsServerNameChanged,
+                )
             }
         }
     }
@@ -308,8 +308,7 @@ private fun TlsServerNameSection(
                     .background(
                         color = MaterialTheme.colorScheme.primaryTextColor.copy(alpha = 0.05f),
                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                    )
-                    .padding(12.dp),
+                    ).padding(12.dp),
         ) {
             Text(
                 stringResource(com.windscribe.vpn.R.string.tls_server_name),
@@ -319,7 +318,7 @@ private fun TlsServerNameSection(
             Spacer(modifier = Modifier.padding(8.dp))
             Text(
                 stringResource(com.windscribe.vpn.R.string.tls_server_name_description),
-                style = font14.copy(textAlign = TextAlign.Start,fontWeight = FontWeight.Normal),
+                style = font14.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Normal),
                 color = MaterialTheme.colorScheme.preferencesSubtitleColor,
             )
         }
@@ -328,13 +327,13 @@ private fun TlsServerNameSection(
 
         // Text field section with edit controls
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.primaryTextColor.copy(alpha = 0.05f),
-                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-                )
-                .padding(horizontal = 16.dp, vertical = 0.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryTextColor.copy(alpha = 0.05f),
+                        shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+                    ).padding(horizontal = 16.dp, vertical = 0.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextField(
