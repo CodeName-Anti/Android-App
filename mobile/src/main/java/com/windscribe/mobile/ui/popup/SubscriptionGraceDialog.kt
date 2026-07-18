@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.windscribe.mobile.ui.helper.MultiDevicePreview
+import com.windscribe.mobile.ui.helper.PreviewWithNav
 import com.windscribe.mobile.ui.theme.font12
 import com.windscribe.mobile.ui.theme.font16
 import com.windscribe.mobile.ui.theme.preferencesBackgroundColor
@@ -66,4 +68,12 @@ fun SubscriptionGraceDialog(
             }
         },
     )
+}
+
+@MultiDevicePreview
+@Composable
+private fun SubscriptionGraceDialogPreview() {
+    PreviewWithNav {
+        SubscriptionGraceDialog({}, {})
+    }
 }
