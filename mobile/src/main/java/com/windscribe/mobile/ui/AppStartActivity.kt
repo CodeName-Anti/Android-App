@@ -21,6 +21,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import com.windscribe.mobile.R
+import com.windscribe.mobile.ui.common.openUrl
 import com.windscribe.mobile.ui.helper.PermissionHelper
 import com.windscribe.mobile.ui.nav.NavigationStack
 import com.windscribe.mobile.ui.nav.Screen
@@ -29,6 +30,7 @@ import com.windscribe.mobile.ui.theme.AndroidTheme
 import com.windscribe.vpn.Windscribe.Companion.appContext
 import com.windscribe.vpn.api.response.PushNotificationAction
 import com.windscribe.vpn.apppreference.PreferencesKeyConstants.DARK_THEME
+import com.windscribe.vpn.billing.GooglePlaySubscriptionUrl
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -123,6 +125,7 @@ class AppStartActivity : AppCompatActivity() {
      * keep this handler simple and permissive because:
      * - AppStartActivity is the launcher activity, so external apps can already launch it
      * - "promo" only deep-links to the upgrade screen (non-sensitive)
+     * - subscription grace notifications build a fixed Google Play URL from an encoded product ID
      * - "user_expired"/"user_downgraded" trigger server verification before any action
      *
      * SessionWorker validates account status with the server and only disconnects the VPN
@@ -141,6 +144,10 @@ class AppStartActivity : AppCompatActivity() {
                         PushNotificationAction(pcpid, promoCode, type)
                     viewmodel.requestDeepLink(Screen.Upgrade.route)
                 }
+            }
+            GooglePlaySubscriptionUrl.NOTIFICATION_TYPE -> {
+                val productId = extras.getString(GooglePlaySubscriptionUrl.PRODUCT_ID_EXTRA).orEmpty()
+                GooglePlaySubscriptionUrl.build(packageName, productId)?.let { openUrl(it) }
             }
             "user_expired", "user_downgraded" -> {
                 appContext.workManager.updateSession()
