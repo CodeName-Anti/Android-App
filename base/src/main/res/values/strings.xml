@@ -57,6 +57,8 @@
     <string name="upgrade">UPGRADE</string>
     <string name="upgrade_case_normal">Upgrade</string>
     <string name="renew_plan">Renew Plan</string>
+    <string name="subscription_payment_issue">Subscription payment issue</string>
+    <string name="subscription_payment_issue_description">Your subscription payment needs attention. Open Google Play to review your payment method.</string>
     <string name="you_ve_been_downgraded_to_free_for_now">You’ve been downgraded to free for now</string>
     <string name="you_ve_violated_our_terms">Your account has been disabled for violating our terms</string>
     <string name="you_r_pro_plan_expired">Your Pro Plan expired!</string>

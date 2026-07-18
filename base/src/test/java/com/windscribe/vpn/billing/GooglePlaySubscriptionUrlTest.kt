@@ -25,4 +25,44 @@ class GooglePlaySubscriptionUrlTest {
     fun `rejects a blank product ID`() {
         assertNull(GooglePlaySubscriptionUrl.build("com.windscribe.vpn", " "))
     }
+
+    @Test
+    fun `extracts product ID from grace notification payload`() {
+        val productId =
+            GooglePlaySubscriptionUrl.productIdFromPayload(
+                "com.windscribe.vpn",
+                mapOf(
+                    "type" to GooglePlaySubscriptionUrl.NOTIFICATION_TYPE,
+                    GooglePlaySubscriptionUrl.PRODUCT_ID_EXTRA to "pro_yearly",
+                ),
+            )
+
+        assertEquals("pro_yearly", productId)
+    }
+
+    @Test
+    fun `rejects a grace payload with blank product ID`() {
+        assertNull(
+            GooglePlaySubscriptionUrl.productIdFromPayload(
+                "com.windscribe.vpn",
+                mapOf(
+                    "type" to GooglePlaySubscriptionUrl.NOTIFICATION_TYPE,
+                    GooglePlaySubscriptionUrl.PRODUCT_ID_EXTRA to " ",
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun `rejects an unrelated notification payload`() {
+        assertNull(
+            GooglePlaySubscriptionUrl.productIdFromPayload(
+                "com.windscribe.vpn",
+                mapOf(
+                    "type" to "promo",
+                    GooglePlaySubscriptionUrl.PRODUCT_ID_EXTRA to "pro_yearly",
+                ),
+            ),
+        )
+    }
 }

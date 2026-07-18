@@ -9,6 +9,15 @@ object GooglePlaySubscriptionUrl {
 
     private const val SUBSCRIPTIONS_URL = "https://play.google.com/store/account/subscriptions"
 
+    fun productIdFromPayload(
+        packageName: String,
+        payload: Map<String, String>,
+    ): String? {
+        if (payload["type"] != NOTIFICATION_TYPE) return null
+        val productId = payload[PRODUCT_ID_EXTRA].orEmpty()
+        return productId.takeIf { build(packageName, it) != null }
+    }
+
     fun build(
         packageName: String,
         productId: String,
