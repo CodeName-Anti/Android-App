@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -26,6 +28,7 @@ import com.windscribe.mobile.ui.helper.PermissionHelper
 import com.windscribe.mobile.ui.nav.NavigationStack
 import com.windscribe.mobile.ui.nav.Screen
 import com.windscribe.mobile.ui.popup.EncryptionWarningDialog
+import com.windscribe.mobile.ui.popup.SubscriptionGraceDialog
 import com.windscribe.mobile.ui.theme.AndroidTheme
 import com.windscribe.vpn.Windscribe.Companion.appContext
 import com.windscribe.vpn.api.response.PushNotificationAction
@@ -40,6 +43,7 @@ class AppStartActivity : AppCompatActivity() {
     val viewmodel: AppStartActivityViewModel get() = viewmodelImpl
     lateinit var navController: NavController
     lateinit var permissionHelper: PermissionHelper
+    private var subscriptionGraceProductId by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         permissionHelper = PermissionHelper(this)
@@ -104,6 +108,17 @@ class AppStartActivity : AppCompatActivity() {
                             },
                         )
                     }
+                    subscriptionGraceProductId?.let { productId ->
+                        SubscriptionGraceDialog(
+                            onConfirm = {
+                                subscriptionGraceProductId = null
+                                GooglePlaySubscriptionUrl.build(packageName, productId)?.let { openUrl(it) }
+                            },
+                            onDismiss = {
+                                subscriptionGraceProductId = null
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -117,6 +132,15 @@ class AppStartActivity : AppCompatActivity() {
     }
 
     fun Context.isTablet(): Boolean = resources.configuration.screenWidthDp >= 600
+
+    fun showSubscriptionGraceDialog(productId: String) {
+        if (GooglePlaySubscriptionUrl.build(packageName, productId) == null) return
+        runOnUiThread {
+            if (!isFinishing && !isDestroyed) {
+                subscriptionGraceProductId = productId
+            }
+        }
+    }
 
     /**
      * Handles intent extras from FCM push notifications and external app launches.
