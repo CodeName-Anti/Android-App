@@ -21,6 +21,7 @@ abstract class ExcludedIpDomainViewModel : ViewModel() {
     abstract val inputText: StateFlow<String>
     abstract val errorMessage: StateFlow<String?>
     abstract val toastMessage: StateFlow<String?>
+    abstract val dialogMessage: StateFlow<String?>
     abstract val isRefreshing: StateFlow<Boolean>
 
     open fun onInputTextChange(text: String) {}
@@ -36,6 +37,8 @@ abstract class ExcludedIpDomainViewModel : ViewModel() {
     open fun onRefreshHostnames() {}
 
     open fun clearToastMessage() {}
+
+    open fun clearDialogMessage() {}
 }
 
 @HiltViewModel
@@ -57,6 +60,9 @@ class ExcludedIpDomainViewModelImpl
 
         private val _toastMessage = MutableStateFlow<String?>(null)
         override val toastMessage: StateFlow<String?> = _toastMessage.asStateFlow()
+
+        private val _dialogMessage = MutableStateFlow<String?>(null)
+        override val dialogMessage: StateFlow<String?> = _dialogMessage.asStateFlow()
 
         private val _isRefreshing = MutableStateFlow(false)
         override val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
@@ -105,12 +111,12 @@ class ExcludedIpDomainViewModelImpl
                                 val ipCount = getIpCount(prefix)
                                 val message =
                                     buildString {
-                                        append("Invalid: $value is not a valid network address.\n")
+                                        append("Invalid: $value is not a valid network address.\n\n")
                                         append("Did you mean:\n")
                                         append("• $ip/32 (single host)\n")
                                         append("• $canonicalIp/$prefix ($ipCount IPs)")
                                     }
-                                _toastMessage.emit(message)
+                                _dialogMessage.emit(message)
                                 return@launch
                             }
                         }
@@ -174,6 +180,7 @@ class ExcludedIpDomainViewModelImpl
                     var duplicateCount = 0
                     var failCount = 0
                     val newHostnames = mutableListOf<ExcludedIpDomain>()
+                    val nonCanonicalCidrs = mutableListOf<String>()
 
                     lines.forEach { line ->
                         val value = line.trim().lowercase()
@@ -186,6 +193,22 @@ class ExcludedIpDomainViewModelImpl
                         if (localDbInterface.excludedIpDomainExists(value) > 0) {
                             duplicateCount++
                             return@forEach
+                        }
+
+                        // Check for non-canonical CIDR before processing
+                        if (value.contains("/")) {
+                            val parts = value.split("/")
+                            if (parts.size == 2) {
+                                val ip = parts[0]
+                                val prefix = parts[1].toIntOrNull()
+                                if (prefix != null && isValidIpAddress(ip) && prefix in 0..32) {
+                                    if (!isCanonicalCidr(ip, prefix)) {
+                                        nonCanonicalCidrs.add(value)
+                                        failCount++
+                                        return@forEach
+                                    }
+                                }
+                            }
                         }
 
                         val type = detectEntryType(value)
@@ -218,8 +241,33 @@ class ExcludedIpDomainViewModelImpl
                         excludedIpHolder.loadCachedIps()
                     }
 
-                    val result =
-                        buildString {
+                    // Build result message
+                    if (nonCanonicalCidrs.isNotEmpty()) {
+                        // Show detailed error dialog for non-canonical CIDRs
+                        val message = buildString {
+                            append("Import Results:\n")
+                            append("✓ Imported: $successCount\n")
+                            if (duplicateCount > 0) {
+                                append("⊘ Skipped (duplicates): $duplicateCount\n")
+                            }
+                            append("✗ Failed: $failCount\n\n")
+                            append("Invalid CIDR notations found:\n")
+                            nonCanonicalCidrs.take(5).forEach { cidr ->
+                                val parts = cidr.split("/")
+                                val ip = parts[0]
+                                val prefix = parts[1].toInt()
+                                val canonicalIp = getCanonicalNetworkAddress(ip, prefix)
+                                append("\n• $cidr\n")
+                                append("  Should be: $canonicalIp/$prefix\n")
+                            }
+                            if (nonCanonicalCidrs.size > 5) {
+                                append("\n...and ${nonCanonicalCidrs.size - 5} more")
+                            }
+                        }
+                        _dialogMessage.emit(message)
+                    } else {
+                        // Show simple toast for successful import
+                        val result = buildString {
                             append("Imported: $successCount")
                             if (duplicateCount > 0) {
                                 append(", Skipped: $duplicateCount")
@@ -228,7 +276,8 @@ class ExcludedIpDomainViewModelImpl
                                 append(", Failed: $failCount")
                             }
                         }
-                    _toastMessage.emit(result)
+                        _toastMessage.emit(result)
+                    }
                 } catch (e: Exception) {
                     _toastMessage.emit("Failed to import file: ${e.message}")
                 }
@@ -252,6 +301,12 @@ class ExcludedIpDomainViewModelImpl
         override fun clearToastMessage() {
             viewModelScope.launch {
                 _toastMessage.emit(null)
+            }
+        }
+
+        override fun clearDialogMessage() {
+            viewModelScope.launch {
+                _dialogMessage.emit(null)
             }
         }
 
