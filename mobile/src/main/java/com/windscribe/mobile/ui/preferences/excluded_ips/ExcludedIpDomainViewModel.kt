@@ -226,34 +226,36 @@ class ExcludedIpDomainViewModelImpl
                     // Build result message
                     if (nonCanonicalCidrs.isNotEmpty()) {
                         // Show detailed error dialog for non-canonical CIDRs
-                        val message = buildString {
-                            append("Import Results:\n")
-                            append("✓ Imported: $successCount\n")
-                            if (duplicateCount > 0) {
-                                append("⊘ Skipped (duplicates): $duplicateCount\n")
+                        val message =
+                            buildString {
+                                append("Import Results:\n")
+                                append("✓ Imported: $successCount\n")
+                                if (duplicateCount > 0) {
+                                    append("⊘ Skipped (duplicates): $duplicateCount\n")
+                                }
+                                append("✗ Failed: $failCount\n\n")
+                                append("Invalid CIDR notations found:\n")
+                                nonCanonicalCidrs.take(5).forEach { (cidr, info) ->
+                                    append("\n• $cidr\n")
+                                    append("  Should be: ${info.canonicalIp}/${info.prefix}\n")
+                                }
+                                if (nonCanonicalCidrs.size > 5) {
+                                    append("\n...and ${nonCanonicalCidrs.size - 5} more")
+                                }
                             }
-                            append("✗ Failed: $failCount\n\n")
-                            append("Invalid CIDR notations found:\n")
-                            nonCanonicalCidrs.take(5).forEach { (cidr, info) ->
-                                append("\n• $cidr\n")
-                                append("  Should be: ${info.canonicalIp}/${info.prefix}\n")
-                            }
-                            if (nonCanonicalCidrs.size > 5) {
-                                append("\n...and ${nonCanonicalCidrs.size - 5} more")
-                            }
-                        }
                         _dialogMessage.emit(message)
                     } else {
                         // Show simple toast for successful import
-                        val result = buildString {
-                            append("Imported: $successCount")
-                            if (duplicateCount > 0) {
-                                append(", Skipped: $duplicateCount")
+                        val result =
+                            buildString {
+                                append("Imported: $successCount")
+                                if (duplicateCount > 0) {
+                                    append(", Skipped: $duplicateCount")
+                                }
+                                if (failCount > 0) {
+                                    append(", Failed: $failCount")
+                                }
                             }
-                            if (failCount > 0) {
-                                append(", Failed: $failCount")
-                            }
-                        }
                         _toastMessage.emit(result)
                     }
                 } catch (e: Exception) {
