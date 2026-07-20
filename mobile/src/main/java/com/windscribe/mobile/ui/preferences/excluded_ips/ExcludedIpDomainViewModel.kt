@@ -100,27 +100,17 @@ class ExcludedIpDomainViewModelImpl
                 }
 
                 // Check if it's a non-canonical CIDR and provide helpful feedback
-                if (value.contains("/")) {
-                    val parts = value.split("/")
-                    if (parts.size == 2) {
-                        val ip = parts[0]
-                        val prefix = parts[1].toIntOrNull()
-                        if (prefix != null && isValidIpAddress(ip) && prefix in 0..32) {
-                            if (!isCanonicalCidr(ip, prefix)) {
-                                val canonicalIp = getCanonicalNetworkAddress(ip, prefix)
-                                val ipCount = getIpCount(prefix)
-                                val message =
-                                    buildString {
-                                        append("Invalid: $value is not a valid network address.\n\n")
-                                        append("Did you mean:\n")
-                                        append("• $ip/32 (single host)\n")
-                                        append("• $canonicalIp/$prefix ($ipCount IPs)")
-                                    }
-                                _dialogMessage.emit(message)
-                                return@launch
-                            }
+                val cidrCheck = checkNonCanonicalCidr(value)
+                if (cidrCheck != null) {
+                    val message =
+                        buildString {
+                            append("Invalid: $value is not a valid network address.\n\n")
+                            append("Did you mean:\n")
+                            append("• ${cidrCheck.ip}/32 (single host)\n")
+                            append("• ${cidrCheck.canonicalIp}/${cidrCheck.prefix} (${cidrCheck.ipCount} IPs)")
                         }
-                    }
+                    _dialogMessage.emit(message)
+                    return@launch
                 }
 
                 val type = detectEntryType(value)
@@ -180,7 +170,7 @@ class ExcludedIpDomainViewModelImpl
                     var duplicateCount = 0
                     var failCount = 0
                     val newHostnames = mutableListOf<ExcludedIpDomain>()
-                    val nonCanonicalCidrs = mutableListOf<String>()
+                    val nonCanonicalCidrs = mutableListOf<Pair<String, NonCanonicalCidrInfo>>()
 
                     lines.forEach { line ->
                         val value = line.trim().lowercase()
@@ -196,19 +186,11 @@ class ExcludedIpDomainViewModelImpl
                         }
 
                         // Check for non-canonical CIDR before processing
-                        if (value.contains("/")) {
-                            val parts = value.split("/")
-                            if (parts.size == 2) {
-                                val ip = parts[0]
-                                val prefix = parts[1].toIntOrNull()
-                                if (prefix != null && isValidIpAddress(ip) && prefix in 0..32) {
-                                    if (!isCanonicalCidr(ip, prefix)) {
-                                        nonCanonicalCidrs.add(value)
-                                        failCount++
-                                        return@forEach
-                                    }
-                                }
-                            }
+                        val cidrCheck = checkNonCanonicalCidr(value)
+                        if (cidrCheck != null) {
+                            nonCanonicalCidrs.add(value to cidrCheck)
+                            failCount++
+                            return@forEach
                         }
 
                         val type = detectEntryType(value)
@@ -252,13 +234,9 @@ class ExcludedIpDomainViewModelImpl
                             }
                             append("✗ Failed: $failCount\n\n")
                             append("Invalid CIDR notations found:\n")
-                            nonCanonicalCidrs.take(5).forEach { cidr ->
-                                val parts = cidr.split("/")
-                                val ip = parts[0]
-                                val prefix = parts[1].toInt()
-                                val canonicalIp = getCanonicalNetworkAddress(ip, prefix)
+                            nonCanonicalCidrs.take(5).forEach { (cidr, info) ->
                                 append("\n• $cidr\n")
-                                append("  Should be: $canonicalIp/$prefix\n")
+                                append("  Should be: ${info.canonicalIp}/${info.prefix}\n")
                             }
                             if (nonCanonicalCidrs.size > 5) {
                                 append("\n...and ${nonCanonicalCidrs.size - 5} more")
@@ -307,6 +285,36 @@ class ExcludedIpDomainViewModelImpl
         override fun clearDialogMessage() {
             viewModelScope.launch {
                 _dialogMessage.emit(null)
+            }
+        }
+
+        private data class NonCanonicalCidrInfo(
+            val ip: String,
+            val prefix: Int,
+            val canonicalIp: String,
+            val ipCount: String,
+        )
+
+        private fun checkNonCanonicalCidr(value: String): NonCanonicalCidrInfo? {
+            if (!value.contains("/")) return null
+
+            val parts = value.split("/")
+            if (parts.size != 2) return null
+
+            val ip = parts[0]
+            val prefix = parts[1].toIntOrNull() ?: return null
+
+            if (!isValidIpAddress(ip) || prefix !in 0..32) return null
+
+            return if (!isCanonicalCidr(ip, prefix)) {
+                NonCanonicalCidrInfo(
+                    ip = ip,
+                    prefix = prefix,
+                    canonicalIp = getCanonicalNetworkAddress(ip, prefix),
+                    ipCount = getIpCount(prefix),
+                )
+            } else {
+                null
             }
         }
 
