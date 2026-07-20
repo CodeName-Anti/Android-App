@@ -89,7 +89,7 @@ class WindscribeCloudMessaging : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        logger.info("Received new FCM Token = $token")
+        logger.info("Received new FCM Token")
     }
 
     companion object {
