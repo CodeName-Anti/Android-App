@@ -4,6 +4,8 @@ v4.3(Mobile)
 * Added custom SNI support for wstunnel & stealth.
 * Handle subscription in grace period notifications.
 * Prevent non-canonical CIDR addresses in IP exclusion
+* Sensitive log removal.
+* Whitelist ocsp domains from clear text restrictions.
 * Relaxed haptic feedback for serverlist scroll.
 * Trim hashed login input whitespace.
 * Ctlrd library upgraded to v1.5.4
