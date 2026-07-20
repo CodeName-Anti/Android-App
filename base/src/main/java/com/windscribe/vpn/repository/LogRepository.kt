@@ -44,10 +44,6 @@ class LogRepository
                     "${appContext.filesDir}/wireguard_log.txt"
                 }
 
-                advanceParams[AdvanceParamKeys.SHOW_CD_LOG].toBoolean() -> {
-                    "${appContext.filesDir}/vpntunnel.log"
-                }
-
                 else -> {
                     appContext.filesDir.path + PreferencesKeyConstants.DEBUG_LOG_FILE_NAME
                 }
