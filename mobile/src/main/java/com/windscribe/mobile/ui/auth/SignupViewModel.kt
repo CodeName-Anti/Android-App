@@ -487,7 +487,7 @@ class SignupViewModel
                     result<UserRegistrationResponse> {
                         apiCallManager.signUserIn(
                             username.trim(),
-                            password.trim(),
+                            password,
                             referralUsername.trim(),
                             email.trim(),
                             voucher.trim(),
@@ -535,7 +535,7 @@ class SignupViewModel
                 result<UserRegistrationResponse> {
                     apiCallManager.signUserIn(
                         username.trim(),
-                        password.trim(),
+                        password,
                         referralUsername.trim(),
                         email.trim(),
                         voucher.trim(),
