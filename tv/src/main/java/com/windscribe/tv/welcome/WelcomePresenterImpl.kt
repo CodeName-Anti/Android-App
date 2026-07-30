@@ -475,7 +475,7 @@ class WelcomePresenterImpl
         }
 
         private fun evaluatePassword(password: String): Boolean {
-            val pattern = Regex("(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}")
+            val pattern = Regex("(?=.*[a-z])(?=.*[A-Z]).{8,}")
             return password.matches(pattern)
         }
 

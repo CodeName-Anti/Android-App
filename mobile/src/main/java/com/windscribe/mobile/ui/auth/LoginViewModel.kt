@@ -244,7 +244,7 @@ class LoginViewModel
                 result<UserLoginResponse> {
                     apiCallManager.logUserIn(
                         username.trim(),
-                        password.trim(),
+                        password,
                         twoFactorCode.trim(),
                         captchaSolution.token,
                         "${captchaSolution.leftOffset}",
@@ -315,7 +315,7 @@ class LoginViewModel
                     result<UserLoginResponse> {
                         apiCallManager.logUserIn(
                             username.trim(),
-                            password.trim(),
+                            password,
                             twoFactorCode.trim(),
                             token,
                             null,

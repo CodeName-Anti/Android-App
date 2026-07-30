@@ -404,7 +404,7 @@ class SignupViewModel
                 return
             }
             val passwordRegex =
-                Regex("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#\$%^&*()_+\\-={}\\[\\]:;\"'<>,.?/`~|\\\\]+$")
+                Regex("^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#\$%^&*()_+\\-={}\\[\\]:;\"'<>,.?/`~|\\\\\\s]+$")
             if (!password.matches(passwordRegex)) {
                 updateState(
                     SignupState.Error(
@@ -487,7 +487,7 @@ class SignupViewModel
                     result<UserRegistrationResponse> {
                         apiCallManager.signUserIn(
                             username.trim(),
-                            password.trim(),
+                            password,
                             referralUsername.trim(),
                             email.trim(),
                             voucher.trim(),
@@ -535,7 +535,7 @@ class SignupViewModel
                 result<UserRegistrationResponse> {
                     apiCallManager.signUserIn(
                         username.trim(),
-                        password.trim(),
+                        password,
                         referralUsername.trim(),
                         email.trim(),
                         voucher.trim(),
