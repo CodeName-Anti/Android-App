@@ -346,6 +346,7 @@
     <string name="Error">Hata</string>
     <string name="text_account_set_up">Kaydol</string>
     <string name="xpress_login">Tembel Giriş</string>
+    <string name="scan_lazy_login_qr_code">Giriş yapmak için bu QR kodunu telefonunuzla tarayın.</string>
     <string name="web_login_description">Git </string>
     <string name="app_login_description">Windscribe Android uygulamanızı telefonunuzda veya tabletinizde kullanarak Tercihler\e (Sol üstte) gidin, \"Hesap\" altında \"Lazy Login\" i seçin ve aşağıdaki kodu girin.</string>
     <string name="or">VEYA</string>

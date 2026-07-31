@@ -346,6 +346,7 @@
     <string name="Error">Kesalahan</string>
     <string name="text_account_set_up">Tandatangan</string>
     <string name="xpress_login">Login Malas</string>
+    <string name="scan_lazy_login_qr_code">Pindai kode QR ini dengan ponsel Anda untuk masuk.</string>
     <string name="web_login_description">Pergi ke </string>
     <string name="app_login_description">Menggunakan aplikasi Android Windscribe Anda di ponsel atau tablet Anda, buka Preferensi (Kiri atas), di bawah \"Akun\" pilih \"Login Malas\" dan masukkan kode di bawah ini.</string>
     <string name="or">ATAU</string>

@@ -346,6 +346,7 @@
     <string name="Error">エラー</string>
     <string name="text_account_set_up">サインアップ</string>
     <string name="xpress_login">レイジーログイン</string>
+    <string name="scan_lazy_login_qr_code">スマートフォンでこのQRコードをスキャンしてログインしてください。</string>
     <string name="web_login_description">行きます</string>
     <string name="app_login_description">携帯電話またはタブレットでWindscribe Androidアプリを使用して、[設定](左上)に移動し、[アカウント]で[遅延ログイン]を選択して、以下のコードを入力します。</string>
     <string name="or">又は</string>

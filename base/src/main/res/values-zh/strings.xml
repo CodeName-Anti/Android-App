@@ -347,6 +347,7 @@
     <string name="Error">错误</string>
     <string name="text_account_set_up">注册</string>
     <string name="xpress_login">延迟登录</string>
+    <string name="scan_lazy_login_qr_code">使用手机扫描此二维码以登录。</string>
     <string name="web_login_description">
         在任意设备上访问 
         <b>https://windscribe.com/lazy</b>

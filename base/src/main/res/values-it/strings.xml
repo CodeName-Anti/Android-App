@@ -347,6 +347,7 @@
     <string name="Error">Errore</string>
     <string name="text_account_set_up">Registrati</string>
     <string name="xpress_login">Login pigro</string>
+    <string name="scan_lazy_login_qr_code">Scansiona questo codice QR con il telefono per accedere.</string>
     <string name="web_login_description">Vai a </string>
     <string name="app_login_description">Utilizzando l\'app Android Windscribe sul tuo telefono o tablet, vai su Preferenze (in alto a sinistra), sotto \"Account\" scegli \"Lazy Login\" e inserisci il codice qui sotto.</string>
     <string name="or">O</string>

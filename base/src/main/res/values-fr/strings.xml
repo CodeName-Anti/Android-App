@@ -346,6 +346,7 @@
     <string name="Error">Erreur</string>
     <string name="text_account_set_up">S’enregistrer</string>
     <string name="xpress_login">Connexion paresseuse</string>
+    <string name="scan_lazy_login_qr_code">Scannez ce code QR avec votre téléphone pour vous connecter.</string>
     <string name="web_login_description">Atteindre </string>
     <string name="app_login_description">En utilisant votre application Windscribe Android sur votre téléphone ou votre tablette, allez dans Préférences (en haut à gauche), sous « Compte », choisissez « Lazy Login » et entrez le code ci-dessous.</string>
     <string name="or">OU</string>

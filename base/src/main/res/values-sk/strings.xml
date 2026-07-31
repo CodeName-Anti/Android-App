@@ -357,6 +357,7 @@
     <string name="Error">Chyba</string>
     <string name="text_account_set_up">Zaregistrovať sa</string>
     <string name="xpress_login">Lazy Login</string>
+    <string name="scan_lazy_login_qr_code">Naskenujte tento QR kód telefónom a prihláste sa.</string>
     <string name="web_login_description">
         Prejdite na 
         <b>https://windscribe.com/lazy</b>

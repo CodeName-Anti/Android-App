@@ -349,6 +349,7 @@
     <string name="Error">Σφάλμα</string>
     <string name="text_account_set_up">Εγγραφή</string>
     <string name="xpress_login">Εύκολη Σύνδεση</string>
+    <string name="scan_lazy_login_qr_code">Σαρώστε αυτόν τον κωδικό QR με το τηλέφωνό σας για να συνδεθείτε.</string>
     <string name="web_login_description">Πηγαίνετε στο **https://windscribe.com/lazy** σε οποιαδήποτε συσκευή και εισάγετε τον παρακάτω κωδικό.</string>
     <string name="app_login_description">Χρησιμοποιώντας την εφαρμογή Windscribe Android στο τηλέφωνο ή το tablet σας, μεταβείτε στις Προτιμήσεις (Πάνω αριστερά), στην ενότητα «Λογαριασμός» επιλέξτε «Εύκολη Σύνδεση» και εισάγετε τον παρακάτω κωδικό.</string>
     <string name="or">Ή</string>

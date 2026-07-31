@@ -372,6 +372,7 @@
     <string name="note">Note</string>
     <string name="text_account_set_up">Sign Up</string>
     <string name="xpress_login">Lazy Login</string>
+    <string name="scan_lazy_login_qr_code">Scan this QR code with your phone to log in.</string>
     <string name="web_login_description">Go to <b>https://windscribe.com/lazy</b> on any device and enter the code below.</string>
     <string name="app_login_description">Using your Windscribe Android app on your phone or tablet, go to Preferences (Top left), under “Account” choose “Lazy Login” and enter the code below.</string>
     <string name="or">OR</string>

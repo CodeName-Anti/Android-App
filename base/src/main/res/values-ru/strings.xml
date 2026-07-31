@@ -347,6 +347,7 @@
     <string name="Error">Ошибка</string>
     <string name="text_account_set_up">Регистрация</string>
     <string name="xpress_login">Быстрый вход</string>
+    <string name="scan_lazy_login_qr_code">Отсканируйте этот QR-код телефоном, чтобы войти.</string>
     <string name="web_login_description">Перейти к </string>
     <string name="app_login_description">Откройте приложение Windscribe для Android на телефоне или планшете, перейдите в раздел «Настройки» (вверху слева), в разделе «Учетная запись» выберите «Быстрый вход» и введите приведенный ниже код.</string>
     <string name="or">ИЛИ</string>

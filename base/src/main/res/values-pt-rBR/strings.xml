@@ -346,6 +346,7 @@
     <string name="Error">Error</string>
     <string name="text_account_set_up">Sign Up</string>
     <string name="xpress_login">Lazy Login</string>
+    <string name="scan_lazy_login_qr_code">Escaneie este código QR com seu celular para entrar.</string>
     <string name="web_login_description">
         Go to 
         <b>https://windscribe.com/lazy</b>

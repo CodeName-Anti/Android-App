@@ -346,6 +346,7 @@
     <string name="Error">Lỗi</string>
     <string name="text_account_set_up">Đăng ký</string>
     <string name="xpress_login">Đăng nhập lười biếng</string>
+    <string name="scan_lazy_login_qr_code">Quét mã QR này bằng điện thoại để đăng nhập.</string>
     <string name="web_login_description">Đi tới </string>
     <string name="app_login_description">Sử dụng ứng dụng Windscribe Android trên điện thoại hoặc máy tính bảng của bạn, đi tới Tùy chọn (Trên cùng bên trái), trong \"Tài khoản\" chọn \"Đăng nhập lười biếng\" và nhập mã bên dưới.</string>
     <string name="or">HOẶC</string>

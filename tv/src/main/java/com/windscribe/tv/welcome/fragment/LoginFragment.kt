@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.windscribe.tv.R
@@ -20,6 +21,9 @@ class LoginFragment :
     Fragment(),
     WelcomeActivityCallback {
     private lateinit var generateCode: Button
+    private lateinit var manualLoginContainer: View
+    private lateinit var qrCode: ImageView
+    private lateinit var qrLoginContainer: View
     private lateinit var secretCode: TextView
     private lateinit var binding: FragmentLoginBinding
     private var callBack: FragmentCallback? = null
@@ -46,6 +50,9 @@ class LoginFragment :
     ) {
         super.onViewCreated(view, savedInstanceState)
         generateCode = view.findViewById(R.id.generate_code)
+        manualLoginContainer = view.findViewById(R.id.manual_login_container)
+        qrCode = view.findViewById(R.id.qr_code)
+        qrLoginContainer = view.findViewById(R.id.qr_login_container)
         secretCode = view.findViewById(R.id.secret_code)
         binding.loginSignUpContainer.requestFocus()
         binding.passwordEdit.transformationMethod = PasswordTransformationMethod()
@@ -126,13 +133,28 @@ class LoginFragment :
     override fun setSecretCode(code: String) {
         if (code.isEmpty()) {
             secretCode.text = code
-            secretCode.visibility = View.GONE
-            generateCode.visibility = View.VISIBLE
+            qrCode.setImageDrawable(null)
+            qrLoginContainer.visibility = View.GONE
+            manualLoginContainer.visibility = View.VISIBLE
             generateCode.requestFocus()
         } else {
-            generateCode.visibility = View.GONE
-            secretCode.visibility = View.VISIBLE
             secretCode.text = code
+            manualLoginContainer.visibility = View.GONE
+            qrLoginContainer.visibility = View.VISIBLE
+            binding.usernameContainer.requestFocus()
+            qrCode.post {
+                if (!isAdded || secretCode.text.toString() != code) return@post
+                val width = qrCode.width - qrCode.paddingLeft - qrCode.paddingRight
+                val height = qrCode.height - qrCode.paddingTop - qrCode.paddingBottom
+                if (width <= 0 || height <= 0) return@post
+                runCatching {
+                    LazyLoginQrCode.bitmap(
+                        LazyLoginQrCode.loginUrl(code),
+                        width,
+                        height,
+                    )
+                }.onSuccess(qrCode::setImageBitmap)
+            }
         }
     }
 

@@ -346,6 +346,7 @@
     <string name="Error">Błąd</string>
     <string name="text_account_set_up">Zarejestruj się</string>
     <string name="xpress_login">Leniwe logowanie</string>
+    <string name="scan_lazy_login_qr_code">Zeskanuj ten kod QR telefonem, aby się zalogować.</string>
     <string name="web_login_description">Przejdź do </string>
     <string name="app_login_description">Korzystając z aplikacji Windscribe na Androida na telefonie lub tablecie, przejdź do Preferencji (w lewym górnym rogu), w sekcji \"Konto\" wybierz \"Lazy Login\" i wprowadź poniższy kod.</string>
     <string name="or">LUB</string>

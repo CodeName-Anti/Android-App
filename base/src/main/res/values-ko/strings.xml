@@ -359,6 +359,7 @@
     <string name="note">참고</string>
     <string name="text_account_set_up">가입하기</string>
     <string name="xpress_login">간편 로그인</string>
+    <string name="scan_lazy_login_qr_code">휴대폰으로 이 QR 코드를 스캔하여 로그인하세요.</string>
     <string name="web_login_description">다른 기기에서 <b>https://windscribe.com/lazy</b>에 접속하여 아래 코드를 입력하세요.</string>
     <string name="app_login_description">휴대폰이나 태블릿의 Windscribe Android 앱에서 환경 설정(왼쪽 상단)으로 이동한 후 \"계정\"에서 \"간편 로그인\"을 선택하고 아래 코드를 입력하세요.</string>
     <string name="or">또는</string>

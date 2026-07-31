@@ -346,6 +346,7 @@
     <string name="Error">خطأ</string>
     <string name="text_account_set_up">التسجيل</string>
     <string name="xpress_login">تسجيل الدخول الكسول</string>
+    <string name="scan_lazy_login_qr_code">امسح رمز الاستجابة السريعة هذا بهاتفك لتسجيل الدخول.</string>
     <string name="web_login_description">الانتقال إلى </string>
     <string name="app_login_description">باستخدام تطبيق Windscribe Android على هاتفك أو جهازك اللوحي ، انتقل إلى التفضيلات (أعلى اليسار) ، ضمن \"الحساب\" ، اختر \"تسجيل الدخول البطيء\" وأدخل الرمز أدناه.</string>
     <string name="or">أو</string>

@@ -347,6 +347,7 @@ Gefällt dir Windscribe? Das hoffen wir doch. Bewerte uns im Play Store und wir 
     <string name="Error">Fehler</string>
     <string name="text_account_set_up">Registrieren</string>
     <string name="xpress_login">Faules Login</string>
+    <string name="scan_lazy_login_qr_code">Scanne diesen QR-Code mit deinem Smartphone, um dich anzumelden.</string>
     <string name="web_login_description">
         Gehe zu 
         <b>https://windscribe.com/lazy</b>

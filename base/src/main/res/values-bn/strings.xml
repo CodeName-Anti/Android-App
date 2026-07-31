@@ -346,6 +346,7 @@
     <string name="Error">ত্রুটি</string>
     <string name="text_account_set_up">সাইন আপ</string>
     <string name="xpress_login">সহজ লগইন</string>
+    <string name="scan_lazy_login_qr_code">লগ ইন করতে আপনার ফোন দিয়ে এই QR কোডটি স্ক্যান করুন।</string>
     <string name="web_login_description">
         যেকোনো ডিভাইসে 
         <b>https://windscribe.com/lazy</b>

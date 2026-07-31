@@ -346,6 +346,7 @@
     <string name="Error">Помилка</string>
     <string name="text_account_set_up">Зареєструватися</string>
     <string name="xpress_login">Лінивий вхід</string>
+    <string name="scan_lazy_login_qr_code">Відскануйте цей QR-код телефоном, щоб увійти.</string>
     <string name="web_login_description">Іти до </string>
     <string name="app_login_description">Використовуючи додаток Windscribe для Android на телефоні або планшеті, перейдіть в Налаштування (вгорі ліворуч), в розділі «Обліковий запис» виберіть «Лінивий вхід» і введіть код нижче.</string>
     <string name="or">АБО</string>

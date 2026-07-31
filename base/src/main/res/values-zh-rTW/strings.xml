@@ -346,6 +346,7 @@
     <string name="Error">错误</string>
     <string name="text_account_set_up">登记</string>
     <string name="xpress_login">延迟登录</string>
+    <string name="scan_lazy_login_qr_code">使用手機掃描此 QR Code 以登入。</string>
     <string name="web_login_description">转到</string>
     <string name="app_login_description">在手机或平板电脑上使用您的 Windscribe Android 应用程序，转到首选项（左上角），在“帐户”下选择“延迟登录”并输入下面的代码。</string>
     <string name="or">或</string>

@@ -342,6 +342,7 @@
     <string name="Error">خطا</string>
     <string name="text_account_set_up">ثبت نام</string>
     <string name="xpress_login">ورود به سیستم Lazy</string>
+    <string name="scan_lazy_login_qr_code">برای ورود، این کد QR را با تلفن خود اسکن کنید.</string>
     <string name="web_login_description">برو به </string>
     <string name="app_login_description">با استفاده از برنامه Windscribe Android در تلفن یا رایانه لوحی خود، به تنظیمات (بالا سمت چپ)، در زیر \"حساب\" \"Lazy Login\" را انتخاب کنید و کد زیر را وارد کنید.</string>
     <string name="or">یا</string>

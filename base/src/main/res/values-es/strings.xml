@@ -346,6 +346,7 @@
     <string name="Error">Error</string>
     <string name="text_account_set_up">Únete</string>
     <string name="xpress_login">Inicio de sesión perezoso</string>
+    <string name="scan_lazy_login_qr_code">Escanea este código QR con tu teléfono para iniciar sesión.</string>
     <string name="web_login_description">Vete a </string>
     <string name="app_login_description">Usando su aplicación Windscribe Android en su teléfono o tableta, vaya a Preferencias (arriba a la izquierda), en \"Cuenta\", elija \"Lazy Login\" e ingrese el código a continuación.</string>
     <string name="or">O</string>

@@ -346,6 +346,7 @@
     <string name="Error">भूल</string>
     <string name="text_account_set_up">नाम लिखो</string>
     <string name="xpress_login">आलसी लॉगिन</string>
+    <string name="scan_lazy_login_qr_code">लॉग इन करने के लिए इस QR कोड को अपने फ़ोन से स्कैन करें।</string>
     <string name="web_login_description">यहाँ जाओ </string>
     <string name="app_login_description">अपने फोन या टैबलेट पर अपने विंडस्क्राइब एंड्रॉइड ऐप का उपयोग करके, वरीयताओं (ऊपर बाएं) पर जाएं, \"खाता\" के तहत \"आलसी लॉगिन\" चुनें और नीचे दिए गए कोड दर्ज करें।</string>
     <string name="or">नहीं तो</string>
