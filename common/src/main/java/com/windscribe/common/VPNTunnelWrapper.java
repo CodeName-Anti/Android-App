@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -287,7 +288,40 @@ public class VPNTunnelWrapper {
         }
     }
 
-    private final Map<Integer, DnsQuery> pendingQueries = new ConcurrentHashMap<>();
+    // Composite key to prevent DNS transaction ID collisions between apps
+    private static class DnsQueryKey {
+        final int transactionId;
+        final String srcAddr;
+        final int srcPort;
+
+        DnsQueryKey(int transactionId, String srcAddr, int srcPort) {
+            this.transactionId = transactionId;
+            this.srcAddr = srcAddr;
+            this.srcPort = srcPort;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof DnsQueryKey)) return false;
+            DnsQueryKey that = (DnsQueryKey) o;
+            return transactionId == that.transactionId &&
+                   srcPort == that.srcPort &&
+                   Objects.equals(srcAddr, that.srcAddr);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(transactionId, srcAddr, srcPort);
+        }
+
+        @Override
+        public String toString() {
+            return "DnsQueryKey[txId=" + transactionId + ", src=" + srcAddr + ":" + srcPort + "]";
+        }
+    }
+
+    private final Map<DnsQueryKey, DnsQuery> pendingQueries = new ConcurrentHashMap<>();
     private ScheduledExecutorService timeoutExecutor;
     private ExecutorService dnsWorkerPool;
     private long nextQueryId = 1;
@@ -313,14 +347,21 @@ public class VPNTunnelWrapper {
                     long queryId = nextQueryId++;
                     DnsQuery query = new DnsQuery(packet, queryId);
 
-                    // Extract transaction ID from DNS packet for mapping
+                    // Extract transaction ID and source details from DNS packet for mapping
                     int transactionId = extractTransactionId(packet);
-                    if (transactionId >= 0) {
-                        pendingQueries.put(transactionId, query);
+                    if (transactionId >= 0 && packet instanceof IpPacket ipPacket &&
+                        ipPacket.getPayload() instanceof UdpPacket udpPacket) {
+
+                        // Create composite key to prevent cross-app DNS collision
+                        String srcAddr = ipPacket.getHeader().getSrcAddr().getHostAddress();
+                        int srcPort = udpPacket.getHeader().getSrcPort().valueAsInt();
+                        DnsQueryKey queryKey = new DnsQueryKey(transactionId, srcAddr, srcPort);
+
+                        pendingQueries.put(queryKey, query);
 
                         if (enablePacketLogging) {
                             String packetDetails = getPacketDetails(packet);
-                            logPacket("[DNS Query #" + queryId + " TxID:" + transactionId + "] " + packetDetails);
+                            logPacket("[DNS Query #" + queryId + " " + queryKey + "] " + packetDetails);
                             logPacket("  └─ Query: " + query.queryName + " → ControlD");
                         }
 
@@ -328,7 +369,7 @@ public class VPNTunnelWrapper {
                         writeDNSRequestToControlD(packet);
 
                         // Schedule timeout check
-                        timeoutExecutor.schedule(() -> handleTimeout(transactionId),
+                        timeoutExecutor.schedule(() -> handleTimeout(queryKey),
                                                DNS_READ_TIMEOUT_MS, TimeUnit.MILLISECONDS);
                     }
                 }
@@ -367,18 +408,33 @@ public class VPNTunnelWrapper {
 
                         // Extract transaction ID from response
                         int transactionId = extractTransactionIdFromResponse(responseData);
-                        DnsQuery query = pendingQueries.remove(transactionId);
 
-                        if (query != null) {
-                            long responseTime = System.currentTimeMillis() - query.startTime;
+                        // Find and remove the matching query using composite key
+                        DnsQuery matchedQuery = null;
+                        DnsQueryKey matchedKey = null;
+
+                        // We need to find the query that matches this transaction ID
+                        // Since we're using ControlD proxy, we can match based on transaction ID
+                        // but we must ensure it's from our pending queries
+                        for (Map.Entry<DnsQueryKey, DnsQuery> entry : pendingQueries.entrySet()) {
+                            if (entry.getKey().transactionId == transactionId) {
+                                matchedKey = entry.getKey();
+                                matchedQuery = entry.getValue();
+                                break;
+                            }
+                        }
+
+                        if (matchedQuery != null && matchedKey != null) {
+                            pendingQueries.remove(matchedKey);
+                            long responseTime = System.currentTimeMillis() - matchedQuery.startTime;
 
                             if (enablePacketLogging) {
-                                logPacket("  └─ Response for TxID:" + transactionId + " (" + query.queryName +
+                                logPacket("  └─ Response for " + matchedKey + " (" + matchedQuery.queryName +
                                         ") [" + bytesRead + " bytes, " + responseTime + "ms]");
                             }
 
-                            // Send response back to apps
-                            writeDNSResponseData(query.packet, responseData);
+                            // Send response back to the correct app
+                            writeDNSResponseData(matchedQuery.packet, responseData);
                         } else {
                             if (enablePacketLogging) {
                                 logPacket("  └─ Unexpected response TxID:" + transactionId + " (no matching query)");
@@ -392,12 +448,12 @@ public class VPNTunnelWrapper {
         }
     }
 
-    private void handleTimeout(int transactionId) {
-        DnsQuery query = pendingQueries.remove(transactionId);
+    private void handleTimeout(DnsQueryKey queryKey) {
+        DnsQuery query = pendingQueries.remove(queryKey);
         if (query != null) {
             long elapsed = System.currentTimeMillis() - query.startTime;
             if (enablePacketLogging) {
-                logPacket("  └─ TIMEOUT TxID:" + transactionId + " (" + query.queryName +
+                logPacket("  └─ TIMEOUT " + queryKey + " (" + query.queryName +
                         ") after " + elapsed + "ms");
             }
         }
