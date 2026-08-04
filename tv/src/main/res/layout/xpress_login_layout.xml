@@ -103,20 +103,63 @@
                 android:layout_width="match_parent"
                 android:text="@string/scan_lazy_login_qr_code" />
 
-            <ImageView
-                android:id="@+id/qr_code"
+            <FrameLayout
                 android:layout_width="384dp"
                 android:layout_height="384dp"
-                android:layout_marginTop="@dimen/reg_12dp"
-                android:background="@color/colorWhite"
-                android:contentDescription="@string/scan_lazy_login_qr_code"
-                android:padding="@dimen/reg_8dp"
-                android:scaleType="fitCenter" />
+                android:layout_marginTop="@dimen/reg_12dp">
+
+                <ImageView
+                    android:id="@+id/qr_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:contentDescription="@string/scan_lazy_login_qr_code"
+                    android:padding="@dimen/reg_8dp"
+                    android:scaleType="fitCenter" />
+
+                <ProgressBar
+                    android:id="@+id/qr_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/qr_error_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/reg_16dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/qr_error_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/qr_generation_failed"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_size_16" />
+
+                    <Button
+                        android:id="@+id/qr_retry_button"
+                        style="@style/LoginButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/reg_16dp"
+                        android:text="@string/retry" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/secret_code"
                 style="@style/secretCodeStyle"
-                android:layout_marginTop="@dimen/reg_8dp"
+                android:layout_marginTop="@dimen/reg_16dp"
+                android:fontFamily="@font/ibm_plex_sans_bold"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -132,11 +175,6 @@
             <TextView
                 style="@style/loginDescriptionStyle"
                 android:layout_width="match_parent"
-                android:text="@string/web_login_description" />
-
-            <TextView
-                style="@style/loginDescriptionStyle"
-                android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/reg_24dp"
                 android:fontFamily="@font/ibm_plex_sans_bold"
                 android:text="@string/or" />
@@ -145,7 +183,24 @@
                 style="@style/loginDescriptionStyle"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/reg_24dp"
-                android:text="@string/app_login_description" />
+                android:text="@string/manual_enter_code" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/secret_code_large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/reg_16dp"
+                android:fontFamily="@font/ibm_plex_sans_bold"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_32"
+                android:letterSpacing="0.1" />
+
+            <TextView
+                style="@style/loginDescriptionStyle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/reg_24dp"
+                android:text="@string/app_login_manual_entry" />
 
         </LinearLayout>
 

@@ -377,7 +377,10 @@
     <string name="app_login_description">Using your Windscribe Android app on your phone or tablet, go to Preferences (Top left), under “Account” choose “Lazy Login” and enter the code below.</string>
     <string name="or">OR</string>
     <string name="generate_code">Generate Code</string>
+    <string name="app_login_manual_entry">Enter the code below in your Windscribe mobile app:\nPreferences → Account → Lazy Login</string>
+    <string name="manual_enter_code">Enter this code manually:</string>
     <string name="manual_login">Manual Login</string>
+    <string name="qr_generation_failed">Failed to generate QR code</string>
     <string name="keep_your_secrets">Keep Your\nSecrets.</string>
     <string name="reset_password_description">Please visit windscribe.com to reset your password</string>
     <string name="support_url">windscribe.com/support</string>
