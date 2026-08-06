@@ -2,7 +2,7 @@ module golang.zx2c4.com/wireguard/android
 
 go 1.25.12
 
-replace github.com/amnezia-vpn/amneziawg-go => github.com/Windscribe/amneziawg-go v0.2.17-0.20260128224822-ecda464cad7a
+replace github.com/amnezia-vpn/amneziawg-go => github.com/Windscribe/amneziawg-go v0.2.20-0.20260806173830-cca5c05d73df
 
 replace github.com/mr-karan/doggo => github.com/Windscribe/doggo v0.0.0-20220919152748-2c118fc391f8
 
@@ -41,7 +41,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/groob/plist v0.0.0-20200425180238-0f631f258c01 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
