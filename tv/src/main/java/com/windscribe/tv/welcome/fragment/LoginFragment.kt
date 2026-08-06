@@ -17,10 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.windscribe.tv.R
 import com.windscribe.tv.databinding.FragmentLoginBinding
-import com.windscribe.vpn.R as BaseR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.windscribe.vpn.R as BaseR
 
 class LoginFragment :
     Fragment(),

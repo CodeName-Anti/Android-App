@@ -372,13 +372,12 @@
     <string name="note">Note</string>
     <string name="text_account_set_up">Sign Up</string>
     <string name="xpress_login">Lazy Login</string>
-    <string name="scan_lazy_login_qr_code">Scan this QR code with your phone to log in.</string>
-    <string name="web_login_description">Go to <b>https://windscribe.com/lazy</b> on any device and enter the code below.</string>
-    <string name="app_login_description">Using your Windscribe Android app on your phone or tablet, go to Preferences (Top left), under “Account” choose “Lazy Login” and enter the code below.</string>
+    <string name="scan_lazy_login_qr_code">Scan this QR code</string>
+    <string name="web_login_description">Scan the QR code or enter the code in Windscribe mobile app at <b>Account → Lazy Login</b>.</string>
     <string name="or">OR</string>
     <string name="generate_code">Generate Code</string>
-    <string name="app_login_manual_entry">Enter the code below in your Windscribe mobile app:\nPreferences → Account → Lazy Login</string>
-    <string name="manual_enter_code">Enter this code manually:</string>
+    <string name="app_login_manual_entry">Enter in mobile app at <b>Account → Lazy Login</b></string>
+    <string name="manual_enter_code">Or enter this code manually:</string>
     <string name="manual_login">Manual Login</string>
     <string name="qr_generation_failed">Failed to generate QR code</string>
     <string name="keep_your_secrets">Keep Your\nSecrets.</string>
@@ -430,7 +429,7 @@ last chosen location.</string>
     <string name="appearance_description">Light or Dark. Choose a side, and choose wisely.</string>
     <string name="auto_connect_on_boot_description">Automatically connect to the last connected location when the device starts.</string>
     <string name="gps_spoofing_description">Spoof your device\'s GPS coordinates.</string>
-    <string name="lazy_login_description">Login into Windscribe\'s TV apps with a short code.</string>
+    <string name="lazy_login_description">Login into Windscribe\'s TV apps or enter the code in this app.</string>
     <string name="get_10gb_data">Get 10GB/ Month of data and gain the ability to reset your password.</string>
     <string name="data_left_in_your_plan">Data Left</string>
     <string name="referral_username">Referring Username</string>
