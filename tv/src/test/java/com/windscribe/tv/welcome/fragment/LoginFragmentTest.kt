@@ -35,13 +35,14 @@ class LoginFragmentTest {
         val generateCode = root.findViewById<View>(R.id.generate_code)
         val manualContainer = root.findViewById<View>(R.id.manual_login_container)
         val qrContainer = root.findViewById<View>(R.id.qr_login_container)
+        val qrFrame = root.findViewById<View>(R.id.qr_frame)
         val qrCode = root.findViewById<ImageView>(R.id.qr_code)
         val secretCode = root.findViewById<TextView>(R.id.secret_code)
         val usernameContainer = root.findViewById<View>(R.id.username_container)
-        val minimumQrSize = (360 * root.resources.displayMetrics.density).toInt()
+        val minimumQrSize = (225 * root.resources.displayMetrics.density).toInt()
 
-        assertTrue(qrCode.layoutParams.width >= minimumQrSize)
-        assertEquals(qrCode.layoutParams.width, qrCode.layoutParams.height)
+        assertTrue(qrFrame.layoutParams.width >= minimumQrSize)
+        assertEquals(qrFrame.layoutParams.width, qrFrame.layoutParams.height)
 
         generateCode.requestFocus()
         fragment.setSecretCode("AB12-CD34")
