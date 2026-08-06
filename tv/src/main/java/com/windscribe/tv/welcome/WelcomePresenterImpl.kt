@@ -454,6 +454,8 @@ class WelcomePresenterImpl
                                     logger.debug("Successfully verified XPress login code.")
                                     preferencesHelper.sessionHash = result.data.sessionAuth
                                     xpressVerificationJob?.cancel()
+                                    welcomeView.prepareUiForApiCallStart()
+                                    welcomeView.updateCurrentProcess("Signing in...")
                                     firebaseManager.getFirebaseToken { token ->
                                         prepareLoginRegistrationDashboard(token)
                                     }
