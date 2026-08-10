@@ -347,8 +347,8 @@
     <string name="text_account_set_up">नाम लिखो</string>
     <string name="xpress_login">आलसी लॉगिन</string>
     <string name="scan_lazy_login_qr_code">लॉग इन करने के लिए इस QR कोड को अपने फ़ोन से स्कैन करें।</string>
-    <string name="web_login_description">यहाँ जाओ </string>
-    <string name="app_login_description">अपने फोन या टैबलेट पर अपने विंडस्क्राइब एंड्रॉइड ऐप का उपयोग करके, वरीयताओं (ऊपर बाएं) पर जाएं, \"खाता\" के तहत \"आलसी लॉगिन\" चुनें और नीचे दिए गए कोड दर्ज करें।</string>
+    <string name="web_login_description">क्यूआर कोड स्कैन करें या <b>Account → Lazy Login</b> पर Windscribe मोबाइल ऐप में कोड दर्ज करें।</string>
+    <string name="app_login_manual_entry"><b>Account → Lazy Login</b> पर मोबाइल ऐप में दर्ज करें</string>
     <string name="or">नहीं तो</string>
     <string name="generate_code">कोड जनरेट करें</string>
     <string name="manual_login">मैन्युअल लॉगिन</string>
@@ -397,7 +397,7 @@
     <string name="appearance_description">प्रकाश या अंधेरा। एक पक्ष चुनें, और बुद्धिमानी से चुनें।</string>
     <string name="auto_connect_on_boot_description">डिवाइस प्रारंभ होने पर स्वचालित रूप से अंतिम कनेक्टेड स्थान से कनेक्ट करें।</string>
     <string name="gps_spoofing_description">अपने डिवाइस के जीपीएस निर्देशांक को स्पूफ करें।</string>
-    <string name="lazy_login_description">एक छोटे कोड के साथ विंडस्क्राइब के टीवी ऐप्स में लॉगिन करें।</string>
+    <string name="lazy_login_description">Windscribe के TV ऐप्स में लॉगिन करें या इस ऐप में कोड दर्ज करें।</string>
     <string name="get_10gb_data">10GB / माह डेटा प्राप्त करें और अपना पासवर्ड रीसेट करने की क्षमता प्राप्त करें।</string>
     <string name="data_left_in_your_plan">डेटा छोड़ दिया गया</string>
     <string name="referral_username">उपयोगकर्ता नाम का संदर्भ देना</string>

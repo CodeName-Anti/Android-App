@@ -347,8 +347,8 @@
     <string name="text_account_set_up">Zarejestruj się</string>
     <string name="xpress_login">Leniwe logowanie</string>
     <string name="scan_lazy_login_qr_code">Zeskanuj ten kod QR telefonem, aby się zalogować.</string>
-    <string name="web_login_description">Przejdź do </string>
-    <string name="app_login_description">Korzystając z aplikacji Windscribe na Androida na telefonie lub tablecie, przejdź do Preferencji (w lewym górnym rogu), w sekcji \"Konto\" wybierz \"Lazy Login\" i wprowadź poniższy kod.</string>
+    <string name="web_login_description">Zeskanuj kod QR lub wprowadź kod w aplikacji mobilnej Windscribe w <b>Account → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Wprowadź w aplikacji mobilnej w <b>Account → Lazy Login</b></string>
     <string name="or">LUB</string>
     <string name="generate_code">Generowanie kodu</string>
     <string name="manual_login">Logowanie ręczne</string>
@@ -397,7 +397,7 @@ ostatnio wybrana lokalizacja.</string>
     <string name="appearance_description">Jasne lub ciemne. Wybierz stronę i wybierz mądrze.</string>
     <string name="auto_connect_on_boot_description">Automatycznie łącz się z ostatnio połączoną lokalizacją podczas uruchamiania urządzenia.</string>
     <string name="gps_spoofing_description">Sfałszuj współrzędne GPS urządzenia.</string>
-    <string name="lazy_login_description">Zaloguj się do aplikacji telewizyjnych Windscribe za pomocą krótkiego kodu.</string>
+    <string name="lazy_login_description">Zaloguj się do aplikacji telewizyjnych Windscribe lub wprowadź kod w tej aplikacji.</string>
     <string name="get_10gb_data">Uzyskaj 10 GB / miesiąc danych i zyskaj możliwość zresetowania hasła.</string>
     <string name="data_left_in_your_plan">Pozostawione dane</string>
     <string name="referral_username">Polecająca nazwa użytkownika</string>

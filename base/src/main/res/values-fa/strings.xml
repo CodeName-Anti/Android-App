@@ -343,8 +343,8 @@
     <string name="text_account_set_up">ثبت نام</string>
     <string name="xpress_login">ورود به سیستم Lazy</string>
     <string name="scan_lazy_login_qr_code">برای ورود، این کد QR را با تلفن خود اسکن کنید.</string>
-    <string name="web_login_description">برو به </string>
-    <string name="app_login_description">با استفاده از برنامه Windscribe Android در تلفن یا رایانه لوحی خود، به تنظیمات (بالا سمت چپ)، در زیر \"حساب\" \"Lazy Login\" را انتخاب کنید و کد زیر را وارد کنید.</string>
+    <string name="web_login_description">کد QR را اسکن کنید یا کد را در برنامه موبایل Windscribe در <b>حساب → Lazy Login</b> وارد کنید.</string>
+    <string name="app_login_manual_entry">در برنامه موبایل در <b>حساب → Lazy Login</b> وارد کنید</string>
     <string name="or">یا</string>
     <string name="generate_code">تولید کد</string>
     <string name="manual_login">ورود دستی</string>
@@ -393,7 +393,7 @@
     <string name="appearance_description">روشن یا تاریک. یک طرف را انتخاب کنید و عاقلانه انتخاب کنید.</string>
     <string name="auto_connect_on_boot_description">هنگامی که دستگاه شروع به کار می کند، به طور خودکار به اخرین مکان متصل متصل می شود.</string>
     <string name="gps_spoofing_description">مختصات GPS دستگاه خود را جعل کنید.</string>
-    <string name="lazy_login_description">با یک کد کوتاه وارد برنامه های تلویزیونی Windscribe شوید.</string>
+    <string name="lazy_login_description">وارد برنامه‌های TV Windscribe شوید یا کد را در این برنامه وارد کنید.</string>
     <string name="get_10gb_data">دریافت 10GB / ماه داده ها و به دست اوردن توانایی برای تنظیم مجدد رمز عبور خود را.</string>
     <string name="data_left_in_your_plan">چپ داده</string>
     <string name="referral_username">ارجاع نام کاربری</string>

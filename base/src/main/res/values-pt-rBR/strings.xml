@@ -347,12 +347,8 @@
     <string name="text_account_set_up">Sign Up</string>
     <string name="xpress_login">Lazy Login</string>
     <string name="scan_lazy_login_qr_code">Escaneie este código QR com seu celular para entrar.</string>
-    <string name="web_login_description">
-        Go to 
-        <b>https://windscribe.com/lazy</b>
-         on any device and enter the code below.
-    </string>
-    <string name="app_login_description">Using your Windscribe Android app on your phone or tablet, go to Preferences (Top left), under “Account” choose “Lazy Login” and enter the code below.</string>
+    <string name="web_login_description">Escaneie o código QR ou insira o código no aplicativo móvel do Windscribe em <b>Conta → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Digite no aplicativo móvel em <b>Conta → Lazy Login</b></string>
     <string name="or">OR</string>
     <string name="generate_code">Generate Code</string>
     <string name="manual_login">Manual Login</string>
@@ -401,7 +397,7 @@ last chosen location.</string>
     <string name="appearance_description">Light or Dark. Choose a side, and choose wisely.</string>
     <string name="auto_connect_on_boot_description">Automatically connect to the last connected location when the device starts.</string>
     <string name="gps_spoofing_description">Spoof your device\'s GPS coordinates.</string>
-    <string name="lazy_login_description">Login into Windscribe\'s TV apps with a short code.</string>
+    <string name="lazy_login_description">Faça login nos aplicativos de TV do Windscribe ou insira o código neste aplicativo.</string>
     <string name="get_10gb_data">Get 10GB/ Month of data and gain the ability to reset your password.</string>
     <string name="data_left_in_your_plan">Data Left</string>
     <string name="referral_username">Referring Username</string>

@@ -347,8 +347,8 @@
     <string name="text_account_set_up">Зареєструватися</string>
     <string name="xpress_login">Лінивий вхід</string>
     <string name="scan_lazy_login_qr_code">Відскануйте цей QR-код телефоном, щоб увійти.</string>
-    <string name="web_login_description">Іти до </string>
-    <string name="app_login_description">Використовуючи додаток Windscribe для Android на телефоні або планшеті, перейдіть в Налаштування (вгорі ліворуч), в розділі «Обліковий запис» виберіть «Лінивий вхід» і введіть код нижче.</string>
+    <string name="web_login_description">Скануйте QR-код або введіть код у мобільному додатку Windscribe в <b>Обліковий запис → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Введіть у мобільному додатку в <b>Обліковий запис → Lazy Login</b></string>
     <string name="or">АБО</string>
     <string name="generate_code">Згенерувати код</string>
     <string name="manual_login">Вхід вручну</string>
@@ -397,7 +397,7 @@
     <string name="appearance_description">Світлий або темний. Вибирайте сторону, і вибирайте з розумом.</string>
     <string name="auto_connect_on_boot_description">Автоматично підключатися до останнього підключеного розташування під час запуску пристрою.</string>
     <string name="gps_spoofing_description">Підробіть GPS-координати вашого пристрою.</string>
-    <string name="lazy_login_description">Увійдіть у телевізійні програми Windscribe за допомогою короткого коду.</string>
+    <string name="lazy_login_description">Увійдіть у телевізійні програми Windscribe або введіть код у цьому додатку.</string>
     <string name="get_10gb_data">Отримайте 10 ГБ/місяць даних і отримайте можливість скинути пароль.</string>
     <string name="data_left_in_your_plan">Залишилися дані</string>
     <string name="referral_username">Посилання на ім\я користувача</string>
