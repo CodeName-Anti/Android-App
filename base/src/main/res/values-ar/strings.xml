@@ -346,8 +346,9 @@
     <string name="Error">خطأ</string>
     <string name="text_account_set_up">التسجيل</string>
     <string name="xpress_login">تسجيل الدخول الكسول</string>
-    <string name="web_login_description">الانتقال إلى </string>
-    <string name="app_login_description">باستخدام تطبيق Windscribe Android على هاتفك أو جهازك اللوحي ، انتقل إلى التفضيلات (أعلى اليسار) ، ضمن \"الحساب\" ، اختر \"تسجيل الدخول البطيء\" وأدخل الرمز أدناه.</string>
+    <string name="scan_lazy_login_qr_code">امسح رمز الاستجابة السريعة هذا بهاتفك لتسجيل الدخول.</string>
+    <string name="web_login_description">امسح رمز الاستجابة السريعة أو أدخل الرمز في تطبيق Windscribe للهاتف المحمول في <b>الحساب ← تسجيل الدخول الكسول</b>.</string>
+    <string name="app_login_manual_entry">أدخل في تطبيق الهاتف المحمول في <b>الحساب ← تسجيل الدخول الكسول</b></string>
     <string name="or">أو</string>
     <string name="generate_code">إنشاء التعليمات البرمجية</string>
     <string name="manual_login">تسجيل الدخول اليدوي</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">فاتح أو غامق. اختر جانبا ، واختر بحكمة.</string>
     <string name="auto_connect_on_boot_description">الاتصال تلقائيا بآخر موقع متصل عند بدء تشغيل الجهاز.</string>
     <string name="gps_spoofing_description">انتحال إحداثيات GPS الخاصة بجهازك.</string>
-    <string name="lazy_login_description">قم بتسجيل الدخول إلى تطبيقات Windscribe TV باستخدام رمز قصير.</string>
+    <string name="lazy_login_description">قم بتسجيل الدخول إلى تطبيقات Windscribe TV أو أدخل الرمز في هذا التطبيق.</string>
     <string name="get_10gb_data">احصل على 10 جيجابايت / شهر من البيانات واحصل على القدرة على إعادة تعيين كلمة المرور الخاصة بك.</string>
     <string name="data_left_in_your_plan">البيانات المتبقية</string>
     <string name="referral_username">إحالة اسم المستخدم</string>

@@ -346,8 +346,9 @@
     <string name="Error">エラー</string>
     <string name="text_account_set_up">サインアップ</string>
     <string name="xpress_login">レイジーログイン</string>
-    <string name="web_login_description">行きます</string>
-    <string name="app_login_description">携帯電話またはタブレットでWindscribe Androidアプリを使用して、[設定](左上)に移動し、[アカウント]で[遅延ログイン]を選択して、以下のコードを入力します。</string>
+    <string name="scan_lazy_login_qr_code">スマートフォンでこのQRコードをスキャンしてログインしてください。</string>
+    <string name="web_login_description"><b>Account → Lazy Login</b>でWindscribeモバイルアプリのQRコードをスキャンするか、コードを入力してください。</string>
+    <string name="app_login_manual_entry"><b>Account → Lazy Login</b>でモバイルアプリに入力してください</string>
     <string name="or">又は</string>
     <string name="generate_code">コードの生成</string>
     <string name="manual_login">手動ログイン</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">アプリのテーマを指定できます。</string>
     <string name="auto_connect_on_boot_description">デバイスの起動時に、最後に接続した場所に自動的に接続します。</string>
     <string name="gps_spoofing_description">デバイスのGPS座標を偽装します。</string>
-    <string name="lazy_login_description">ショートコードでWindscribeのテレビアプリにログインします。</string>
+    <string name="lazy_login_description">WindscribeのTVアプリにログインするか、このアプリでコードを入力してください。</string>
     <string name="get_10gb_data">10GB /月のデータを取得し、パスワードをリセットする機能を取得します。</string>
     <string name="data_left_in_your_plan">残りのデータ</string>
     <string name="referral_username">参照元のユーザー名</string>

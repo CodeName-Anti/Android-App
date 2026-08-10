@@ -6,7 +6,6 @@
         android:id="@+id/login_sign_up_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorDeepBlue"
         android:focusable="false">
 
         <include layout="@layout/xpress_login_layout" />

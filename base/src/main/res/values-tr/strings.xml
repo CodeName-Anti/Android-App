@@ -346,8 +346,9 @@
     <string name="Error">Hata</string>
     <string name="text_account_set_up">Kaydol</string>
     <string name="xpress_login">Tembel Giriş</string>
-    <string name="web_login_description">Git </string>
-    <string name="app_login_description">Windscribe Android uygulamanızı telefonunuzda veya tabletinizde kullanarak Tercihler\e (Sol üstte) gidin, \"Hesap\" altında \"Lazy Login\" i seçin ve aşağıdaki kodu girin.</string>
+    <string name="scan_lazy_login_qr_code">Giriş yapmak için bu QR kodunu telefonunuzla tarayın.</string>
+    <string name="web_login_description">QR kodunu tarayın veya <b>Hesap → Lazy Login</b> bölümündeki Windscribe mobil uygulamasına kodu girin.</string>
+    <string name="app_login_manual_entry"><b>Hesap → Lazy Login</b> bölümündeki mobil uygulamaya girin</string>
     <string name="or">VEYA</string>
     <string name="generate_code">Kod Oluştur</string>
     <string name="manual_login">Manuel Giriş</string>
@@ -396,7 +397,7 @@ son seçilen yer.</string>
     <string name="appearance_description">Açık veya Karanlık. Bir taraf seçin ve akıllıca seçim yapın.</string>
     <string name="auto_connect_on_boot_description">Cihaz başlatıldığında en son bağlanılan konuma otomatik olarak bağlanın.</string>
     <string name="gps_spoofing_description">Cihazınızın GPS koordinatlarını taklit edin.</string>
-    <string name="lazy_login_description">Windscribe\\ın TV uygulamalarına kısa bir kodla giriş yapın.</string>
+    <string name="lazy_login_description">Windscribe\'ın TV uygulamalarına giriş yapın veya kodu bu uygulamaya girin.</string>
     <string name="get_10gb_data">10GB / Ay veri alın ve şifrenizi sıfırlama yeteneği kazanın.</string>
     <string name="data_left_in_your_plan">Kalan Veri</string>
     <string name="referral_username">Yönlendiren Kullanıcı Adı</string>

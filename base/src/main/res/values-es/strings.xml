@@ -346,8 +346,9 @@
     <string name="Error">Error</string>
     <string name="text_account_set_up">Únete</string>
     <string name="xpress_login">Inicio de sesión perezoso</string>
-    <string name="web_login_description">Vete a </string>
-    <string name="app_login_description">Usando su aplicación Windscribe Android en su teléfono o tableta, vaya a Preferencias (arriba a la izquierda), en \"Cuenta\", elija \"Lazy Login\" e ingrese el código a continuación.</string>
+    <string name="scan_lazy_login_qr_code">Escanea este código QR con tu teléfono para iniciar sesión.</string>
+    <string name="web_login_description">Escanea el código QR o ingresa el código en la aplicación móvil de Windscribe en <b>Cuenta → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Ingresa en la aplicación móvil en <b>Cuenta → Lazy Login</b></string>
     <string name="or">O</string>
     <string name="generate_code">Generar código</string>
     <string name="manual_login">Inicio de sesión manual</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">Claro u oscuro. Elige un lado y elige sabiamente.</string>
     <string name="auto_connect_on_boot_description">Conéctese automáticamente a la última ubicación conectada cuando se inicie el dispositivo.</string>
     <string name="gps_spoofing_description">Falsificar las coordenadas GPS de su dispositivo \ \s.</string>
-    <string name="lazy_login_description">Inicie sesión en las aplicaciones de TV de Windscribe \ \s con un código corto.</string>
+    <string name="lazy_login_description">Inicie sesión en las aplicaciones de TV de Windscribe o ingrese el código en esta aplicación.</string>
     <string name="get_10gb_data">Obtenga 10GB / mes de datos y obtenga la capacidad de restablecer su contraseña.</string>
     <string name="data_left_in_your_plan">Datos restantes</string>
     <string name="referral_username">Nombre de usuario de referencia</string>

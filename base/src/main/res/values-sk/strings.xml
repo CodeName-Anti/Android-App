@@ -357,12 +357,9 @@
     <string name="Error">Chyba</string>
     <string name="text_account_set_up">Zaregistrovať sa</string>
     <string name="xpress_login">Lazy Login</string>
-    <string name="web_login_description">
-        Prejdite na 
-        <b>https://windscribe.com/lazy</b>
-         na akomkoľvek zariadení a zadajte kód nižšie.
-    </string>
-    <string name="app_login_description">Pomocou vašej Windscribe Android aplikácie na telefóne alebo tablete prejdite do Preferencií (vľavo hore), v časti \"Účet\" vyberte \"Lazy Login\" a zadajte kód nižšie.</string>
+    <string name="scan_lazy_login_qr_code">Naskenujte tento QR kód telefónom a prihláste sa.</string>
+    <string name="web_login_description">Naskenujte QR kód alebo zadajte kód v mobilnej aplikácii Windscribe na <b>Účet → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Zadajte v mobilnej aplikácii na <b>Účet → Lazy Login</b></string>
     <string name="or">ALEBO</string>
     <string name="generate_code">Vygenerovať kód</string>
     <string name="manual_login">Manuálne prihlásenie</string>
@@ -414,7 +411,7 @@ naposledy vybranú polohu.</string>
     <string name="appearance_description">Svetlý alebo tmavý. Vyberte si stranu a vyberte múdro.</string>
     <string name="auto_connect_on_boot_description">Automaticky pripojiť sa k naposledy pripojenej polohe pri spustení zariadenia.</string>
     <string name="gps_spoofing_description">Falšovať GPS súradnice vášho zariadenia.</string>
-    <string name="lazy_login_description">Prihlásiť sa do TV aplikácií Windscribe pomocou krátkeho kódu.</string>
+    <string name="lazy_login_description">Prihlásiť sa do TV aplikácií Windscribe alebo zadajte kód v tejto aplikácii.</string>
     <string name="get_10gb_data">Získajte 10GB/mesiac dát a získajte možnosť obnoviť svoje heslo.</string>
     <string name="data_left_in_your_plan">Zostávajúce dáta</string>
     <string name="referral_username">Odporúčajúce používateľské meno</string>

@@ -38,6 +38,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -86,6 +89,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:${libs.versions.appcompat.get()}")
     implementation("com.google.android.material:material:${libs.versions.material.get()}")
     implementation("androidx.leanback:leanback:${libs.versions.leanback.get()}")
+    implementation(libs.zxing.core)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     // Core
     implementation(project(":base"))
@@ -100,4 +104,7 @@ dependencies {
 
     // Baseline Profile for startup optimization
     implementation("androidx.profileinstaller:profileinstaller:1.4.1")
+    testImplementation(libs.androidx.test.core)
+    testImplementation("junit:junit:${libs.versions.junit.get()}")
+    testImplementation(libs.robolectric)
 }

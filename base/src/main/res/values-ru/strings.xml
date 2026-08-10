@@ -347,8 +347,9 @@
     <string name="Error">Ошибка</string>
     <string name="text_account_set_up">Регистрация</string>
     <string name="xpress_login">Быстрый вход</string>
-    <string name="web_login_description">Перейти к </string>
-    <string name="app_login_description">Откройте приложение Windscribe для Android на телефоне или планшете, перейдите в раздел «Настройки» (вверху слева), в разделе «Учетная запись» выберите «Быстрый вход» и введите приведенный ниже код.</string>
+    <string name="scan_lazy_login_qr_code">Отсканируйте этот QR-код телефоном, чтобы войти.</string>
+    <string name="web_login_description">Отсканируйте QR-код или введите код в мобильном приложении Windscribe в <b>Аккаунт → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Введите в мобильном приложении в <b>Аккаунт → Lazy Login</b></string>
     <string name="or">ИЛИ</string>
     <string name="generate_code">Создание кода</string>
     <string name="manual_login">Ручной вход в систему</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">Светлый или темный. Выберите сторону, и выбирайте с умом.</string>
     <string name="auto_connect_on_boot_description">Автоматически подключаться к последней активной локации при запуске устройства.</string>
     <string name="gps_spoofing_description">Подделка GPS-координат вашего устройства.</string>
-    <string name="lazy_login_description">Войдите в приложения Windscribe для ТВ с помощью короткого кода.</string>
+    <string name="lazy_login_description">Войдите в приложения Windscribe для ТВ или введите код в этом приложении.</string>
     <string name="get_10gb_data">Получите 10 ГБ трафика в месяц и возможность сброса пароля.</string>
     <string name="data_left_in_your_plan">Данные слева</string>
     <string name="referral_username">Имя приглашенного пользователя</string>

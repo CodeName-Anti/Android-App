@@ -347,12 +347,9 @@ Gefällt dir Windscribe? Das hoffen wir doch. Bewerte uns im Play Store und wir 
     <string name="Error">Fehler</string>
     <string name="text_account_set_up">Registrieren</string>
     <string name="xpress_login">Faules Login</string>
-    <string name="web_login_description">
-        Gehe zu 
-        <b>https://windscribe.com/lazy</b>
-         auf einem beliebigen Gerät und gib den unten stehenden Code ein.
-    </string>
-    <string name="app_login_description">Gehe mit deiner Windscribe Android-App auf deinem Telefon oder Tablet zu Einstellungen (oben links), wähle unter \"Konto\" die Option \"Faules Login\" und gib den folgenden Code ein.</string>
+    <string name="scan_lazy_login_qr_code">Scanne diesen QR-Code mit deinem Smartphone, um dich anzumelden.</string>
+    <string name="web_login_description">Scanne den QR-Code oder gib den Code in der Windscribe Mobile App unter <b>Konto → Faules Login</b> ein.</string>
+    <string name="app_login_manual_entry">In der Mobile App unter <b>Konto → Faules Login</b> eingeben</string>
     <string name="or">ODER</string>
     <string name="generate_code">Code generieren</string>
     <string name="manual_login">Manuelle Anmeldung</string>
@@ -400,7 +397,7 @@ Gefällt dir Windscribe? Das hoffen wir doch. Bewerte uns im Play Store und wir 
     <string name="appearance_description">Hell oder dunkel. Wähle eine Seite, und wähle sie mit Bedacht.</string>
     <string name="auto_connect_on_boot_description">Stelle automatisch eine Verbindung zum zuletzt verbundenen Standort her, wenn das Gerät gestartet wird.</string>
     <string name="gps_spoofing_description">Spoofe die GPS-Koordinaten deines Geräts.</string>
-    <string name="lazy_login_description">Melde dich mit einem kurzen Code bei den TV-Apps von Windscribe an.</string>
+    <string name="lazy_login_description">Melde dich bei den TV-Apps von Windscribe an oder gib den Code in dieser App ein.</string>
     <string name="get_10gb_data">Hol dir 10 GB / Monat Daten und erhalte die Möglichkeit, dein Passwort zurückzusetzen.</string>
     <string name="data_left_in_your_plan">Übrige Daten</string>
     <string name="referral_username">Verweisender Benutzername</string>

@@ -346,8 +346,9 @@
     <string name="Error">Erreur</string>
     <string name="text_account_set_up">S’enregistrer</string>
     <string name="xpress_login">Connexion paresseuse</string>
-    <string name="web_login_description">Atteindre </string>
-    <string name="app_login_description">En utilisant votre application Windscribe Android sur votre téléphone ou votre tablette, allez dans Préférences (en haut à gauche), sous « Compte », choisissez « Lazy Login » et entrez le code ci-dessous.</string>
+    <string name="scan_lazy_login_qr_code">Scannez ce code QR avec votre téléphone pour vous connecter.</string>
+    <string name="web_login_description">Scannez le code QR ou entrez le code dans l\'application mobile Windscribe sous <b>Compte → Connexion paresseuse</b>.</string>
+    <string name="app_login_manual_entry">Entrez dans l\'application mobile sous <b>Compte → Connexion paresseuse</b></string>
     <string name="or">OU</string>
     <string name="generate_code">Générer du code</string>
     <string name="manual_login">Connexion manuelle</string>
@@ -396,7 +397,7 @@ dernier emplacement choisi.</string>
     <string name="appearance_description">Clair ou sombre. Choisissez un camp et choisissez judicieusement.</string>
     <string name="auto_connect_on_boot_description">Connectez-vous automatiquement au dernier emplacement connecté au démarrage de l’appareil.</string>
     <string name="gps_spoofing_description">Usurpez les coordonnées GPS de votre appareil.</string>
-    <string name="lazy_login_description">Connectez-vous aux applications TV de Windscribe avec un code court.</string>
+    <string name="lazy_login_description">Connectez-vous aux applications TV de Windscribe ou entrez le code dans cette application.</string>
     <string name="get_10gb_data">Obtenez 10 Go / mois de données et obtenez la possibilité de réinitialiser votre mot de passe.</string>
     <string name="data_left_in_your_plan">Données restantes</string>
     <string name="referral_username">Nom d’utilisateur référent</string>

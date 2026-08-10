@@ -132,8 +132,8 @@ public class BadConfigExceptionTest {
             Config.parse(CONFIG_MAP.get("syntax-error"));
             fail("Config parsing must fail in this test");
         } catch (final BadConfigException e) {
-            assertEquals(e.getReason(), Reason.SYNTAX_ERROR);
-            assertEquals(e.getLocation(), Location.TOP_LEVEL);
+            assertEquals(e.getReason(), Reason.INVALID_VALUE);
+            assertEquals(e.getLocation(), Location.ENDPOINT);
             assertEquals(e.getSection(), Section.PEER);
         } catch (final IOException e) {
             e.printStackTrace();

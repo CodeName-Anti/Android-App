@@ -347,8 +347,9 @@
     <string name="Error">Errore</string>
     <string name="text_account_set_up">Registrati</string>
     <string name="xpress_login">Login pigro</string>
-    <string name="web_login_description">Vai a </string>
-    <string name="app_login_description">Utilizzando l\'app Android Windscribe sul tuo telefono o tablet, vai su Preferenze (in alto a sinistra), sotto \"Account\" scegli \"Lazy Login\" e inserisci il codice qui sotto.</string>
+    <string name="scan_lazy_login_qr_code">Scansiona questo codice QR con il telefono per accedere.</string>
+    <string name="web_login_description">Scansiona il codice QR o inserisci il codice nell\'app mobile Windscribe su <b>Account → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Inserisci nell\'app mobile su <b>Account → Lazy Login</b></string>
     <string name="or">O</string>
     <string name="generate_code">Genera codice</string>
     <string name="manual_login">Login manuale</string>
@@ -397,7 +398,7 @@ Ultima posizione scelta.</string>
     <string name="appearance_description">Chiaro o scuro. Scegli da che parte stare, decidi saggiamente.</string>
     <string name="auto_connect_on_boot_description">Connettiti automaticamente all\'ultima posizione connessa quando il dispositivo si avvia.</string>
     <string name="gps_spoofing_description">Falsifica la posizione GPS</string>
-    <string name="lazy_login_description">Accedi all\'app per TV di Windscribe con un codice breve</string>
+    <string name="lazy_login_description">Accedi alle app TV di Windscribe o inserisci il codice in questa app.</string>
     <string name="get_10gb_data">Ottieni 10 GB al mese di dati e la possibilità di ripristinare la password.</string>
     <string name="data_left_in_your_plan">Dati rimanenti</string>
     <string name="referral_username">Nome utente di riferimento</string>
