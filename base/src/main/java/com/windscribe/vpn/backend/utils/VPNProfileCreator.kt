@@ -693,7 +693,8 @@ class VPNProfileCreator
             if (!preferencesHelper.isPackageSizeModeAuto && preferencesHelper.packetSize != -1) {
                 builder.setMtu(preferencesHelper.packetSize)
             }
-            if (preferencesHelper.isDecoyTrafficOn) {
+            // Ipv6 hates small MTU.
+            if (preferencesHelper.isDecoyTrafficOn && preferencesHelper.ipv6Mode == PreferencesKeyConstants.IPV6_MODE_IPV4_ONLY) {
                 builder.setMtu(100)
             }
             if (preferencesHelper.splitTunnelToggle) {
