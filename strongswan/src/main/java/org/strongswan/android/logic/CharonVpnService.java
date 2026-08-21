@@ -156,6 +156,9 @@ public abstract class CharonVpnService extends VpnService implements Runnable, V
 	abstract protected void applyExcludedRoutes(Builder builder);
 	abstract protected boolean shouldEnablePacketLogging();
 
+	/** Port ctrld is currently listening on. Read live; DNSDetails carries a stale snapshot. */
+	abstract protected int getControlDPort();
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
@@ -1079,7 +1082,7 @@ public abstract class CharonVpnService extends VpnService implements Runnable, V
 				if (dnsDetails != null && (dnsDetails.getType() == DnsType.Proxy)){
 					mBuilder.setBlocking(true);
 					fd = mBuilder.establish();
-					tunnelWrapper = new VPNTunnelWrapper(fd, CharonVpnService.this, dnsDetails.getControlDPort(), shouldEnablePacketLogging());
+					tunnelWrapper = new VPNTunnelWrapper(fd, CharonVpnService.this, getControlDPort(), shouldEnablePacketLogging());
 					tunnelWrapper.start();
 					fd = tunnelWrapper.getParcelDescriptor();
 				} else {

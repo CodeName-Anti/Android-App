@@ -30,7 +30,7 @@ class XPressLoginCodeResponse {
         "XPressLoginCodeResponse{" +
             "xPressLoginCode='" + xPressLoginCode + '\'' +
             ", ttl=" + ttl +
-            ", signature='" + signature + '\'' +
+            ", signature='[REDACTED]'" +
             ", time=" + time +
             '}'
 }

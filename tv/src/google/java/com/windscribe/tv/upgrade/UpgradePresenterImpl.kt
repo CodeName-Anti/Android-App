@@ -391,7 +391,11 @@ class UpgradePresenterImpl
             )
             upgradeView.showProgressBar("Purchase successful")
             val receipt = response.receipt
-            logger.debug(receipt.toJSON().toString())
+            logger.debug(
+                "Amazon receipt received: type={} id={}",
+                receipt.productType,
+                receipt.receiptId.truncatedBillingToken(),
+            )
             handleAmazonReceipt(receipt, response.userData)
         }
 
@@ -433,7 +437,12 @@ class UpgradePresenterImpl
 
                 BillingResponseCode.OK -> {
                     logger.info("Purchase successful...Need to consume the product...")
-                    logger.info(purchases.toString())
+                    logger.info(
+                        "Purchases: {}",
+                        purchases.joinToString { p ->
+                            "${p.products} state=${p.purchaseState} token=${p.purchaseToken.truncatedBillingToken()}"
+                        },
+                    )
                     upgradeView.onPurchaseSuccessful(purchases)
                 }
 

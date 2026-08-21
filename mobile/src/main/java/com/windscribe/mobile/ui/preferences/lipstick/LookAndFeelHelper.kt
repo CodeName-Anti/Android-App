@@ -6,6 +6,7 @@ import com.windscribe.mobile.ui.model.DropDownItem
 import com.windscribe.mobile.ui.model.ThemeItem
 import com.windscribe.vpn.apppreference.PreferencesKeyConstants.DARK_THEME
 import com.windscribe.vpn.apppreference.PreferencesKeyConstants.LIGHT_THEME
+import com.windscribe.vpn.commonutils.SafeFileName
 import java.io.File
 
 object LookAndFeelHelper {
@@ -141,19 +142,27 @@ object LookAndFeelHelper {
         }
 
     /**
-     * Returns custom sound file to play based on connection state
+     * Returns the custom sound file for [fileName] in the app-private sound directory for the given
+     * connection state, or null if [fileName] cannot safely be used as a file name.
+     *
+     * [fileName] originates from a DocumentsProvider's COLUMN_DISPLAY_NAME, which any installed app
+     * can choose, so it is untrusted. Callers write to the returned file, so a name containing
+     * `../` would let the picked document overwrite arbitrary app-private files - including the
+     * serialized VPN profile that is later read back with ObjectInputStream. Reduce the name to a
+     * single path component and confirm the result really does resolve inside the sound directory.
      */
     fun getSoundFile(
         context: Context,
         isConnected: Boolean,
         fileName: String,
-    ): File {
+    ): File? {
         val soundDir =
             context.getDir(
                 if (isConnected) "connected_sounds" else "disconnected_sounds",
                 Context.MODE_PRIVATE,
             )
-        return File(soundDir, fileName)
+        val safeName = SafeFileName.sanitize(fileName) ?: return null
+        return File(soundDir, safeName).takeIf { SafeFileName.isInside(it, soundDir) }
     }
 
     /**

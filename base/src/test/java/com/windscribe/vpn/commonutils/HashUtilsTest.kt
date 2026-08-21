@@ -1,6 +1,7 @@
 package com.windscribe.vpn.commonutils
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -32,6 +33,31 @@ class HashUtilsTest {
         val hash = HashUtils.sha256FromInputStream(ByteArrayInputStream(ByteArray(0)))
 
         assertEquals("0x27ae41e4649b934ca495991b7852b855", hash)
+    }
+
+    @Test
+    fun `isAccountHash accepts output of sha256FromInputStream`() {
+        val hash = HashUtils.sha256FromInputStream(ByteArrayInputStream("hello".toByteArray()))
+
+        assertTrue(HashUtils.isAccountHash(hash))
+    }
+
+    @Test
+    fun `isAccountHash rejects ordinary usernames`() {
+        assertFalse(HashUtils.isAccountHash("windscribe_user"))
+        assertFalse(HashUtils.isAccountHash(""))
+        assertFalse(HashUtils.isAccountHash("0x"))
+    }
+
+    @Test
+    fun `isAccountHash rejects near misses on the account hash format`() {
+        // Wrong length, uppercase hex, missing prefix, and trailing content must all fail closed.
+        assertFalse(HashUtils.isAccountHash("0x1b161e5c1fa7425e73043362938b982"))
+        assertFalse(HashUtils.isAccountHash("0x1b161e5c1fa7425e73043362938b98244"))
+        assertFalse(HashUtils.isAccountHash("0x1B161E5C1FA7425E73043362938B9824"))
+        assertFalse(HashUtils.isAccountHash("1b161e5c1fa7425e73043362938b9824"))
+        assertFalse(HashUtils.isAccountHash("0x1b161e5c1fa7425e73043362938b9824 "))
+        assertFalse(HashUtils.isAccountHash("prefix0x1b161e5c1fa7425e73043362938b9824"))
     }
 
     @Test
