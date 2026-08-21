@@ -5,6 +5,7 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -49,10 +50,12 @@ class BillingDtoTest {
     }
 
     @Test
-    fun `AmazonPurchase toString contains both fields`() {
-        val text = AmazonPurchase("receipt-1", "user-1").toString()
-        assertTrue(text.contains("receiptId='receipt-1'"))
-        assertTrue(text.contains("userId='user-1'"))
+    fun `AmazonPurchase toString redacts both fields`() {
+        val text = AmazonPurchase("receipt-id-1234567890", "user-1").toString()
+        assertFalse(text.contains("receipt-id-1234567890"))
+        assertFalse(text.contains("user-1"))
+        assertTrue(text.contains("receiptId='rece...7890'"))
+        assertTrue(text.contains("userId='[REDACTED]'"))
     }
 
     @Test

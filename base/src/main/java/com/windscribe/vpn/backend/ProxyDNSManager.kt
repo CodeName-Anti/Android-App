@@ -14,8 +14,11 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.net.DatagramSocket
+import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.ServerSocket
+import java.net.SocketAddress
+import java.security.SecureRandom
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -25,6 +28,24 @@ class ProxyDNSManager(
 ) {
     companion object {
         const val CONFIG_FILE = "config.toml"
+
+        /**
+         * Range the ctrld listener port is drawn from. Bounded below 32768 to stay clear of the
+         * Linux ephemeral range (ip_local_port_range, 32768-60999 by default), so the kernel will
+         * not hand the same port to an unrelated socket while ctrld is using it.
+         */
+        private const val PORT_RANGE_START = 10000
+        private const val PORT_RANGE_END = 32767
+        private const val PORT_SELECTION_ATTEMPTS = 20
+
+        private const val READY_POLL_MS = 100L
+
+        /**
+         * 10s. Generous because ctrld only has to bind a local socket here - no upstream contact is
+         * needed - but failure now aborts the connection, so a slow cold start on a weak device
+         * must not be mistaken for a hijacked port.
+         */
+        private const val READY_MAX_ATTEMPTS = 100
     }
 
     private var cdLib = CdLib()
@@ -34,6 +55,7 @@ class ProxyDNSManager(
     private var isRunning = AtomicBoolean(false)
     private val logger = LoggerFactory.getLogger("vpn")
     private val activePort = AtomicInteger(5355)
+    private val portRandom = SecureRandom()
 
     /** Returns the port ctrld is currently configured to listen on. */
     fun getListenPort(): Int = activePort.get()
@@ -72,15 +94,40 @@ class ProxyDNSManager(
         invalidConfig = false
     }
 
+    /**
+     * Picks a free port for ctrld's listener, which binds UDP (and TCP) on 127.0.0.1 per
+     * config.toml.
+     *
+     * The port is chosen at random rather than scanned upwards from a fixed 5355. Any app on the
+     * device can bind a loopback port, and whichever process holds this one receives every app's
+     * DNS while the tunnel is up; a predictable port lets an attacker simply bind it at boot and
+     * wait. Drawing from a large range means it has to guess and then also win the race below,
+     * and covering the range would take more sockets than an app's descriptor limit allows.
+     *
+     * Both protocols are probed, on the loopback address specifically: a TCP-only probe on the
+     * wildcard address would report a port free whose UDP side is already held. SO_REUSEADDR is
+     * disabled so the kernel cannot grant a bind to a port already in use.
+     *
+     * A gap remains between this probe and ctrld's own bind - the sockets must be released for
+     * ctrld to take them - so this narrows the window rather than closing it. Closing it needs
+     * ctrld to accept an already-bound socket.
+     */
     private fun findAvailablePort(): String? {
-        var port = 5355
-        repeat(20) {
+        val loopback = InetAddress.getByName("127.0.0.1")
+        repeat(PORT_SELECTION_ATTEMPTS) {
+            val port = PORT_RANGE_START + portRandom.nextInt(PORT_RANGE_END - PORT_RANGE_START + 1)
             try {
-                ServerSocket(port).use {
-                    return "$port"
+                DatagramSocket(null as SocketAddress?).use { udp ->
+                    udp.reuseAddress = false
+                    udp.bind(InetSocketAddress(loopback, port))
+                    ServerSocket().use { tcp ->
+                        tcp.reuseAddress = false
+                        tcp.bind(InetSocketAddress(loopback, port))
+                        return "$port"
+                    }
                 }
             } catch (e: Exception) {
-                port++
+                // Port is taken or unusable; draw another.
             }
         }
         return null
@@ -130,30 +177,61 @@ class ProxyDNSManager(
     }
 
     /**
-     * Waits for ctrld to be reachable on its listen port before returning.
-     * Polls every 100ms for up to 5 seconds.
+     * Waits until ctrld has taken its listen port, and fails the connection if it never does.
+     *
+     * This is a bind test, not a DNS query, and deliberately so: while the VPN is still connecting
+     * ctrld cannot reach its upstream resolver, so a real query would time out even though ctrld is
+     * running and correctly bound. Attempting the bind ourselves needs no DNS traffic and no
+     * working tunnel - if the bind is refused the port is held, if it succeeds nothing is there.
+     *
+     * The previous implementation could not fail: DatagramSocket.connect() on UDP exchanges no
+     * packets, so it always succeeded and the check reduced to cdLib.isCdRunning().
+     *
+     * This establishes only that the port is occupied, NOT that ctrld is what occupies it - a local
+     * app that won the race for the port reads the same. That distinction cannot be made from here;
+     * it needs ctrld to adopt a socket this process owns. So this guards against "nothing is
+     * listening" and "something non-DNS is listening", not against a deliberate local hijacker.
+     * See [findAvailablePort].
      */
     private suspend fun waitForControlDReady() {
         val port = activePort.get()
-        val maxAttempts = 50
-        for (i in 1..maxAttempts) {
-            try {
-                DatagramSocket().use { socket ->
-                    socket.connect(InetSocketAddress("127.0.0.1", port))
-                    socket.soTimeout = 100
-                }
-                // Also verify via native check
-                if (cdLib.isCdRunning()) {
-                    logger.debug("ControlD is ready on port $port after ${i * 100}ms.")
-                    return
-                }
-            } catch (e: Exception) {
-                // Not ready yet
+        for (i in 1..READY_MAX_ATTEMPTS) {
+            if (isLoopbackUdpPortTaken(port) && cdLib.isCdRunning()) {
+                logger.debug("ControlD is listening on port $port after ${i * READY_POLL_MS}ms.")
+                return
             }
-            delay(100)
+            delay(READY_POLL_MS)
         }
-        logger.warn("ControlD may not be ready after ${maxAttempts * 100}ms on port $port. Proceeding anyway.")
+        // Fail closed. Nothing is confirmed on the port, so forwarding every app's DNS there would
+        // either blackhole it or hand it to whatever else holds it. Both are unacceptable in a mode
+        // the user turned on for DNS privacy, so refuse to connect and say why. ctrld is stopped
+        // first so the next attempt starts from a clean state rather than skipping startup because
+        // isRunning is still set.
+        logger.error(
+            "ControlD is not listening on port $port after " +
+                "${READY_MAX_ATTEMPTS * READY_POLL_MS}ms. Failing the connection.",
+        )
+        stopControlD()
+        throw WindScribeException("DNS proxy (ControlD) failed to start.")
     }
+
+    /**
+     * True if [port] cannot be bound on loopback UDP, i.e. some socket already holds it.
+     *
+     * SO_REUSEADDR is explicitly disabled before binding. Left enabled, the kernel may permit a
+     * second bind to a UDP port that is already in use, which would report every port as free and
+     * make this test meaningless.
+     */
+    private fun isLoopbackUdpPortTaken(port: Int): Boolean =
+        try {
+            DatagramSocket(null as SocketAddress?).use { socket ->
+                socket.reuseAddress = false
+                socket.bind(InetSocketAddress(InetAddress.getByName("127.0.0.1"), port))
+            }
+            false
+        } catch (e: Exception) {
+            true
+        }
 
     suspend fun stopControlD() {
         if (isRunning.get()) {

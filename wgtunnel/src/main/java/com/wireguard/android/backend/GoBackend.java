@@ -358,7 +358,9 @@ public final class GoBackend implements Backend {
                 ParcelFileDescriptor tun = builder.establish();
                 if (tun == null)
                     throw new BackendException(Reason.TUN_CREATION_ERROR);
-                tunnelWrapper = new VPNTunnelWrapper(tun, service, dnsDetails.getControlDPort(), service.shouldEnablePacketLogging());
+                // Live port, not dnsDetails.getControlDPort(): that value is snapshotted during
+                // profile creation, before ctrld picks the port it actually listens on.
+                tunnelWrapper = new VPNTunnelWrapper(tun, service, service.getControlDPort(), service.shouldEnablePacketLogging());
                 tunnelWrapper.start();
                 ParcelFileDescriptor wrappedTun = tunnelWrapper.getParcelDescriptor();
                 Log.d(TAG, "Go backend " + wgVersion());
@@ -449,6 +451,10 @@ public final class GoBackend implements Backend {
             return null;
         }
 
+        /**
+         * Port ctrld is listening on. Subclasses MUST override: the port is chosen at random per
+         * connection, so this placeholder is never the live value.
+         */
         public int getControlDPort() {
             return 5355;
         }

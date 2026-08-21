@@ -48,6 +48,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.security.SecureRandom;
 
 public class VPNTunnelWrapper {
     private static final String TAG = "VPNTunnelWrapper";
@@ -267,11 +269,16 @@ public class VPNTunnelWrapper {
         final long startTime;
         final String queryName;
 
-        DnsQuery(Packet packet, long queryId) {
+        final int originalTransactionId;
+        final DnsQueryKey key;
+
+        DnsQuery(Packet packet, long queryId, int originalTransactionId, DnsQueryKey key) {
             this.packet = packet;
             this.queryId = queryId;
             this.startTime = System.currentTimeMillis();
             this.queryName = extractQueryName(packet);
+            this.originalTransactionId = originalTransactionId;
+            this.key = key;
         }
 
         private static String extractQueryName(Packet packet) {
@@ -321,10 +328,21 @@ public class VPNTunnelWrapper {
         }
     }
 
-    private final Map<DnsQueryKey, DnsQuery> pendingQueries = new ConcurrentHashMap<>();
+    /**
+     * In-flight queries keyed by the upstream transaction ID this wrapper assigned - NOT by the ID
+     * the requesting app chose. A response from the resolver carries only a transaction ID, so if
+     * apps' own IDs were used for matching, two apps picking the same ID would be
+     * indistinguishable and one app's answer could be delivered to the other. See
+     * allocateUpstreamTransactionId.
+     */
+    private final Map<Integer, DnsQuery> pendingQueries = new ConcurrentHashMap<>();
     private ScheduledExecutorService timeoutExecutor;
     private ExecutorService dnsWorkerPool;
     private long nextQueryId = 1;
+    private final AtomicInteger nextUpstreamTransactionId =
+            new AtomicInteger(new SecureRandom().nextInt(0x10000));
+    /** Bounds both memory and transaction-ID exhaustion when an app floods queries. */
+    private static final int MAX_PENDING_DNS_QUERIES = 4096;
 
     private void forwardToControlD() {
         connectToControlD();
@@ -344,32 +362,45 @@ public class VPNTunnelWrapper {
 
                 Packet packet = dnsPackets.take();
                 if (packet != null) {
-                    long queryId = nextQueryId++;
-                    DnsQuery query = new DnsQuery(packet, queryId);
-
                     // Extract transaction ID and source details from DNS packet for mapping
                     int transactionId = extractTransactionId(packet);
                     if (transactionId >= 0 && packet instanceof IpPacket ipPacket &&
                         ipPacket.getPayload() instanceof UdpPacket udpPacket) {
 
-                        // Create composite key to prevent cross-app DNS collision
+                        // Identifies the app that asked. Used for logging and for the timeout
+                        // record; it cannot be used to match responses, which carry no source.
                         String srcAddr = ipPacket.getHeader().getSrcAddr().getHostAddress();
                         int srcPort = udpPacket.getHeader().getSrcPort().valueAsInt();
                         DnsQueryKey queryKey = new DnsQueryKey(transactionId, srcAddr, srcPort);
 
-                        pendingQueries.put(queryKey, query);
+                        if (pendingQueries.size() >= MAX_PENDING_DNS_QUERIES) {
+                            logToFile("DNS in-flight limit reached, dropping query from " + queryKey);
+                            continue;
+                        }
+
+                        Integer upstreamTransactionId = allocateUpstreamTransactionId();
+                        if (upstreamTransactionId == null) {
+                            logToFile("No free upstream DNS transaction ID, dropping query from " + queryKey);
+                            continue;
+                        }
+
+                        long queryId = nextQueryId++;
+                        DnsQuery query = new DnsQuery(packet, queryId, transactionId, queryKey);
+                        pendingQueries.put(upstreamTransactionId, query);
 
                         if (enablePacketLogging) {
                             String packetDetails = getPacketDetails(packet);
-                            logPacket("[DNS Query #" + queryId + " " + queryKey + "] " + packetDetails);
+                            logPacket("[DNS Query #" + queryId + " " + queryKey +
+                                    " upstreamTxId=" + upstreamTransactionId + "] " + packetDetails);
                             logPacket("  └─ Query: " + query.queryName + " → ControlD");
                         }
 
                         // Send query without waiting for response
-                        writeDNSRequestToControlD(packet);
+                        writeDNSRequestToControlD(packet, upstreamTransactionId);
 
                         // Schedule timeout check
-                        timeoutExecutor.schedule(() -> handleTimeout(queryKey),
+                        final int timeoutTransactionId = upstreamTransactionId;
+                        timeoutExecutor.schedule(() -> handleTimeout(timeoutTransactionId),
                                                DNS_READ_TIMEOUT_MS, TimeUnit.MILLISECONDS);
                     }
                 }
@@ -406,39 +437,34 @@ public class VPNTunnelWrapper {
                         byte[] responseData = new byte[responseBuffer.remaining()];
                         responseBuffer.get(responseData);
 
-                        // Extract transaction ID from response
-                        int transactionId = extractTransactionIdFromResponse(responseData);
+                        // The ID in the response is the one this wrapper assigned, which is unique
+                        // per in-flight query, so this identifies exactly one requesting app.
+                        int upstreamTransactionId = extractTransactionIdFromResponse(responseData);
+                        DnsQuery matchedQuery = upstreamTransactionId >= 0
+                                ? pendingQueries.remove(upstreamTransactionId)
+                                : null;
 
-                        // Find and remove the matching query using composite key
-                        DnsQuery matchedQuery = null;
-                        DnsQueryKey matchedKey = null;
-
-                        // We need to find the query that matches this transaction ID
-                        // Since we're using ControlD proxy, we can match based on transaction ID
-                        // but we must ensure it's from our pending queries
-                        for (Map.Entry<DnsQueryKey, DnsQuery> entry : pendingQueries.entrySet()) {
-                            if (entry.getKey().transactionId == transactionId) {
-                                matchedKey = entry.getKey();
-                                matchedQuery = entry.getValue();
-                                break;
+                        if (matchedQuery == null) {
+                            if (enablePacketLogging) {
+                                logPacket("  └─ Unexpected response TxID:" + upstreamTransactionId +
+                                        " (no matching query)");
                             }
-                        }
-
-                        if (matchedQuery != null && matchedKey != null) {
-                            pendingQueries.remove(matchedKey);
+                        } else if (!responseMatchesQuestion(responseData, matchedQuery)) {
+                            logToFile("  └─ Dropped response for " + matchedQuery.key +
+                                    ": question does not match " + matchedQuery.queryName);
+                        } else {
                             long responseTime = System.currentTimeMillis() - matchedQuery.startTime;
 
+                            // Hand back the ID the app itself used; it matches its own query on it.
+                            writeTransactionId(responseData, matchedQuery.originalTransactionId);
+
                             if (enablePacketLogging) {
-                                logPacket("  └─ Response for " + matchedKey + " (" + matchedQuery.queryName +
+                                logPacket("  └─ Response for " + matchedQuery.key + " (" + matchedQuery.queryName +
                                         ") [" + bytesRead + " bytes, " + responseTime + "ms]");
                             }
 
                             // Send response back to the correct app
                             writeDNSResponseData(matchedQuery.packet, responseData);
-                        } else {
-                            if (enablePacketLogging) {
-                                logPacket("  └─ Unexpected response TxID:" + transactionId + " (no matching query)");
-                            }
                         }
                     }
                 }
@@ -448,14 +474,55 @@ public class VPNTunnelWrapper {
         }
     }
 
-    private void handleTimeout(DnsQueryKey queryKey) {
-        DnsQuery query = pendingQueries.remove(queryKey);
+    private void handleTimeout(int upstreamTransactionId) {
+        DnsQuery query = pendingQueries.remove(upstreamTransactionId);
         if (query != null) {
             long elapsed = System.currentTimeMillis() - query.startTime;
             if (enablePacketLogging) {
-                logPacket("  └─ TIMEOUT " + queryKey + " (" + query.queryName +
+                logPacket("  └─ TIMEOUT " + query.key + " (" + query.queryName +
                         ") after " + elapsed + "ms");
             }
+        }
+    }
+
+    /**
+     * Reserves a 16-bit transaction ID that is not currently in flight, or null if the entire space
+     * is in use. Only the single DNS forwarding thread allocates, and getAndIncrement hands out
+     * distinct candidates regardless, so no two concurrent callers can receive the same ID.
+     */
+    private Integer allocateUpstreamTransactionId() {
+        for (int attempt = 0; attempt < 0x10000; attempt++) {
+            int candidate = nextUpstreamTransactionId.getAndIncrement() & 0xFFFF;
+            if (!pendingQueries.containsKey(candidate)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    private static void writeTransactionId(byte[] dnsData, int transactionId) {
+        if (dnsData != null && dnsData.length >= 2) {
+            dnsData[0] = (byte) ((transactionId >> 8) & 0xFF);
+            dnsData[1] = (byte) (transactionId & 0xFF);
+        }
+    }
+
+    /**
+     * True if the response's question section asks the name recorded for this query. The upstream
+     * ID already fixes which app the answer belongs to; this additionally rejects a resolver that
+     * answers a different name than the one asked. When neither side yields a parseable question
+     * there is nothing to compare, so the ID match is allowed to stand.
+     */
+    private boolean responseMatchesQuestion(byte[] responseData, DnsQuery query) {
+        try {
+            DnsMessage response = new DnsMessage(responseData);
+            if (response.questions == null || response.questions.isEmpty()) {
+                return "unknown".equals(query.queryName);
+            }
+            return response.questions.get(0).name.toString().equalsIgnoreCase(query.queryName);
+        } catch (Exception e) {
+            logToFile("  └─ Failed to parse DNS response question: " + e.getMessage());
+            return false;
         }
     }
 
@@ -668,9 +735,13 @@ public class VPNTunnelWrapper {
     }
 
 
-    public void writeDNSRequestToControlD(Packet ipPacket) {
+    public void writeDNSRequestToControlD(Packet ipPacket, int upstreamTransactionId) {
         UdpPacket requestUdpPacket = (UdpPacket) ipPacket.getPayload();
-        ByteBuffer payLoadSendToProxy = ByteBuffer.wrap(requestUdpPacket.getPayload().getRawData());
+        // Copy before rewriting: the pending query keeps the original packet so the response can be
+        // rebuilt against it, and pcap4j raw data must not be mutated in place.
+        byte[] dnsPayload = requestUdpPacket.getPayload().getRawData().clone();
+        writeTransactionId(dnsPayload, upstreamTransactionId);
+        ByteBuffer payLoadSendToProxy = ByteBuffer.wrap(dnsPayload);
         try {
             controlDChannel.write(payLoadSendToProxy);
         } catch (IOException e) {

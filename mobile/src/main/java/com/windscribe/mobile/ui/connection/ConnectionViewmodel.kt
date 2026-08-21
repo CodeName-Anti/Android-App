@@ -507,7 +507,9 @@ class ConnectionViewmodelImpl
                             if (fileName.isNullOrEmpty()) {
                                 return@collectLatest
                             }
-                            val inputFile = getSoundFile(appContext, isConnected, fileName)
+                            val inputFile =
+                                getSoundFile(appContext, isConnected, fileName)
+                                    ?: return@collectLatest
                             if (inputFile.exists()) {
                                 playSoundFromFile(inputFile.path)
                             }

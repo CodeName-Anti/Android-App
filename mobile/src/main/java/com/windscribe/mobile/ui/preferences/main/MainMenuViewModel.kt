@@ -2,6 +2,7 @@ package com.windscribe.mobile.ui.preferences.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.windscribe.vpn.commonutils.HashUtils
 import com.windscribe.vpn.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +25,12 @@ class MainMenuViewModelImpl
         val userRepository: UserRepository,
     ) : MainMenuViewModel() {
         override val showReferData: Boolean
-            get() = userRepository.user.value?.isPro == false
+            get() {
+                val user = userRepository.user.value ?: return false
+                // The referral flow asks the user to share their username. For hashed accounts the
+                // username is also the password, so sharing it hands over the account.
+                return !user.isPro && !HashUtils.isAccountHash(user.userName)
+            }
 
         private val _showProgress = MutableStateFlow(false)
         override val showProgress: StateFlow<Boolean> = _showProgress

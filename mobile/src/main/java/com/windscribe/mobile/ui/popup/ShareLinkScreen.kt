@@ -40,6 +40,7 @@ import com.windscribe.mobile.ui.nav.LocalNavController
 import com.windscribe.mobile.ui.theme.font12
 import com.windscribe.mobile.ui.theme.font24
 import com.windscribe.mobile.ui.theme.primaryTextColor
+import com.windscribe.vpn.commonutils.HashUtils
 
 @Composable
 fun ShareLinkScreen(viewmodel: SharedLinkViewmodel = hiltViewModel<SharedLinkViewmodelImpl>()) {
@@ -59,7 +60,8 @@ fun ShareLinkContent(
     userName: String,
     onShareClick: () -> Unit,
 ) {
-    val intentBuilder = buildIntentBuilder(userName)
+    val isHashedAccount = HashUtils.isAccountHash(userName)
+    val intentBuilder = if (isHashedAccount) null else buildIntentBuilder(userName)
     val navController = LocalNavController.current
 
     @Suppress("ktlint:standard:max-line-length")
@@ -114,7 +116,7 @@ fun ShareLinkContent(
                 }
                 NextButton(
                     text = stringResource(com.windscribe.vpn.R.string.share_invite_link),
-                    enabled = true,
+                    enabled = !isHashedAccount,
                     onClick = {
                         intentBuilder?.startChooser()
                         onShareClick()

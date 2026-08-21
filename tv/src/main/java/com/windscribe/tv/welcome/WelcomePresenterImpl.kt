@@ -108,7 +108,7 @@ class WelcomePresenterImpl
                     when (result) {
                         is CallResult.Success -> {
                             welcomeView.prepareUiForApiCallFinished()
-                            logger.debug("Successfully generated XPress login code. ${result.data}")
+                            logger.debug("Successfully generated XPress login code. ttl=${result.data.ttl}")
                             welcomeView.setSecretCode(result.data.xPressLoginCode ?: "")
                             startXPressLoginCodeVerifier(result.data)
                         }

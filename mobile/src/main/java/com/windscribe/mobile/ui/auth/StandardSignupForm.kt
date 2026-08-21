@@ -1,8 +1,5 @@
 package com.windscribe.mobile.ui.auth
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.windscribe.mobile.R
 import com.windscribe.mobile.ui.common.StyledTextFieldWithActions
+import com.windscribe.mobile.ui.helper.copyTextToClipboard
 import com.windscribe.mobile.ui.theme.AppColors
 import com.windscribe.mobile.ui.theme.font12
 import com.windscribe.mobile.ui.theme.font16
@@ -397,9 +395,12 @@ private fun ConfirmPasswordField(
                 IconButton(
                     onClick = {
                         if (passwordToCopy.isNotEmpty()) {
-                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val clip = ClipData.newPlainText("Password", passwordToCopy)
-                            clipboard.setPrimaryClip(clip)
+                            copyTextToClipboard(
+                                context,
+                                label = "Password",
+                                text = passwordToCopy,
+                                sensitive = true,
+                            )
                         }
                     },
                 ) {

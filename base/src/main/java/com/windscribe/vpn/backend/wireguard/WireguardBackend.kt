@@ -176,7 +176,21 @@ class WireguardBackend
             startConnectionJob()
 
             scope.launch {
-                proxyDNSManager.startControlDIfRequired()
+                try {
+                    proxyDNSManager.startControlDIfRequired()
+                } catch (e: Exception) {
+                    // Fail closed: without a confirmed DNS proxy this connection would leak or
+                    // blackhole every app's DNS. Surface it instead of connecting regardless.
+                    vpnLogger.error("DNS proxy failed to start. Aborting connection.", e)
+                    disconnect(
+                        VPNState.Error(
+                            error = VPNState.ErrorType.GenericError,
+                            message = "DNS proxy failed to start.",
+                            showError = true,
+                        ),
+                    )
+                    return@launch
+                }
                 vpnLogger.info("Getting WireGuard profile.")
                 Util.getProfile<WireGuardVpnProfile>()?.let { profile ->
                     withContext(Dispatchers.IO) {
