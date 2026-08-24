@@ -1,7 +1,6 @@
 package com.windscribe.mobile.ui.auth
 
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,10 +53,11 @@ import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.windscribe.mobile.R
+import com.windscribe.mobile.ui.common.AccessibleCaptchaDialog
 import com.windscribe.mobile.ui.common.AppBackground
 import com.windscribe.mobile.ui.common.AppProgressBar
-import com.windscribe.mobile.ui.common.CaptchaDebugDialog
 import com.windscribe.mobile.ui.common.PrimaryButton
+import com.windscribe.mobile.ui.common.PuzzleCaptchaDialog
 import com.windscribe.mobile.ui.helper.MultiDevicePreview
 import com.windscribe.mobile.ui.helper.PreviewWithNav
 import com.windscribe.mobile.ui.nav.LocalNavController
@@ -91,6 +91,7 @@ class SignupActions(
     val onLearnMoreClick: () -> Unit = {},
     val onSignupClick: () -> Unit = {},
     val onCaptchaCancel: () -> Unit = {},
+    val onCaptchaRefresh: () -> Unit = {},
     val onCaptchaSolution: (CaptchaSolution) -> Unit = {},
     val onEmailInfoDismiss: () -> Unit = {},
 )
@@ -188,6 +189,7 @@ fun SignupScreen(viewModel: SignupViewModel = hiltViewModel()) {
                 },
                 onSignupClick = viewModel::signupButtonClick,
                 onCaptchaCancel = viewModel::dismissCaptcha,
+                onCaptchaRefresh = { viewModel.refreshCaptcha() },
                 onCaptchaSolution = viewModel::onCaptchaSolutionReceived,
                 onEmailInfoDismiss = viewModel::dismissEmailInfoDialog,
             ),
@@ -227,21 +229,24 @@ fun SignupContent(
         val message = (signupState as? SignupState.Registering)?.message ?: ""
         AppProgressBar(showProgressBar, message = message)
         if (signupState is SignupState.Captcha) {
-            val captchaRequest = signupState.request
-            CaptchaDebugDialog(
-                captchaRequest,
-                onCancel = actions.onCaptchaCancel,
-                onSolutionSubmit = { t1, t2 ->
-                    Log.i("LoginScreen", "onSolutionSubmit: $t1, $t2")
-                    actions.onCaptchaSolution(
-                        CaptchaSolution(
-                            t1,
-                            t2,
-                            captchaRequest.secureToken,
-                        ),
+            when (val captchaRequest = signupState.request) {
+                is CaptchaRequest.Text ->
+                    AccessibleCaptchaDialog(
+                        request = captchaRequest,
+                        error = signupState.error,
+                        onCancel = actions.onCaptchaCancel,
+                        onRefresh = actions.onCaptchaRefresh,
+                        onSolutionSubmit = actions.onCaptchaSolution,
                     )
-                },
-            )
+
+                is CaptchaRequest.Puzzle ->
+                    PuzzleCaptchaDialog(
+                        captchaRequest = captchaRequest,
+                        error = signupState.error,
+                        onCancel = actions.onCaptchaCancel,
+                        onSolutionSubmit = actions.onCaptchaSolution,
+                    )
+            }
         }
 
         if (showEmailInfoDialog) {

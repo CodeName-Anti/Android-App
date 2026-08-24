@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.windscribe.mobile.ui.helper.AccessibilityHelper
 import com.windscribe.vpn.api.IApiCallManager
 import com.windscribe.vpn.api.response.AuthToken
 import com.windscribe.vpn.api.response.UserRegistrationResponse
@@ -27,6 +28,7 @@ import com.windscribe.vpn.repository.UserRepository
 import com.windscribe.vpn.repository.getNetworkError
 import com.windscribe.vpn.services.FirebaseManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +52,7 @@ sealed class SignupState {
 
     data class Captcha(
         val request: CaptchaRequest,
+        val error: String? = null,
     ) : SignupState()
 
     data class Error(
@@ -61,6 +64,7 @@ sealed class SignupState {
 class SignupViewModel
     @Inject
     constructor(
+        @ApplicationContext private val appContext: Context,
         private val apiCallManager: IApiCallManager,
         private val preferenceHelper: PreferencesHelper,
         private val firebaseManager: FirebaseManager,
@@ -433,9 +437,13 @@ class SignupViewModel
             }
         }
 
-        private suspend fun startSignupProcess() {
+        private suspend fun startSignupProcess(captchaError: String? = null) {
             logger.info("Trying to registering with provided credentials...")
-            val authResult = result<AuthToken> { apiCallManager.authTokenSignup(username, false) }
+            val useTextCaptcha = AccessibilityHelper.isScreenReaderEnabled(appContext)
+            if (useTextCaptcha) {
+                logger.info("Screen reader detected, requesting text captcha.")
+            }
+            val authResult = result<AuthToken> { apiCallManager.authTokenSignup(username, useTextCaptcha) }
             when (authResult) {
                 is CallResult.Error -> {
                     val networkError = getNetworkError(authResult.code)
@@ -450,7 +458,7 @@ class SignupViewModel
 
                 is CallResult.Success -> {
                     logger.info("Received auth token successfully")
-                    handleAuthToken(authResult.data)
+                    handleAuthToken(authResult.data, captchaError)
                 }
             }
         }
@@ -463,19 +471,22 @@ class SignupViewModel
             }
         }
 
-        private suspend fun handleAuthToken(authToken: AuthToken) {
+        private suspend fun handleAuthToken(
+            authToken: AuthToken,
+            captchaError: String? = null,
+        ) {
             val captcha = authToken.captcha
             val token = authToken.token
             if (captcha != null) {
-                logger.info("Received captcha: ${captcha.top}")
-                val request =
-                    CaptchaRequest(
-                        captcha.background!!,
-                        captcha.top!!,
-                        captcha.slider!!,
-                        authToken.token,
-                    )
-                updateState(SignupState.Captcha(request))
+                val request = captcha.toRequest(token)
+                if (request == null) {
+                    logger.warn("Captcha payload was missing the fields needed to render it.")
+                    updateState(SignupState.Error(AuthError.LocalizedInputError(com.windscribe.vpn.R.string.captcha_unavailable)))
+                    _signupButtonEnabled.emit(true)
+                    return
+                }
+                logger.info("Received captcha: ${request::class.simpleName}")
+                updateState(SignupState.Captcha(request, captchaError))
             } else {
                 // Request Play Integrity token for device attestation
                 val integrityToken = playIntegrityManager.requestIntegrityToken()
@@ -540,7 +551,7 @@ class SignupViewModel
                         email.trim(),
                         voucher.trim(),
                         captchaSolution.token,
-                        "${captchaSolution.leftOffset}",
+                        captchaSolution.solution,
                         trailX,
                         trailY,
                         integrityToken,
@@ -552,6 +563,13 @@ class SignupViewModel
                     val networkError = getNetworkError(result.code)
                     if (networkError != null) {
                         handleNetworkError(networkError)
+                    } else if (result.code == NetworkErrorCodes.ERROR_INVALID_CAPTCHA) {
+                        // The secure token is spent, so hand the user a fresh challenge instead of
+                        // dropping them back to the form with no way to retry.
+                        _signupButtonEnabled.emit(true)
+                        startSignupProcess(
+                            captchaError = SessionErrorHandler.instance.getErrorMessage(result.code, result.errorMessage),
+                        )
                     } else {
                         _signupButtonEnabled.emit(true)
                         handleApiError(result.code, result.errorMessage)
@@ -649,6 +667,13 @@ class SignupViewModel
 
         fun dismissCaptcha() {
             updateState(SignupState.Idle)
+        }
+
+        /** Asks the API for a fresh challenge, keeping any error already shown to the user. */
+        fun refreshCaptcha(error: String? = null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                startSignupProcess(captchaError = error)
+            }
         }
 
         private fun updateState(state: SignupState) {

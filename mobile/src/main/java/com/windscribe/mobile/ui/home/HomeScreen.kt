@@ -66,6 +66,9 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -457,10 +460,13 @@ private fun ConnectionStatusSheetContent(
         }
         Image(
             painter = painterResource(R.drawable.arrow_right_small),
-            contentDescription = null,
+            // The arrow is the only thing that changes protocol, so it has to name that action
+            // itself: the protocol it applies to is a sibling text node, not part of this control.
+            contentDescription = stringResource(com.windscribe.vpn.R.string.protocol_change),
             modifier =
                 Modifier
                     .size(24.dp)
+                    .semantics { role = Role.Button }
                     .hapticClickable {
                         onProtocolChangeClick()
                     }.testTag("protocol_switcher"),

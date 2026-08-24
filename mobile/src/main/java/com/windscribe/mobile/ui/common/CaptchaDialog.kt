@@ -35,6 +35,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
@@ -42,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.windscribe.mobile.ui.auth.CaptchaRequest
+import com.windscribe.mobile.ui.auth.CaptchaSolution
 import com.windscribe.mobile.ui.theme.AppColors
 import com.windscribe.mobile.ui.theme.font12
 import com.windscribe.mobile.ui.theme.font18
@@ -53,6 +63,9 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+
+/** Fraction of the puzzle width one accessibility nudge moves the piece. */
+private const val NUDGE_FRACTION = 0.02f
 
 @OptIn(ExperimentalEncodingApi::class)
 private fun decodeBase64ToBitmap(base64: String): Bitmap? {
@@ -67,11 +80,13 @@ private fun decodeBase64ToBitmap(base64: String): Bitmap? {
 }
 
 @Composable
-fun CaptchaDebugDialog(
-    captchaRequest: CaptchaRequest,
+fun PuzzleCaptchaDialog(
+    captchaRequest: CaptchaRequest.Puzzle,
+    error: String?,
     onCancel: () -> Unit,
-    onSolutionSubmit: (Float, Map<String, List<Float>>) -> Unit,
+    onSolutionSubmit: (CaptchaSolution) -> Unit,
 ) {
+    val title = stringResource(com.windscribe.vpn.R.string.complete_puzzle_to_continue)
     Dialog(
         onDismissRequest = onCancel,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -79,26 +94,34 @@ fun CaptchaDebugDialog(
         Surface(
             shape = RoundedCornerShape(16.dp),
             color = AppColors.charcoalBlue,
-            modifier = Modifier.padding(16.dp),
+            modifier =
+                Modifier
+                    .padding(16.dp)
+                    .semantics { paneTitle = title },
             border = BorderStroke(1.dp, AppColors.white.copy(alpha = 0.05f)),
             tonalElevation = 8.dp,
         ) {
-            CaptchaDebugView(captchaRequest, onSolutionSubmit, onCancel)
+            PuzzleCaptchaView(captchaRequest, error, onSolutionSubmit, onCancel)
         }
     }
 }
 
 @Composable
-fun CaptchaDebugView(
-    captcha: CaptchaRequest,
-    onSolutionSubmit: (Float, Map<String, List<Float>>) -> Unit,
+fun PuzzleCaptchaView(
+    captcha: CaptchaRequest.Puzzle,
+    error: String?,
+    onSolutionSubmit: (CaptchaSolution) -> Unit,
     onCancel: () -> Unit,
 ) {
     val captchaBackground = decodeBase64ToBitmap(captcha.background)
     val slider = decodeBase64ToBitmap(captcha.slider)
 
     if (captchaBackground == null || slider == null) {
-        Text("Failed to decode captcha image")
+        Text(
+            text = stringResource(com.windscribe.vpn.R.string.captcha_unavailable),
+            color = AppColors.red,
+            modifier = Modifier.padding(24.dp),
+        )
         return
     }
 
@@ -140,6 +163,7 @@ fun CaptchaDebugView(
     val sliderBitmap = slider.asImageBitmap()
     val scaledSliderWidth = (slider.width * scaleFactor).toInt()
     val scaledSliderHeight = (slider.height * scaleFactor).toInt()
+    val maxX = (backgroundSize.value.width - scaledSliderWidth).toFloat().coerceAtLeast(1f)
 
     fun submit() {
         // Convert scaled position back to original image coordinates for API
@@ -147,12 +171,65 @@ fun CaptchaDebugView(
         val xPositions = dragHistory.map { it.first / scaleFactor }
         val yPositions = dragHistory.map { it.second / scaleFactor }
         val trail = mapOf("x" to xPositions, "y" to yPositions)
-        onSolutionSubmit(originalXOffset, trail)
+        onSolutionSubmit(CaptchaSolution("$originalXOffset", captcha.secureToken, trail))
+    }
+
+    fun recordPoint(
+        newX: Float,
+        newY: Float,
+    ) {
+        val newPoint = Pair(newX, newY - (initialY.floatValue * scaleFactor))
+        // Only add point if it's at least 0.5 pixels away from the last recorded point
+        val shouldRecord =
+            if (dragHistory.isEmpty()) {
+                true
+            } else {
+                val lastPoint = dragHistory.last()
+                val distance =
+                    kotlin.math.sqrt(
+                        (newPoint.first - lastPoint.first) * (newPoint.first - lastPoint.first) +
+                            (newPoint.second - lastPoint.second) * (newPoint.second - lastPoint.second),
+                    )
+                distance >= 0.5f
+            }
+
+        if (shouldRecord) {
+            dragHistory.add(newPoint)
+            if (dragHistory.size > 50) {
+                dragHistory.removeAt(0)
+            }
+        }
+        sliderPositionX.floatValue = newX
+        sliderPositionY.floatValue = newY
     }
 
     var dragJob: Job? = remember { null }
     val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
+
+    fun scheduleSubmit() {
+        dragJob?.cancel()
+        dragJob =
+            coroutineScope.launch {
+                delay(700)
+                submit()
+            }
+    }
+
+    fun nudge(direction: Int): Boolean {
+        val step = maxX * NUDGE_FRACTION
+        recordPoint(
+            (sliderPositionX.floatValue + (direction * step)).coerceIn(0f, maxX),
+            sliderPositionY.floatValue,
+        )
+        scheduleSubmit()
+        return true
+    }
+
     val shape = RoundedCornerShape(8.dp)
+    val puzzleDescription = stringResource(com.windscribe.vpn.R.string.captcha_puzzle_background)
+    val pieceDescription = stringResource(com.windscribe.vpn.R.string.captcha_puzzle_piece)
+    val moveLeftLabel = stringResource(com.windscribe.vpn.R.string.captcha_move_piece_left)
+    val moveRightLabel = stringResource(com.windscribe.vpn.R.string.captcha_move_piece_right)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -162,6 +239,7 @@ fun CaptchaDebugView(
             stringResource(com.windscribe.vpn.R.string.complete_puzzle_to_continue),
             color = Color.White,
             style = font18.copy(fontWeight = FontWeight.Medium),
+            modifier = Modifier.semantics { heading() },
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -171,6 +249,16 @@ fun CaptchaDebugView(
             color = AppColors.white.copy(alpha = 0.50f),
             modifier = Modifier.width(150.dp),
         )
+        if (error != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = error,
+                style = font12,
+                color = AppColors.red,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Assertive },
+            )
+        }
         Spacer(modifier = Modifier.height(24.dp))
         Box {
             Box(
@@ -186,7 +274,7 @@ fun CaptchaDebugView(
             ) {
                 Image(
                     bitmap = backgroundBitmap,
-                    contentDescription = "Captcha Background",
+                    contentDescription = puzzleDescription,
                     modifier =
                         with(density) {
                             Modifier
@@ -204,7 +292,17 @@ fun CaptchaDebugView(
                         Modifier
                             .offset(x = sliderPositionX.floatValue.toDp(), y = sliderPositionY.floatValue.toDp())
                             .size(scaledSliderWidth.toDp(), scaledSliderHeight.toDp())
-                            .pointerInput(Unit) {
+                            .semantics {
+                                contentDescription = pieceDescription
+                                stateDescription =
+                                    "${((sliderPositionX.floatValue / maxX) * 100).toInt()}%"
+                                // Lets switch access and keyboard users position the piece without a drag gesture.
+                                customActions =
+                                    listOf(
+                                        CustomAccessibilityAction(moveRightLabel) { nudge(1) },
+                                        CustomAccessibilityAction(moveLeftLabel) { nudge(-1) },
+                                    )
+                            }.pointerInput(Unit) {
                                 detectDragGestures(
                                     onDrag = { change, dragAmount ->
                                         change.consume()
@@ -218,50 +316,18 @@ fun CaptchaDebugView(
                                                 0f,
                                                 backgroundSize.value.height - scaledSliderHeight.toFloat(),
                                             )
-                                        val newPoint = Pair(newX, newY - (initialY.floatValue * scaleFactor))
-
-                                        // Only add point if it's at least 0.5 pixels away from the last recorded point
-                                        val shouldRecord =
-                                            if (dragHistory.isEmpty()) {
-                                                true
-                                            } else {
-                                                val lastPoint = dragHistory.last()
-                                                val distance =
-                                                    kotlin.math.sqrt(
-                                                        (newPoint.first - lastPoint.first) * (newPoint.first - lastPoint.first) +
-                                                            (newPoint.second - lastPoint.second) * (newPoint.second - lastPoint.second),
-                                                    )
-                                                distance >= 0.5f
-                                            }
-
-                                        if (shouldRecord) {
-                                            dragHistory.add(newPoint)
-                                            if (dragHistory.size > 50) {
-                                                dragHistory.removeAt(0)
-                                            }
-                                        }
-                                        sliderPositionX.floatValue = newX
-                                        sliderPositionY.floatValue = newY
+                                        recordPoint(newX, newY)
                                         dragJob?.cancel()
                                     },
-                                    onDragEnd = {
-                                        dragJob?.cancel()
-                                        dragJob =
-                                            coroutineScope.launch {
-                                                delay(700)
-                                                submit()
-                                            }
-                                    },
-                                    onDragStart = {
-                                        dragJob?.cancel()
-                                    },
+                                    onDragEnd = { scheduleSubmit() },
+                                    onDragStart = { dragJob?.cancel() },
                                 )
                             }
                     },
             ) {
                 Image(
                     bitmap = sliderBitmap,
-                    contentDescription = "Captcha Slider",
+                    contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier.fillMaxSize(),
                 )

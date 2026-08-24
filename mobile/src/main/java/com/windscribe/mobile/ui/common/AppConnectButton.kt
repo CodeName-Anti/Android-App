@@ -26,6 +26,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -75,14 +82,45 @@ fun AppConnectButtonContent(
         haptics.performHapticFeedback(HapticFeedbackType.LongPress)
         onHapticFeedbackHandled()
     }
+    // Idle is only the state before the first connection update arrives, and it draws the off
+    // button, so it is described as disconnected to match what is on screen.
+    val isOff = state is ConnectionUIState.Disconnected || state is ConnectionUIState.Idle
+    val name = stringResource(com.windscribe.vpn.R.string.accessibility_vpn_connection)
+    val actionLabel =
+        stringResource(
+            if (isOff) com.windscribe.vpn.R.string.connect else com.windscribe.vpn.R.string.disconnect,
+        )
+    val status =
+        when (state) {
+            is ConnectionUIState.Connecting -> stringResource(com.windscribe.vpn.R.string.accessibility_status_connecting)
+            is ConnectionUIState.Connected ->
+                if (state.connectedUsingSplitRouting) {
+                    stringResource(com.windscribe.vpn.R.string.accessibility_status_connected_split_routing)
+                } else {
+                    stringResource(com.windscribe.vpn.R.string.accessibility_status_connected)
+                }
+
+            else -> stringResource(com.windscribe.vpn.R.string.accessibility_status_disconnected)
+        }
     Box(
         modifier =
-            Modifier.size(95.dp).testTag("home_connect_button").clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-            ) {
-                onConnectButtonClick()
-            },
+            Modifier
+                .size(95.dp)
+                .testTag("home_connect_button")
+                .semantics(mergeDescendants = true) {
+                    contentDescription = name
+                    stateDescription = status
+                    // The connection can finish while the user is reading elsewhere on the screen.
+                    liveRegion = LiveRegionMode.Polite
+                }.clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    // Names the action rather than the button, so it reads "double tap to connect".
+                    onClickLabel = actionLabel,
+                    role = Role.Button,
+                ) {
+                    onConnectButtonClick()
+                },
     ) {
         when (state) {
             is ConnectionUIState.Connecting -> {
