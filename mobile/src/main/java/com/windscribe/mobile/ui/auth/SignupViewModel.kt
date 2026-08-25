@@ -30,6 +30,7 @@ import com.windscribe.vpn.services.FirebaseManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -53,6 +54,7 @@ sealed class SignupState {
     data class Captcha(
         val request: CaptchaRequest,
         val error: String? = null,
+        val refreshing: Boolean = false,
     ) : SignupState()
 
     data class Error(
@@ -72,6 +74,7 @@ class SignupViewModel
         private val playIntegrityManager: PlayIntegrityManager,
         private val appInstallerDetector: AppInstallerDetector,
     ) : ViewModel() {
+        private var captchaRefreshJob: Job? = null
         private val _signupState = MutableStateFlow<SignupState>(SignupState.Idle)
         val signupState: StateFlow<SignupState> = _signupState.asStateFlow()
 
@@ -564,8 +567,6 @@ class SignupViewModel
                     if (networkError != null) {
                         handleNetworkError(networkError)
                     } else if (result.code == NetworkErrorCodes.ERROR_INVALID_CAPTCHA) {
-                        // The secure token is spent, so hand the user a fresh challenge instead of
-                        // dropping them back to the form with no way to retry.
                         _signupButtonEnabled.emit(true)
                         startSignupProcess(
                             captchaError = SessionErrorHandler.instance.getErrorMessage(result.code, result.errorMessage),
@@ -671,9 +672,18 @@ class SignupViewModel
 
         /** Asks the API for a fresh challenge, keeping any error already shown to the user. */
         fun refreshCaptcha(error: String? = null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                startSignupProcess(captchaError = error)
+            if (captchaRefreshJob?.isActive == true) {
+                return
             }
+            captchaRefreshJob =
+                viewModelScope.launch(Dispatchers.IO) {
+                    // Marks the challenge on screen as stale so the dialog can show and announce
+                    // that a new one is on its way.
+                    (_signupState.value as? SignupState.Captcha)?.let {
+                        updateState(it.copy(error = error, refreshing = true))
+                    }
+                    startSignupProcess(captchaError = error)
+                }
         }
 
         private fun updateState(state: SignupState) {

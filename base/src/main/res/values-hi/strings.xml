@@ -675,5 +675,21 @@
     <string name="update_available_message_generic">Windscribe का एक नया संस्करण उपलब्ध है।</string>
     <string name="update_later">बाद में अपडेट करें</string>
     <string name="update_now">अभी अपडेट करें</string>
+    <string name="captcha_refreshing">नया CAPTCHA कोड लोड हो रहा है</string>
+    <string name="captcha_enter_code">ऊपर दिखाया गया कोड टाइप करें</string>
+    <string name="captcha_code_hint">CAPTCHA कोड</string>
+    <string name="captcha_art_description">चित्र के रूप में बनाया गया CAPTCHA कोड। नया कोड पाने के लिए रीफ़्रेश का उपयोग करें।</string>
+    <string name="captcha_puzzle_background">CAPTCHA पहेली। पहेली के टुकड़े को खाली जगह में खींचें।</string>
+    <string name="captcha_puzzle_piece">पहेली का टुकड़ा</string>
+    <string name="captcha_move_piece_left">पहेली के टुकड़े को बाएं ले जाएं</string>
+    <string name="captcha_move_piece_right">पहेली के टुकड़े को दाएं ले जाएं</string>
+    <string name="captcha_refresh">CAPTCHA रीफ़्रेश करें</string>
+    <string name="captcha_verify">सत्यापित करें</string>
+    <string name="captcha_unavailable">CAPTCHA लोड नहीं हो सका। कृपया पुनः प्रयास करें।</string>
+    <string name="accessibility_vpn_connection">VPN कनेक्शन</string>
+    <string name="accessibility_status_connected">कनेक्ट है</string>
+    <string name="accessibility_status_connected_split_routing">कनेक्ट है, स्प्लिट टनलिंग चालू है</string>
+    <string name="accessibility_status_connecting">कनेक्ट हो रहा है</string>
+    <string name="accessibility_status_disconnected">डिस्कनेक्ट है</string>
 
 </resources>

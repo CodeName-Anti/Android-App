@@ -183,6 +183,7 @@ fun LoginContent(
                     AccessibleCaptchaDialog(
                         request = captchaRequest,
                         error = loginState.error,
+                        refreshing = loginState.refreshing,
                         onCancel = actions.onCaptchaCancel,
                         onRefresh = actions.onCaptchaRefresh,
                         onSolutionSubmit = actions.onCaptchaSolution,

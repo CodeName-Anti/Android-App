@@ -627,6 +627,7 @@ last chosen location.</string>
     <string name="captcha_move_piece_left">Move puzzle piece left</string>
     <string name="captcha_move_piece_right">Move puzzle piece right</string>
     <string name="captcha_refresh">Refresh CAPTCHA</string>
+    <string name="captcha_refreshing">Loading a new CAPTCHA code</string>
     <string name="captcha_verify">Verify</string>
     <string name="captcha_unavailable">CAPTCHA could not be loaded. Please try again.</string>
     <string name="accessibility_vpn_connection">VPN connection</string>

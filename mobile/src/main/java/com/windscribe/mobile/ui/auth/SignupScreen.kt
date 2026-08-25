@@ -234,6 +234,7 @@ fun SignupContent(
                     AccessibleCaptchaDialog(
                         request = captchaRequest,
                         error = signupState.error,
+                        refreshing = signupState.refreshing,
                         onCancel = actions.onCaptchaCancel,
                         onRefresh = actions.onCaptchaRefresh,
                         onSolutionSubmit = actions.onCaptchaSolution,

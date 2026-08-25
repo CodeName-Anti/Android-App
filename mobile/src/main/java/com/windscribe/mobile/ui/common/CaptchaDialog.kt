@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,8 +56,6 @@ import com.windscribe.mobile.ui.auth.CaptchaSolution
 import com.windscribe.mobile.ui.theme.AppColors
 import com.windscribe.mobile.ui.theme.font12
 import com.windscribe.mobile.ui.theme.font18
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -203,12 +202,14 @@ fun PuzzleCaptchaView(
         sliderPositionY.floatValue = newY
     }
 
-    var dragJob: Job? = remember { null }
-    val coroutineScope = remember { CoroutineScope(Dispatchers.Main) }
+    // Held in a state holder so the pending job survives the recomposition that recordPoint
+    // triggers, otherwise none of the cancels below can reach it.
+    val dragJob = remember { mutableStateOf<Job?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     fun scheduleSubmit() {
-        dragJob?.cancel()
-        dragJob =
+        dragJob.value?.cancel()
+        dragJob.value =
             coroutineScope.launch {
                 delay(700)
                 submit()
@@ -317,10 +318,10 @@ fun PuzzleCaptchaView(
                                                 backgroundSize.value.height - scaledSliderHeight.toFloat(),
                                             )
                                         recordPoint(newX, newY)
-                                        dragJob?.cancel()
+                                        dragJob.value?.cancel()
                                     },
                                     onDragEnd = { scheduleSubmit() },
-                                    onDragStart = { dragJob?.cancel() },
+                                    onDragStart = { dragJob.value?.cancel() },
                                 )
                             }
                     },

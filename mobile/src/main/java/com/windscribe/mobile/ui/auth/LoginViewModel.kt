@@ -24,6 +24,7 @@ import com.windscribe.vpn.services.FirebaseManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -44,6 +45,7 @@ sealed class LoginState {
     data class Captcha(
         val request: CaptchaRequest,
         val error: String? = null,
+        val refreshing: Boolean = false,
     ) : LoginState()
 
     object Success : LoginState()
@@ -63,6 +65,7 @@ class LoginViewModel
         private val firebaseManager: FirebaseManager,
         private val userRepository: UserRepository,
     ) : ViewModel() {
+        private var captchaRefreshJob: Job? = null
         private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
         val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
@@ -152,9 +155,18 @@ class LoginViewModel
 
         /** Asks the API for a fresh challenge, keeping any error already shown to the user. */
         fun refreshCaptcha(error: String? = null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                startLoginProcess(captchaError = error)
+            if (captchaRefreshJob?.isActive == true) {
+                return
             }
+            captchaRefreshJob =
+                viewModelScope.launch(Dispatchers.IO) {
+                    // Marks the challenge on screen as stale so the dialog can show and announce
+                    // that a new one is on its way.
+                    (_loginState.value as? LoginState.Captcha)?.let {
+                        updateState(it.copy(error = error, refreshing = true))
+                    }
+                    startLoginProcess(captchaError = error)
+                }
         }
 
         fun onTwoFactorHintClicked() {

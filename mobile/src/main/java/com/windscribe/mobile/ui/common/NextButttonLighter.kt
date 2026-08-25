@@ -50,11 +50,13 @@ fun NextButtonLighter(
 fun NextButtonLighterNoPadding(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier =
             modifier
                 .height(48.dp),

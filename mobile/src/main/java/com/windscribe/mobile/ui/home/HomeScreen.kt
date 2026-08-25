@@ -460,8 +460,6 @@ private fun ConnectionStatusSheetContent(
         }
         Image(
             painter = painterResource(R.drawable.arrow_right_small),
-            // The arrow is the only thing that changes protocol, so it has to name that action
-            // itself: the protocol it applies to is a sibling text node, not part of this control.
             contentDescription = stringResource(com.windscribe.vpn.R.string.protocol_change),
             modifier =
                 Modifier

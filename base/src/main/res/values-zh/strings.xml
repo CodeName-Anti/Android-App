@@ -676,5 +676,21 @@
     <string name="update_available_message_generic">有新版本的 Windscribe 可用。</string>
     <string name="update_later">稍后更新</string>
     <string name="update_now">立即更新</string>
+    <string name="captcha_refreshing">正在加载新的验证码</string>
+    <string name="captcha_enter_code">请输入上方显示的验证码</string>
+    <string name="captcha_code_hint">验证码</string>
+    <string name="captcha_art_description">以图片形式绘制的验证码。点按“刷新”获取新的验证码。</string>
+    <string name="captcha_puzzle_background">验证码拼图。将拼图块拖入缺口。</string>
+    <string name="captcha_puzzle_piece">拼图块</string>
+    <string name="captcha_move_piece_left">将拼图块向左移动</string>
+    <string name="captcha_move_piece_right">将拼图块向右移动</string>
+    <string name="captcha_refresh">刷新验证码</string>
+    <string name="captcha_verify">验证</string>
+    <string name="captcha_unavailable">无法加载验证码。请重试。</string>
+    <string name="accessibility_vpn_connection">VPN 连接</string>
+    <string name="accessibility_status_connected">已连接</string>
+    <string name="accessibility_status_connected_split_routing">已连接，已开启拆分隧道</string>
+    <string name="accessibility_status_connecting">正在连接</string>
+    <string name="accessibility_status_disconnected">已断开连接</string>
 
 </resources>

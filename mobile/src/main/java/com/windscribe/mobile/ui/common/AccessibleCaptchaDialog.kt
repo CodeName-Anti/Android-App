@@ -6,12 +6,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -57,6 +61,7 @@ private const val ASCII_MAX_HEIGHT = 220
 fun AccessibleCaptchaDialog(
     request: CaptchaRequest.Text,
     error: String?,
+    refreshing: Boolean = false,
     onCancel: () -> Unit,
     onRefresh: () -> Unit,
     onSolutionSubmit: (CaptchaSolution) -> Unit,
@@ -77,7 +82,7 @@ fun AccessibleCaptchaDialog(
             border = BorderStroke(1.dp, AppColors.white.copy(alpha = 0.05f)),
             tonalElevation = 8.dp,
         ) {
-            AccessibleCaptchaContent(request, error, onCancel, onRefresh, onSolutionSubmit)
+            AccessibleCaptchaContent(request, error, refreshing, onCancel, onRefresh, onSolutionSubmit)
         }
     }
 }
@@ -86,6 +91,7 @@ fun AccessibleCaptchaDialog(
 private fun AccessibleCaptchaContent(
     request: CaptchaRequest.Text,
     error: String?,
+    refreshing: Boolean,
     onCancel: () -> Unit,
     onRefresh: () -> Unit,
     onSolutionSubmit: (CaptchaSolution) -> Unit,
@@ -123,7 +129,13 @@ private fun AccessibleCaptchaContent(
                 color = AppColors.red,
             )
         } else {
-            AsciiArt(art)
+            // Dimmed while a new challenge is in flight, so the stale code does not read as current.
+            AsciiArt(art, modifier = Modifier.alpha(if (refreshing) 0.3f else 1f))
+        }
+
+        if (refreshing) {
+            Spacer(modifier = Modifier.height(16.dp))
+            RefreshingStatus()
         }
 
         if (error != null) {
@@ -152,6 +164,7 @@ private fun AccessibleCaptchaContent(
         NextButtonLighterNoPadding(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(com.windscribe.vpn.R.string.captcha_verify),
+            enabled = !refreshing,
         ) {
             if (solution.isNotBlank()) {
                 onSolutionSubmit(CaptchaSolution(solution.trim(), request.secureToken))
@@ -161,6 +174,7 @@ private fun AccessibleCaptchaContent(
         NextButtonLighterNoPadding(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(com.windscribe.vpn.R.string.captcha_refresh),
+            enabled = !refreshing,
             onClick = onRefresh,
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -168,6 +182,25 @@ private fun AccessibleCaptchaContent(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(com.windscribe.vpn.R.string.cancel),
             onClick = onCancel,
+        )
+    }
+}
+
+/** Announced as soon as a refresh starts, so the tap is not silent to a screen reader. */
+@Composable
+private fun RefreshingStatus() {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(16.dp),
+            color = AppColors.white,
+            strokeWidth = 2.dp,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(com.windscribe.vpn.R.string.captcha_refreshing),
+            style = font12,
+            color = AppColors.white.copy(alpha = 0.50f),
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Assertive },
         )
     }
 }
@@ -185,7 +218,10 @@ private fun AccessibleCaptchaContent(
  * description for screen readers.
  */
 @Composable
-private fun AsciiArt(art: String) {
+private fun AsciiArt(
+    art: String,
+    modifier: Modifier = Modifier,
+) {
     val description = stringResource(com.windscribe.vpn.R.string.captcha_art_description)
     val rows =
         remember(art) {
@@ -198,7 +234,7 @@ private fun AsciiArt(art: String) {
 
     BoxWithConstraints(
         modifier =
-            Modifier
+            modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(8.dp))
                 .background(AppColors.white.copy(alpha = 0.05f))

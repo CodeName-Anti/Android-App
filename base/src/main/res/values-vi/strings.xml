@@ -675,5 +675,21 @@ Dữ liệu vị trí của bạn vẫn ở trên thiết bị của bạn và c
     <string name="update_available_message_generic">Có phiên bản mới của Windscribe.</string>
     <string name="update_later">Cập nhật sau</string>
     <string name="update_now">Cập nhật ngay</string>
+    <string name="captcha_refreshing">Đang tải mã CAPTCHA mới</string>
+    <string name="captcha_enter_code">Nhập mã được hiển thị ở trên</string>
+    <string name="captcha_code_hint">Mã CAPTCHA</string>
+    <string name="captcha_art_description">Mã CAPTCHA được vẽ dưới dạng hình ảnh. Dùng Làm mới để lấy mã mới.</string>
+    <string name="captcha_puzzle_background">Câu đố CAPTCHA. Kéo mảnh ghép vào khoảng trống.</string>
+    <string name="captcha_puzzle_piece">Mảnh ghép</string>
+    <string name="captcha_move_piece_left">Di chuyển mảnh ghép sang trái</string>
+    <string name="captcha_move_piece_right">Di chuyển mảnh ghép sang phải</string>
+    <string name="captcha_refresh">Làm mới CAPTCHA</string>
+    <string name="captcha_verify">Xác minh</string>
+    <string name="captcha_unavailable">Không thể tải CAPTCHA. Vui lòng thử lại.</string>
+    <string name="accessibility_vpn_connection">Kết nối VPN</string>
+    <string name="accessibility_status_connected">Đã kết nối</string>
+    <string name="accessibility_status_connected_split_routing">Đã kết nối, tạo đường hầm phân chia đang bật</string>
+    <string name="accessibility_status_connecting">Đang kết nối</string>
+    <string name="accessibility_status_disconnected">Đã ngắt kết nối</string>
 
 </resources>
