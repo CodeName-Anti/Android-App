@@ -675,5 +675,21 @@
     <string name="update_available_message_generic">إصدار جديد من Windscribe متاح.</string>
     <string name="update_later">التحديث لاحقًا</string>
     <string name="update_now">التحديث الآن</string>
+    <string name="captcha_refreshing">جارٍ تحميل رمز CAPTCHA جديد</string>
+    <string name="captcha_enter_code">اكتب الرمز الظاهر أعلاه</string>
+    <string name="captcha_code_hint">رمز CAPTCHA</string>
+    <string name="captcha_art_description">رمز CAPTCHA مرسوم كصورة. استخدم زر التحديث للحصول على رمز جديد.</string>
+    <string name="captcha_puzzle_background">أحجية CAPTCHA. اسحب قطعة الأحجية إلى الفراغ.</string>
+    <string name="captcha_puzzle_piece">قطعة الأحجية</string>
+    <string name="captcha_move_piece_left">تحريك قطعة الأحجية إلى اليسار</string>
+    <string name="captcha_move_piece_right">تحريك قطعة الأحجية إلى اليمين</string>
+    <string name="captcha_refresh">تحديث CAPTCHA</string>
+    <string name="captcha_verify">تحقق</string>
+    <string name="captcha_unavailable">تعذر تحميل CAPTCHA. يرجى المحاولة مرة أخرى.</string>
+    <string name="accessibility_vpn_connection">اتصال VPN</string>
+    <string name="accessibility_status_connected">متصل</string>
+    <string name="accessibility_status_connected_split_routing">متصل، الانقسام النفقي مُفعّل</string>
+    <string name="accessibility_status_connecting">جارٍ الاتصال</string>
+    <string name="accessibility_status_disconnected">غير متصل</string>
 
 </resources>

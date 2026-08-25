@@ -671,5 +671,21 @@
     <string name="update_available_message_generic">نسخه جدیدی از Windscribe در دسترس است.</string>
     <string name="update_later">بعداً به‌روزرسانی کنید</string>
     <string name="update_now">اکنون به‌روزرسانی کنید</string>
+    <string name="captcha_refreshing">در حال بارگیری کد CAPTCHA جدید</string>
+    <string name="captcha_enter_code">کدی که در بالا نشان داده شده است را وارد کنید</string>
+    <string name="captcha_code_hint">کد CAPTCHA</string>
+    <string name="captcha_art_description">کد CAPTCHA به صورت تصویر ترسیم شده است. برای کد جدید از بازخوانی استفاده کنید.</string>
+    <string name="captcha_puzzle_background">پازل CAPTCHA. قطعه پازل را به جای خالی بکشید.</string>
+    <string name="captcha_puzzle_piece">قطعه پازل</string>
+    <string name="captcha_move_piece_left">انتقال قطعه پازل به چپ</string>
+    <string name="captcha_move_piece_right">انتقال قطعه پازل به راست</string>
+    <string name="captcha_refresh">بازخوانی CAPTCHA</string>
+    <string name="captcha_verify">تأیید</string>
+    <string name="captcha_unavailable">CAPTCHA بارگیری نشد. لطفاً دوباره تلاش کنید.</string>
+    <string name="accessibility_vpn_connection">اتصال VPN</string>
+    <string name="accessibility_status_connected">متصل</string>
+    <string name="accessibility_status_connected_split_routing">متصل، تونل زنی اسپلیت فعال است</string>
+    <string name="accessibility_status_connecting">در حال اتصال</string>
+    <string name="accessibility_status_disconnected">قطع شده</string>
 
 </resources>

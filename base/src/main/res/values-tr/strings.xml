@@ -675,5 +675,21 @@ Maksimum güvenlik için, güvenilmeyen ağlarda veya root\'lanmışsa bu cihaz�
     <string name="update_available_message_generic">Windscribe\'ın yeni bir sürümü mevcut.</string>
     <string name="update_later">Daha sonra güncelle</string>
     <string name="update_now">Şimdi güncelle</string>
+    <string name="captcha_refreshing">Yeni CAPTCHA kodu yükleniyor</string>
+    <string name="captcha_enter_code">Yukarıda gösterilen kodu yazın</string>
+    <string name="captcha_code_hint">CAPTCHA kodu</string>
+    <string name="captcha_art_description">Resim olarak çizilmiş CAPTCHA kodu. Yeni bir kod için Yenile düğmesini kullanın.</string>
+    <string name="captcha_puzzle_background">CAPTCHA bulmacası. Bulmaca parçasını boşluğa sürükleyin.</string>
+    <string name="captcha_puzzle_piece">Bulmaca parçası</string>
+    <string name="captcha_move_piece_left">Bulmaca parçasını sola taşı</string>
+    <string name="captcha_move_piece_right">Bulmaca parçasını sağa taşı</string>
+    <string name="captcha_refresh">CAPTCHA kodunu yenile</string>
+    <string name="captcha_verify">Doğrula</string>
+    <string name="captcha_unavailable">CAPTCHA yüklenemedi. Lütfen tekrar deneyin.</string>
+    <string name="accessibility_vpn_connection">VPN bağlantısı</string>
+    <string name="accessibility_status_connected">Bağlandı</string>
+    <string name="accessibility_status_connected_split_routing">Bağlandı, bölünmüş tünel açma etkin</string>
+    <string name="accessibility_status_connecting">Bağlanıyor</string>
+    <string name="accessibility_status_disconnected">Bağlantı kesildi</string>
 
 </resources>

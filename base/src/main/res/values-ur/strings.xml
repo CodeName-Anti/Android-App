@@ -679,5 +679,21 @@ last chosen location.</string>
     <string name="update_now">ابھی اپ ڈیٹ کریں</string>
     <string name="subscription_payment_issue">سبسکرپشن ادائیگی کا مسئلہ</string>
     <string name="subscription_payment_issue_description">آپ کی سبسکرپشن کی ادائیگی کو توجہ کی ضرورت ہے۔ اپنے ادائیگی کے طریقے کا جائزہ لینے کے لیے Google Play کھولیں۔</string>
+    <string name="captcha_refreshing">نیا CAPTCHA کوڈ لوڈ ہو رہا ہے</string>
+    <string name="captcha_enter_code">اوپر دکھایا گیا کوڈ ٹائپ کریں</string>
+    <string name="captcha_code_hint">CAPTCHA کوڈ</string>
+    <string name="captcha_art_description">تصویر کے طور پر بنایا گیا CAPTCHA کوڈ۔ نئے کوڈ کے لیے ریفریش استعمال کریں۔</string>
+    <string name="captcha_puzzle_background">CAPTCHA پہیلی۔ پہیلی کے ٹکڑے کو خالی جگہ میں کھینچیں۔</string>
+    <string name="captcha_puzzle_piece">پہیلی کا ٹکڑا</string>
+    <string name="captcha_move_piece_left">پہیلی کا ٹکڑا بائیں منتقل کریں</string>
+    <string name="captcha_move_piece_right">پہیلی کا ٹکڑا دائیں منتقل کریں</string>
+    <string name="captcha_refresh">CAPTCHA ریفریش کریں</string>
+    <string name="captcha_verify">تصدیق کریں</string>
+    <string name="captcha_unavailable">CAPTCHA لوڈ نہیں ہو سکا۔ براہ کرم دوبارہ کوشش کریں۔</string>
+    <string name="accessibility_vpn_connection">VPN کنکشن</string>
+    <string name="accessibility_status_connected">منسلک</string>
+    <string name="accessibility_status_connected_split_routing">منسلک، سپلٹ ٹنلنگ آن ہے</string>
+    <string name="accessibility_status_connecting">منسلک ہو رہا ہے</string>
+    <string name="accessibility_status_disconnected">غیر منسلک</string>
 
 </resources>

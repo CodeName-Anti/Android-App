@@ -675,5 +675,21 @@ Untuk keamanan maksimal, hindari menggunakan perangkat ini di jaringan yang tida
     <string name="update_available_message_generic">Versi baru Windscribe tersedia.</string>
     <string name="update_later">Perbarui Nanti</string>
     <string name="update_now">Perbarui Sekarang</string>
+    <string name="captcha_refreshing">Memuat kode CAPTCHA baru</string>
+    <string name="captcha_enter_code">Ketik kode yang ditampilkan di atas</string>
+    <string name="captcha_code_hint">Kode CAPTCHA</string>
+    <string name="captcha_art_description">Kode CAPTCHA yang digambar sebagai gambar. Gunakan Muat Ulang untuk kode baru.</string>
+    <string name="captcha_puzzle_background">Puzzle CAPTCHA. Geser potongan puzzle ke celah.</string>
+    <string name="captcha_puzzle_piece">Potongan puzzle</string>
+    <string name="captcha_move_piece_left">Geser potongan puzzle ke kiri</string>
+    <string name="captcha_move_piece_right">Geser potongan puzzle ke kanan</string>
+    <string name="captcha_refresh">Muat ulang CAPTCHA</string>
+    <string name="captcha_verify">Verifikasi</string>
+    <string name="captcha_unavailable">CAPTCHA tidak dapat dimuat. Silakan coba lagi.</string>
+    <string name="accessibility_vpn_connection">Koneksi VPN</string>
+    <string name="accessibility_status_connected">Terhubung</string>
+    <string name="accessibility_status_connected_split_routing">Terhubung, terowongan terpisah aktif</string>
+    <string name="accessibility_status_connecting">Menghubungkan</string>
+    <string name="accessibility_status_disconnected">Terputus</string>
 
 </resources>

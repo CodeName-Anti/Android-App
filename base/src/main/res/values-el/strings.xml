@@ -674,5 +674,21 @@
     <string name="update_available_message_generic">Μια νέα έκδοση του Windscribe είναι διαθέσιμη.</string>
     <string name="update_later">Ενημέρωση αργότερα</string>
     <string name="update_now">Ενημέρωση τώρα</string>
+    <string name="captcha_refreshing">Φόρτωση νέου κωδικού CAPTCHA</string>
+    <string name="captcha_enter_code">Πληκτρολογήστε τον κωδικό που εμφανίζεται πιο πάνω</string>
+    <string name="captcha_code_hint">Κωδικός CAPTCHA</string>
+    <string name="captcha_art_description">Κωδικός CAPTCHA σχεδιασμένος ως εικόνα. Χρησιμοποιήστε την Ανανέωση για νέο κωδικό.</string>
+    <string name="captcha_puzzle_background">Puzzle CAPTCHA. Σύρτε το κομμάτι του puzzle στο κενό.</string>
+    <string name="captcha_puzzle_piece">Κομμάτι puzzle</string>
+    <string name="captcha_move_piece_left">Μετακίνηση κομματιού puzzle αριστερά</string>
+    <string name="captcha_move_piece_right">Μετακίνηση κομματιού puzzle δεξιά</string>
+    <string name="captcha_refresh">Ανανέωση CAPTCHA</string>
+    <string name="captcha_verify">Επαλήθευση</string>
+    <string name="captcha_unavailable">Δεν ήταν δυνατή η φόρτωση του CAPTCHA. Δοκιμάστε ξανά.</string>
+    <string name="accessibility_vpn_connection">Σύνδεση VPN</string>
+    <string name="accessibility_status_connected">Συνδεδεμένο</string>
+    <string name="accessibility_status_connected_split_routing">Συνδεδεμένο, διαχωρισμένη διοχέτευση ενεργή</string>
+    <string name="accessibility_status_connecting">Γίνεται σύνδεση</string>
+    <string name="accessibility_status_disconnected">Αποσυνδέθηκε</string>
 
 </resources>

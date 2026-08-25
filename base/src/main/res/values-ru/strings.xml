@@ -675,5 +675,21 @@
     <string name="update_available_message_generic">Доступна новая версия Windscribe.</string>
     <string name="update_later">Обновить позже</string>
     <string name="update_now">Обновить сейчас</string>
+    <string name="captcha_refreshing">Загрузка нового кода CAPTCHA</string>
+    <string name="captcha_enter_code">Введите код, показанный выше</string>
+    <string name="captcha_code_hint">Код CAPTCHA</string>
+    <string name="captcha_art_description">Код CAPTCHA в виде рисунка. Нажмите «Обновить», чтобы получить новый код.</string>
+    <string name="captcha_puzzle_background">Головоломка CAPTCHA. Перетащите фрагмент в пустое место.</string>
+    <string name="captcha_puzzle_piece">Фрагмент головоломки</string>
+    <string name="captcha_move_piece_left">Переместить фрагмент влево</string>
+    <string name="captcha_move_piece_right">Переместить фрагмент вправо</string>
+    <string name="captcha_refresh">Обновить CAPTCHA</string>
+    <string name="captcha_verify">Проверить</string>
+    <string name="captcha_unavailable">Не удалось загрузить CAPTCHA. Попробуйте снова.</string>
+    <string name="accessibility_vpn_connection">VPN-подключение</string>
+    <string name="accessibility_status_connected">Подключено</string>
+    <string name="accessibility_status_connected_split_routing">Подключено, раздельное туннелирование включено</string>
+    <string name="accessibility_status_connecting">Подключение</string>
+    <string name="accessibility_status_disconnected">Отключено</string>
 
 </resources>

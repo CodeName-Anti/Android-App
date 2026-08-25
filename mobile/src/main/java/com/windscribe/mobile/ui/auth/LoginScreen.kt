@@ -1,6 +1,5 @@
 package com.windscribe.mobile.ui.auth
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
@@ -46,10 +45,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.windscribe.mobile.R
+import com.windscribe.mobile.ui.common.AccessibleCaptchaDialog
 import com.windscribe.mobile.ui.common.AppBackground
 import com.windscribe.mobile.ui.common.AppProgressBar
-import com.windscribe.mobile.ui.common.CaptchaDebugDialog
 import com.windscribe.mobile.ui.common.PrimaryButton
+import com.windscribe.mobile.ui.common.PuzzleCaptchaDialog
 import com.windscribe.mobile.ui.helper.MultiDevicePreview
 import com.windscribe.mobile.ui.helper.PreviewWithNav
 import com.windscribe.mobile.ui.nav.LocalNavController
@@ -75,6 +75,7 @@ class LoginActions(
     val onUploadHashClick: () -> Unit = {},
     val onLoginClick: () -> Unit = {},
     val onCaptchaCancel: () -> Unit = {},
+    val onCaptchaRefresh: () -> Unit = {},
     val onCaptchaSolution: (CaptchaSolution) -> Unit = {},
     val onTwoFactorInfoDismiss: () -> Unit = {},
 )
@@ -143,6 +144,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                 onUploadHashClick = viewModel::onUploadHashClick,
                 onLoginClick = viewModel::loginButtonClick,
                 onCaptchaCancel = viewModel::dismissCaptcha,
+                onCaptchaRefresh = { viewModel.refreshCaptcha() },
                 onCaptchaSolution = viewModel::onCaptchaSolutionReceived,
                 onTwoFactorInfoDismiss = viewModel::dismissTwoFactorInfoDialog,
             ),
@@ -176,21 +178,25 @@ fun LoginContent(
         val message = (loginState as? LoginState.LoggingIn)?.message ?: ""
         AppProgressBar(showProgressBar, message = message)
         if (loginState is LoginState.Captcha) {
-            val captchaRequest = loginState.request
-            CaptchaDebugDialog(
-                captchaRequest,
-                onCancel = actions.onCaptchaCancel,
-                onSolutionSubmit = { t1, t2 ->
-                    Log.i("LoginScreen", "onSolutionSubmit: $t1, $t2")
-                    actions.onCaptchaSolution(
-                        CaptchaSolution(
-                            t1,
-                            t2,
-                            captchaRequest.secureToken,
-                        ),
+            when (val captchaRequest = loginState.request) {
+                is CaptchaRequest.Text ->
+                    AccessibleCaptchaDialog(
+                        request = captchaRequest,
+                        error = loginState.error,
+                        refreshing = loginState.refreshing,
+                        onCancel = actions.onCaptchaCancel,
+                        onRefresh = actions.onCaptchaRefresh,
+                        onSolutionSubmit = actions.onCaptchaSolution,
                     )
-                },
-            )
+
+                is CaptchaRequest.Puzzle ->
+                    PuzzleCaptchaDialog(
+                        captchaRequest = captchaRequest,
+                        error = loginState.error,
+                        onCancel = actions.onCaptchaCancel,
+                        onSolutionSubmit = actions.onCaptchaSolution,
+                    )
+            }
         }
 
         if (showTwoFactorInfoDialog) {

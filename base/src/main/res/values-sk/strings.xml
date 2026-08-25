@@ -675,5 +675,21 @@ Pre maximálnu bezpečnosť sa vyhnite používaniu tohto zariadenia v nedôvery
     <string name="update_available_message_generic">Je dostupná nová verzia Windscribe.</string>
     <string name="update_later">Aktualizovať neskôr</string>
     <string name="update_now">Aktualizovať teraz</string>
+    <string name="captcha_refreshing">Načítava sa nový kód CAPTCHA</string>
+    <string name="captcha_enter_code">Zadajte kód zobrazený vyššie</string>
+    <string name="captcha_code_hint">Kód CAPTCHA</string>
+    <string name="captcha_art_description">Kód CAPTCHA nakreslený ako obrázok. Nový kód získate pomocou tlačidla Obnoviť.</string>
+    <string name="captcha_puzzle_background">Puzzle CAPTCHA. Presuňte dielik puzzle do medzery.</string>
+    <string name="captcha_puzzle_piece">Dielik puzzle</string>
+    <string name="captcha_move_piece_left">Presunúť dielik puzzle vľavo</string>
+    <string name="captcha_move_piece_right">Presunúť dielik puzzle vpravo</string>
+    <string name="captcha_refresh">Obnoviť CAPTCHA</string>
+    <string name="captcha_verify">Overiť</string>
+    <string name="captcha_unavailable">CAPTCHA sa nepodarilo načítať. Skúste to znova.</string>
+    <string name="accessibility_vpn_connection">Pripojenie VPN</string>
+    <string name="accessibility_status_connected">Pripojené</string>
+    <string name="accessibility_status_connected_split_routing">Pripojené, rozdelené tunelovanie je zapnuté</string>
+    <string name="accessibility_status_connecting">Pripájanie</string>
+    <string name="accessibility_status_disconnected">Odpojené</string>
 
 </resources>

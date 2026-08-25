@@ -675,5 +675,21 @@ Para máxima seguridad, evita usar este dispositivo en redes no confiables o si 
     <string name="update_available_message_generic">Hay una nueva versión de Windscribe disponible.</string>
     <string name="update_later">Actualizar más tarde</string>
     <string name="update_now">Actualizar ahora</string>
+    <string name="captcha_refreshing">Cargando un nuevo código CAPTCHA</string>
+    <string name="captcha_enter_code">Escribe el código que se muestra arriba</string>
+    <string name="captcha_code_hint">Código CAPTCHA</string>
+    <string name="captcha_art_description">Código CAPTCHA dibujado como una imagen. Usa Actualizar para obtener un código nuevo.</string>
+    <string name="captcha_puzzle_background">Rompecabezas CAPTCHA. Arrastra la pieza hasta el hueco.</string>
+    <string name="captcha_puzzle_piece">Pieza del rompecabezas</string>
+    <string name="captcha_move_piece_left">Mover la pieza a la izquierda</string>
+    <string name="captcha_move_piece_right">Mover la pieza a la derecha</string>
+    <string name="captcha_refresh">Actualizar CAPTCHA</string>
+    <string name="captcha_verify">Verificar</string>
+    <string name="captcha_unavailable">No se pudo cargar el CAPTCHA. Inténtalo de nuevo.</string>
+    <string name="accessibility_vpn_connection">Conexión VPN</string>
+    <string name="accessibility_status_connected">Conectado</string>
+    <string name="accessibility_status_connected_split_routing">Conectado, túnel dividido activado</string>
+    <string name="accessibility_status_connecting">Conectando</string>
+    <string name="accessibility_status_disconnected">Desconectado</string>
 
 </resources>
