@@ -346,8 +346,9 @@
     <string name="Error">Lỗi</string>
     <string name="text_account_set_up">Đăng ký</string>
     <string name="xpress_login">Đăng nhập lười biếng</string>
-    <string name="web_login_description">Đi tới </string>
-    <string name="app_login_description">Sử dụng ứng dụng Windscribe Android trên điện thoại hoặc máy tính bảng của bạn, đi tới Tùy chọn (Trên cùng bên trái), trong \"Tài khoản\" chọn \"Đăng nhập lười biếng\" và nhập mã bên dưới.</string>
+    <string name="scan_lazy_login_qr_code">Quét mã QR này bằng điện thoại để đăng nhập.</string>
+    <string name="web_login_description">Quét mã QR hoặc nhập mã vào ứng dụng di động Windscribe tại <b>Account → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Nhập vào ứng dụng di động tại <b>Account → Lazy Login</b></string>
     <string name="or">HOẶC</string>
     <string name="generate_code">Tạo mã</string>
     <string name="manual_login">Đăng nhập thủ công</string>
@@ -396,7 +397,7 @@ Vị trí được chọn cuối cùng.</string>
     <string name="appearance_description">Ánh sáng hoặc bóng tối. Chọn một bên, và lựa chọn một cách khôn ngoan.</string>
     <string name="auto_connect_on_boot_description">Tự động kết nối với vị trí được kết nối cuối cùng khi thiết bị khởi động.</string>
     <string name="gps_spoofing_description">Giả mạo tọa độ GPS của thiết bị.</string>
-    <string name="lazy_login_description">Đăng nhập vào các ứng dụng TV của Windscribe bằng một mã ngắn.</string>
+    <string name="lazy_login_description">Đăng nhập vào các ứng dụng TV của Windscribe hoặc nhập mã trong ứng dụng này.</string>
     <string name="get_10gb_data">Nhận 10GB / Tháng dữ liệu và có khả năng đặt lại mật khẩu của bạn.</string>
     <string name="data_left_in_your_plan">Dữ liệu còn lại</string>
     <string name="referral_username">Tên người dùng giới thiệu</string>
@@ -674,5 +675,21 @@ Dữ liệu vị trí của bạn vẫn ở trên thiết bị của bạn và c
     <string name="update_available_message_generic">Có phiên bản mới của Windscribe.</string>
     <string name="update_later">Cập nhật sau</string>
     <string name="update_now">Cập nhật ngay</string>
+    <string name="captcha_refreshing">Đang tải mã CAPTCHA mới</string>
+    <string name="captcha_enter_code">Nhập mã được hiển thị ở trên</string>
+    <string name="captcha_code_hint">Mã CAPTCHA</string>
+    <string name="captcha_art_description">Mã CAPTCHA được vẽ dưới dạng hình ảnh. Dùng Làm mới để lấy mã mới.</string>
+    <string name="captcha_puzzle_background">Câu đố CAPTCHA. Kéo mảnh ghép vào khoảng trống.</string>
+    <string name="captcha_puzzle_piece">Mảnh ghép</string>
+    <string name="captcha_move_piece_left">Di chuyển mảnh ghép sang trái</string>
+    <string name="captcha_move_piece_right">Di chuyển mảnh ghép sang phải</string>
+    <string name="captcha_refresh">Làm mới CAPTCHA</string>
+    <string name="captcha_verify">Xác minh</string>
+    <string name="captcha_unavailable">Không thể tải CAPTCHA. Vui lòng thử lại.</string>
+    <string name="accessibility_vpn_connection">Kết nối VPN</string>
+    <string name="accessibility_status_connected">Đã kết nối</string>
+    <string name="accessibility_status_connected_split_routing">Đã kết nối, tạo đường hầm phân chia đang bật</string>
+    <string name="accessibility_status_connecting">Đang kết nối</string>
+    <string name="accessibility_status_disconnected">Đã ngắt kết nối</string>
 
 </resources>

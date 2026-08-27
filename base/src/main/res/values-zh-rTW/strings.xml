@@ -346,8 +346,9 @@
     <string name="Error">错误</string>
     <string name="text_account_set_up">登记</string>
     <string name="xpress_login">延迟登录</string>
-    <string name="web_login_description">转到</string>
-    <string name="app_login_description">在手机或平板电脑上使用您的 Windscribe Android 应用程序，转到首选项（左上角），在“帐户”下选择“延迟登录”并输入下面的代码。</string>
+    <string name="scan_lazy_login_qr_code">使用手機掃描此 QR Code 以登入。</string>
+    <string name="web_login_description">掃描 QR Code 或在 <b>Account → Lazy Login</b> 的 Windscribe 行動應用程式中輸入代碼。</string>
+    <string name="app_login_manual_entry">在 <b>Account → Lazy Login</b> 的行動應用程式中輸入</string>
     <string name="or">或</string>
     <string name="generate_code">生成代码</string>
     <string name="manual_login">手动登录</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">浅色或深色。选择一方，明智地选择。</string>
     <string name="auto_connect_on_boot_description">设备启动时自动连接到上次连接的位置。</string>
     <string name="gps_spoofing_description">欺骗设备的 GPS 坐标。</string>
-    <string name="lazy_login_description">使用短代码登录Windscribe的电视应用程序。</string>
+    <string name="lazy_login_description">登入 Windscribe 的 TV 應用程式或在此應用程式中輸入代碼。</string>
     <string name="get_10gb_data">获得每月10GB的数据，并能够重置密码。</string>
     <string name="data_left_in_your_plan">剩余数据</string>
     <string name="referral_username">引用用户名</string>
@@ -674,5 +675,21 @@
     <string name="update_available_message_generic">有新版本的 Windscribe 可用。</string>
     <string name="update_later">稍後更新</string>
     <string name="update_now">立即更新</string>
+    <string name="captcha_refreshing">正在載入新的驗證碼</string>
+    <string name="captcha_enter_code">請輸入上方顯示的驗證碼</string>
+    <string name="captcha_code_hint">驗證碼</string>
+    <string name="captcha_art_description">以圖片形式繪製的驗證碼。點選「重新載入」取得新的驗證碼。</string>
+    <string name="captcha_puzzle_background">驗證碼拼圖。將拼圖塊拖曳到缺口中。</string>
+    <string name="captcha_puzzle_piece">拼圖塊</string>
+    <string name="captcha_move_piece_left">將拼圖塊向左移動</string>
+    <string name="captcha_move_piece_right">將拼圖塊向右移動</string>
+    <string name="captcha_refresh">重新載入驗證碼</string>
+    <string name="captcha_verify">驗證</string>
+    <string name="captcha_unavailable">無法載入驗證碼。請重試。</string>
+    <string name="accessibility_vpn_connection">VPN 連線</string>
+    <string name="accessibility_status_connected">已連線</string>
+    <string name="accessibility_status_connected_split_routing">已連線，已開啟拆分隧道</string>
+    <string name="accessibility_status_connecting">正在連線</string>
+    <string name="accessibility_status_disconnected">已中斷連線</string>
 
 </resources>

@@ -8,6 +8,7 @@ object NetworkErrorCodes {
     const val ERROR_RESPONSE_ARGUMENT_INVALID = 502
     const val ERROR_USER_NAME_ALREADY_TAKEN = 600
     const val ERROR_USER_NAME_ALREADY_IN_USE = 503
+    const val ERROR_INVALID_CAPTCHA = 708
     const val ERROR_2FA_REQUIRED = 1340
     const val ERROR_INVALID_2FA = 1341
     const val ERROR_UNABLE_TO_GENERATE_CREDENTIALS = 1700

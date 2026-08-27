@@ -1,8 +1,6 @@
 package com.windscribe.mobile.ui.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +18,7 @@ fun AppBackground(content: @Composable BoxScope.() -> Unit) {
         modifier =
             Modifier
                 .fillMaxSize()
-                .focusable()
-                .clickable {}
-                .background(AppColors.charcoalBlue)
-                .focusable(true),
+                .background(AppColors.charcoalBlue),
     ) {
         content()
     }
@@ -36,10 +31,7 @@ fun PreferenceBackground(content: @Composable BoxScope.() -> Unit) {
         modifier =
             Modifier
                 .fillMaxSize()
-                .focusable()
-                .clickable {}
-                .background(MaterialTheme.colorScheme.preferencesBackgroundColor)
-                .focusable(true),
+                .background(MaterialTheme.colorScheme.preferencesBackgroundColor),
     ) {
         content()
     }

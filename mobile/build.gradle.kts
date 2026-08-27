@@ -141,6 +141,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation("junit:junit:${libs.versions.junit.get()}")
     implementation("androidx.navigation:navigation-compose:${libs.versions.navigation.get()}")
     implementation("androidx.compose.material3.adaptive:adaptive:1.2.0")
     implementation("io.coil-kt.coil3:coil-compose:3.4.0")

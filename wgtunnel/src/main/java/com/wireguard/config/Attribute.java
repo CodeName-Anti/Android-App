@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 @NonNullForAll
 public final class Attribute {
-    private static final Pattern LINE_PATTERN = Pattern.compile("(\\w+)\\s*=\\s*([^\\s#][^#]*)");
+    private static final Pattern LINE_PATTERN = Pattern.compile("(\\w+)\\s*=\\s*([^#]*)");
     private static final Pattern LIST_SEPARATOR = Pattern.compile("\\s*,\\s*");
 
     private final String key;
@@ -43,7 +43,7 @@ public final class Attribute {
         final Matcher matcher = LINE_PATTERN.matcher(line);
         if (!matcher.matches())
             return Optional.empty();
-        return Optional.of(new Attribute(matcher.group(1), matcher.group(2)));
+        return Optional.of(new Attribute(matcher.group(1), matcher.group(2).trim()));
     }
 
     public static String[] split(final CharSequence value) {

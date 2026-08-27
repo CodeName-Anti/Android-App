@@ -488,14 +488,11 @@ class VPNProfileCreator
                 )
             }
             return dnsDetails.getOrNull()?.let { details ->
-                val detailsWithPort =
-                    if (details.type == DnsType.Proxy) {
-                        details.copy(controlDPort = proxyDNSManager.getListenPort())
-                    } else {
-                        details
-                    }
-                proxyDNSManager.dnsDetails = detailsWithPort
-                return detailsWithPort
+                // Deliberately does not stamp a ctrld port here: this runs before ctrld selects the
+                // port it binds, so any value recorded now can be stale by the time the tunnel
+                // wrapper needs it. Consumers read the live port from the VPN service instead.
+                proxyDNSManager.dnsDetails = details
+                return details
             }
         }
 
@@ -560,7 +557,6 @@ class VPNProfileCreator
                 } catch (e: Exception) {
                     logger.error("Full WireGuard config parse exception: ${e.javaClass.simpleName}: ${e.message}")
                     logger.error("Stack trace: ${e.stackTrace.joinToString("\n")}")
-                    logger.error("Config content: ${configFile.content}")
                     throw e
                 }
             interFaceBuilder.parsePrivateKey(
@@ -614,8 +610,21 @@ class VPNProfileCreator
                 LastSelectedLocation(configFile.primaryKey, nickName = configFile.name ?: "")
             saveSelectedLocation(lastSelectedLocation)
             saveProfile(WireGuardVpnProfile(configWithSettings.toWgQuickString()))
-            return "Custom Config: ${configWithSettings.toWgQuickString()}"
+            return "Custom Config: ${configWithSettings.toWgQuickString().withoutWgSecrets()}"
         }
+
+        /**
+         * A wg-quick rendering with the key-bearing lines dropped. The debug log is uploadable and
+         * shareable, so nothing that reaches it may contain PrivateKey/PreSharedKey/PublicKey.
+         */
+        private fun String.withoutWgSecrets(): String =
+            lineSequence()
+                .filterNot {
+                    val line = it.trimStart()
+                    line.startsWith("PrivateKey") ||
+                        line.startsWith("PreSharedKey") ||
+                        line.startsWith("PublicKey")
+                }.joinToString(" ") { it.trim() }
 
         suspend fun createVpnProfileFromWireGuardProfile(
             lastSelectedLocation: LastSelectedLocation,
@@ -644,20 +653,8 @@ class VPNProfileCreator
                     builder.addPeer(peer)
 
                     val content = builder.build().toWgQuickString()
-                    val profileLines = content.split(System.lineSeparator().toRegex()).toTypedArray()
-                    val stringBuilder = StringBuilder()
-                    for (logLine in profileLines) {
-                        if (!logLine.startsWith("PrivateKey") &&
-                            !logLine.startsWith("PreSharedKey") &&
-                            !logLine.startsWith(
-                                "PublicKey",
-                            )
-                        ) {
-                            stringBuilder.append(logLine).append(" ")
-                        }
-                    }
                     preferencesHelper.selectedIp = vpnParameters.hostName
-                    logger.debug(stringBuilder.toString())
+                    logger.debug(content.withoutWgSecrets())
                     saveSelectedLocation(lastSelectedLocation)
                     saveProfile(WireGuardVpnProfile(content))
                     return "$lastSelectedLocation"
@@ -693,7 +690,8 @@ class VPNProfileCreator
             if (!preferencesHelper.isPackageSizeModeAuto && preferencesHelper.packetSize != -1) {
                 builder.setMtu(preferencesHelper.packetSize)
             }
-            if (preferencesHelper.isDecoyTrafficOn) {
+            // Ipv6 hates small MTU.
+            if (preferencesHelper.isDecoyTrafficOn && preferencesHelper.ipv6Mode == PreferencesKeyConstants.IPV6_MODE_IPV4_ONLY) {
                 builder.setMtu(100)
             }
             if (preferencesHelper.splitTunnelToggle) {

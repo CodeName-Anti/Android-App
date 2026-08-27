@@ -66,6 +66,9 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -457,10 +460,11 @@ private fun ConnectionStatusSheetContent(
         }
         Image(
             painter = painterResource(R.drawable.arrow_right_small),
-            contentDescription = null,
+            contentDescription = stringResource(com.windscribe.vpn.R.string.protocol_change),
             modifier =
                 Modifier
                     .size(24.dp)
+                    .semantics { role = Role.Button }
                     .hapticClickable {
                         onProtocolChangeClick()
                     }.testTag("protocol_switcher"),

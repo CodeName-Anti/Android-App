@@ -55,10 +55,10 @@ class ProxyTunnelManager(
                     if (isWSTunnel) {
                         val remote =
                             "wss://$ip:$port/$PROXY_TUNNEL_PROTOCOL/$PROXY_TUNNEL_ADDRESS/$WS_TUNNEL_PORT"
-                        tunnelLib.startProxy(":$localPort", remote, 1, mtu, protocolTweaksEnabled, tlsServerName)
+                        tunnelLib.startProxy("127.0.0.1:$localPort", remote, 1, mtu, protocolTweaksEnabled, tlsServerName)
                     } else {
                         val remote = "https://$ip:$port"
-                        tunnelLib.startProxy(":$localPort", remote, 2, mtu, protocolTweaksEnabled, tlsServerName)
+                        tunnelLib.startProxy("127.0.0.1:$localPort", remote, 2, mtu, protocolTweaksEnabled, tlsServerName)
                     }
                     logger.debug("Exiting tunnel proxy.")
                 }

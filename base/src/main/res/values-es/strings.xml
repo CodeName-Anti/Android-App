@@ -346,8 +346,9 @@
     <string name="Error">Error</string>
     <string name="text_account_set_up">Únete</string>
     <string name="xpress_login">Inicio de sesión perezoso</string>
-    <string name="web_login_description">Vete a </string>
-    <string name="app_login_description">Usando su aplicación Windscribe Android en su teléfono o tableta, vaya a Preferencias (arriba a la izquierda), en \"Cuenta\", elija \"Lazy Login\" e ingrese el código a continuación.</string>
+    <string name="scan_lazy_login_qr_code">Escanea este código QR con tu teléfono para iniciar sesión.</string>
+    <string name="web_login_description">Escanea el código QR o ingresa el código en la aplicación móvil de Windscribe en <b>Cuenta → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Ingresa en la aplicación móvil en <b>Cuenta → Lazy Login</b></string>
     <string name="or">O</string>
     <string name="generate_code">Generar código</string>
     <string name="manual_login">Inicio de sesión manual</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">Claro u oscuro. Elige un lado y elige sabiamente.</string>
     <string name="auto_connect_on_boot_description">Conéctese automáticamente a la última ubicación conectada cuando se inicie el dispositivo.</string>
     <string name="gps_spoofing_description">Falsificar las coordenadas GPS de su dispositivo \ \s.</string>
-    <string name="lazy_login_description">Inicie sesión en las aplicaciones de TV de Windscribe \ \s con un código corto.</string>
+    <string name="lazy_login_description">Inicie sesión en las aplicaciones de TV de Windscribe o ingrese el código en esta aplicación.</string>
     <string name="get_10gb_data">Obtenga 10GB / mes de datos y obtenga la capacidad de restablecer su contraseña.</string>
     <string name="data_left_in_your_plan">Datos restantes</string>
     <string name="referral_username">Nombre de usuario de referencia</string>
@@ -674,5 +675,21 @@ Para máxima seguridad, evita usar este dispositivo en redes no confiables o si 
     <string name="update_available_message_generic">Hay una nueva versión de Windscribe disponible.</string>
     <string name="update_later">Actualizar más tarde</string>
     <string name="update_now">Actualizar ahora</string>
+    <string name="captcha_refreshing">Cargando un nuevo código CAPTCHA</string>
+    <string name="captcha_enter_code">Escribe el código que se muestra arriba</string>
+    <string name="captcha_code_hint">Código CAPTCHA</string>
+    <string name="captcha_art_description">Código CAPTCHA dibujado como una imagen. Usa Actualizar para obtener un código nuevo.</string>
+    <string name="captcha_puzzle_background">Rompecabezas CAPTCHA. Arrastra la pieza hasta el hueco.</string>
+    <string name="captcha_puzzle_piece">Pieza del rompecabezas</string>
+    <string name="captcha_move_piece_left">Mover la pieza a la izquierda</string>
+    <string name="captcha_move_piece_right">Mover la pieza a la derecha</string>
+    <string name="captcha_refresh">Actualizar CAPTCHA</string>
+    <string name="captcha_verify">Verificar</string>
+    <string name="captcha_unavailable">No se pudo cargar el CAPTCHA. Inténtalo de nuevo.</string>
+    <string name="accessibility_vpn_connection">Conexión VPN</string>
+    <string name="accessibility_status_connected">Conectado</string>
+    <string name="accessibility_status_connected_split_routing">Conectado, túnel dividido activado</string>
+    <string name="accessibility_status_connecting">Conectando</string>
+    <string name="accessibility_status_disconnected">Desconectado</string>
 
 </resources>

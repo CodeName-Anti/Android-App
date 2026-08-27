@@ -346,12 +346,9 @@
     <string name="Error">ত্রুটি</string>
     <string name="text_account_set_up">সাইন আপ</string>
     <string name="xpress_login">সহজ লগইন</string>
-    <string name="web_login_description">
-        যেকোনো ডিভাইসে 
-        <b>https://windscribe.com/lazy</b>
-         ঠিকানায় যান এবং নীচের কোড লিখুন।
-    </string>
-    <string name="app_login_description">আপনার ফোন বা ট্যাবলেটে Windscribe Android অ্যাপ ব্যবহার করে, “অ্যাকাউন্ট” এর নীচে “সহজ লগইন” নির্বাচন করুন এবং নীচের কোড লিখুন।</string>
+    <string name="scan_lazy_login_qr_code">লগ ইন করতে আপনার ফোন দিয়ে এই QR কোডটি স্ক্যান করুন।</string>
+    <string name="web_login_description">QR কোড স্ক্যান করুন বা Windscribe মোবাইল অ্যাপে <b>অ্যাকাউন্ট → সহজ লগইন</b> এ কোড লিখুন।</string>
+    <string name="app_login_manual_entry">মোবাইল অ্যাপে <b>অ্যাকাউন্ট → সহজ লগইন</b> এ লিখুন</string>
     <string name="or">অথবা</string>
     <string name="generate_code">কোড তৈরি করুন</string>
     <string name="manual_login">ম্যানুয়াল লগইন</string>
@@ -399,7 +396,7 @@
     <string name="appearance_description">আলো অথবা অন্ধকার ।  একটি মোড নির্বাচন করুন।</string>
     <string name="auto_connect_on_boot_description">ডিভাইস চালু হওয়ার সময় স্বয়ংক্রিয়ভাবে সর্বশেষ সংযুক্ত স্থানে সংযোগ করুন।</string>
     <string name="gps_spoofing_description">আপনার ডিভাইসের GPS স্থানাঙ্ক নকল করুন।</string>
-    <string name="lazy_login_description">Windscribe-এর TV অ্যাপে একটি সংক্ষিপ্ত কোড ব্যবহার করে লগইন করুন।</string>
+    <string name="lazy_login_description">Windscribe-এর TV অ্যাপে লগইন করুন বা এই অ্যাপে কোড লিখুন।</string>
     <string name="get_10gb_data">প্রতি মাসে ১০GB ডেটা পান এবং আপনার পাসওয়ার্ড রিসেট করার সুযোগ অর্জন করুন।</string>
     <string name="data_left_in_your_plan">আপনার প্লানে অবশিষ্ট ডেটা</string>
     <string name="referral_username">রেফার করা ব্যবহারকারীর নাম</string>
@@ -677,5 +674,21 @@
     <string name="update_available_message_generic">Windscribe এর একটি নতুন সংস্করণ উপলব্ধ।</string>
     <string name="update_later">পরে আপডেট করুন</string>
     <string name="update_now">এখনই আপডেট করুন</string>
+    <string name="captcha_refreshing">নতুন CAPTCHA কোড লোড হচ্ছে</string>
+    <string name="captcha_enter_code">উপরে দেখানো কোডটি টাইপ করুন</string>
+    <string name="captcha_code_hint">CAPTCHA কোড</string>
+    <string name="captcha_art_description">ছবি হিসেবে আঁকা CAPTCHA কোড। নতুন কোডের জন্য রিফ্রেশ ব্যবহার করুন।</string>
+    <string name="captcha_puzzle_background">CAPTCHA ধাঁধা। ধাঁধার টুকরাটি ফাঁকা জায়গায় টেনে আনুন।</string>
+    <string name="captcha_puzzle_piece">ধাঁধার টুকরা</string>
+    <string name="captcha_move_piece_left">ধাঁধার টুকরা বাঁয়ে সরান</string>
+    <string name="captcha_move_piece_right">ধাঁধার টুকরা ডানে সরান</string>
+    <string name="captcha_refresh">CAPTCHA রিফ্রেশ করুন</string>
+    <string name="captcha_verify">যাচাই করুন</string>
+    <string name="captcha_unavailable">CAPTCHA লোড করা যায়নি। আবার চেষ্টা করুন।</string>
+    <string name="accessibility_vpn_connection">VPN সংযোগ</string>
+    <string name="accessibility_status_connected">সংযুক্ত</string>
+    <string name="accessibility_status_connected_split_routing">সংযুক্ত, স্প্লিট টানেলিং চালু</string>
+    <string name="accessibility_status_connecting">সংযোগ হচ্ছে</string>
+    <string name="accessibility_status_disconnected">সংযোগ বিচ্ছিন্ন</string>
 
 </resources>

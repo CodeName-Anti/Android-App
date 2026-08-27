@@ -145,16 +145,39 @@ class AppStartActivity : AppCompatActivity() {
     /**
      * Handles intent extras from FCM push notifications and external app launches.
      *
-     * Security Note: This activity is exported and can be launched by any app. We intentionally
-     * keep this handler simple and permissive because:
-     * - AppStartActivity is the launcher activity, so external apps can already launch it
-     * - "promo" only deep-links to the upgrade screen (non-sensitive)
-     * - subscription grace notifications build a fixed Google Play URL from an encoded product ID
-     * - "user_expired"/"user_downgraded" trigger server verification before any action
+     * Security note: this activity is exported - as the launcher and via the icon activity-aliases
+     * - so ANY installed app can invoke it with arbitrary extras. Everything read below is
+     * untrusted input, not trusted FCM input. Treat it that way.
      *
-     * SessionWorker validates account status with the server and only disconnects the VPN
-     * if the server confirms the account is actually expired/banned. This prevents malicious
-     * apps from forcing VPN disconnects.
+     * The extras cannot be replaced by reading appLifeCycleObserver instead. When the app is not
+     * running, Firebase renders the promo notification itself,
+     * WindscribeCloudMessaging.onMessageReceived is never called, and the payload reaches us only
+     * as Intent extras when the user taps the notification. That is the common case for a promo
+     * push, so dropping the extras would break promo notifications for most users.
+     *
+     * What keeps forged extras harmless, per branch:
+     * - "promo": pcpid/promo_code are only ever handed to the server as parameters; nothing on
+     *   device decides anything based on them. getBillingPlans() returns the standard plans when
+     *   the promo is not valid for this user, and postPromoPaymentConfirmation() is a best-effort
+     *   call made only after verifyPurchaseReceipt() has already succeeded, so a forged pcpid
+     *   cannot change entitlement, pricing or payment.
+     *   getNotifications(pcpid) is server-authoritative in the same way: the newsfeed content it
+     *   returns is decided server-side for this account, so a forged pcpid does not let a caller
+     *   choose what the user is shown.
+     * - GooglePlaySubscriptionUrl.NOTIFICATION_TYPE: builds a fixed Play Store URL from an encoded
+     *   product ID, and build() returns null for anything it does not recognise.
+     * - "user_expired"/"user_downgraded": only calls updateSession(). SessionWorker asks the server
+     *   for the real account status and disconnects only if the server confirms the account is
+     *   expired or banned, so a malicious app cannot force a VPN disconnect.
+     *
+     * Invariant for anything added here: promo data must stay a parameter the server validates.
+     * Do not let it gate a client-side entitlement, trust or security decision - the server is the
+     * only validation authority for it. This handler is safe because of that invariant, NOT because
+     * the values are harmless.
+     *
+     * The promo deliberately persists for the lifetime of the process (AppLifeCycleObserver keeps
+     * it in memory and nothing writes it to storage), so back-navigation can return the user to
+     * the promo, and it is gone on a fresh launch. That is intended, not a leak.
      */
     private fun handleIntent(intent: Intent?) {
         val extras = intent?.extras ?: return

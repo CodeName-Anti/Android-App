@@ -119,11 +119,11 @@ class AmazonBillingManager(
     private fun saveActiveReceipts(response: PurchaseUpdatesResponse) {
         for (receipt in response.receipts) {
             if (receipt.isCanceled) {
-                logger.debug("Cancelled: " + receipt.toJSON())
+                logger.debug("Cancelled: " + receipt.receiptId.truncatedBillingToken())
             } else {
                 val amazonPurchase = AmazonPurchase(receipt.receiptId, response.userData.userId)
                 amazonPurchases.add(amazonPurchase)
-                logger.debug("Active: " + receipt.toJSON())
+                logger.debug("Active: " + receipt.receiptId.truncatedBillingToken())
             }
         }
     }

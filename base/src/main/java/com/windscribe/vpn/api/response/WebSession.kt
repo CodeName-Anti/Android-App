@@ -14,8 +14,8 @@ class WebSession {
     @Expose
     val tempSession: String? = null
 
-    override fun toString(): String =
-        "WebSession{" +
-            "tempSession='" + tempSession + '\'' +
-            '}'
+    // tempSession is a live bearer token for the account's web dashboard, so it is redacted here
+    // the same way SsoResponse redacts sessionAuth: the debug log is uploadable and shareable, and
+    // a single logger call on this object would otherwise put the credential in it.
+    override fun toString(): String = "WebSession{tempSession='[REDACTED]'}"
 }

@@ -108,18 +108,20 @@ class WelcomePresenterImpl
                     when (result) {
                         is CallResult.Success -> {
                             welcomeView.prepareUiForApiCallFinished()
-                            logger.debug("Successfully generated XPress login code.")
+                            logger.debug("Successfully generated XPress login code. ttl=${result.data.ttl}")
                             welcomeView.setSecretCode(result.data.xPressLoginCode ?: "")
                             startXPressLoginCodeVerifier(result.data)
                         }
 
                         is CallResult.Error -> {
+                            welcomeView.prepareUiForApiCallFinished()
                             if (NetworkErrorCodes.ERROR_UNABLE_TO_REACH_API == result.code) {
-                                welcomeView.showError("Unable to generate Login code. Check you network connection.")
+                                welcomeView.showError("Unable to generate Login code. Check your network connection.")
                             } else {
                                 logger.error("Generate login code: {}", result.errorMessage)
                                 welcomeView.showError(result.errorMessage)
                             }
+                            welcomeView.setSecretCode("")
                         }
                     }
                 }
@@ -430,7 +432,9 @@ class WelcomePresenterImpl
                         if (secondsPassed > xPressLoginCodeResponse.ttl) {
                             logger.error("Failed to verify XPress login code in ttl. Giving up")
                             withContext(Dispatchers.Main) {
+                                welcomeView.prepareUiForApiCallFinished()
                                 welcomeView.setSecretCode("")
+                                welcomeView.showError("Login code expired. Please generate a new code.")
                             }
                             break
                         }
@@ -450,6 +454,8 @@ class WelcomePresenterImpl
                                     logger.debug("Successfully verified XPress login code.")
                                     preferencesHelper.sessionHash = result.data.sessionAuth
                                     xpressVerificationJob?.cancel()
+                                    welcomeView.prepareUiForApiCallStart()
+                                    welcomeView.updateCurrentProcess("Signing in...")
                                     firebaseManager.getFirebaseToken { token ->
                                         prepareLoginRegistrationDashboard(token)
                                     }
@@ -475,7 +481,7 @@ class WelcomePresenterImpl
         }
 
         private fun evaluatePassword(password: String): Boolean {
-            val pattern = Regex("(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}")
+            val pattern = Regex("(?=.*[a-z])(?=.*[A-Z]).{8,}")
             return password.matches(pattern)
         }
 
