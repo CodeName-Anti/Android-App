@@ -346,8 +346,9 @@
     <string name="Error">エラー</string>
     <string name="text_account_set_up">サインアップ</string>
     <string name="xpress_login">レイジーログイン</string>
-    <string name="web_login_description">行きます</string>
-    <string name="app_login_description">携帯電話またはタブレットでWindscribe Androidアプリを使用して、[設定](左上)に移動し、[アカウント]で[遅延ログイン]を選択して、以下のコードを入力します。</string>
+    <string name="scan_lazy_login_qr_code">スマートフォンでこのQRコードをスキャンしてログインしてください。</string>
+    <string name="web_login_description"><b>Account → Lazy Login</b>でWindscribeモバイルアプリのQRコードをスキャンするか、コードを入力してください。</string>
+    <string name="app_login_manual_entry"><b>Account → Lazy Login</b>でモバイルアプリに入力してください</string>
     <string name="or">又は</string>
     <string name="generate_code">コードの生成</string>
     <string name="manual_login">手動ログイン</string>
@@ -396,7 +397,7 @@
     <string name="appearance_description">アプリのテーマを指定できます。</string>
     <string name="auto_connect_on_boot_description">デバイスの起動時に、最後に接続した場所に自動的に接続します。</string>
     <string name="gps_spoofing_description">デバイスのGPS座標を偽装します。</string>
-    <string name="lazy_login_description">ショートコードでWindscribeのテレビアプリにログインします。</string>
+    <string name="lazy_login_description">WindscribeのTVアプリにログインするか、このアプリでコードを入力してください。</string>
     <string name="get_10gb_data">10GB /月のデータを取得し、パスワードをリセットする機能を取得します。</string>
     <string name="data_left_in_your_plan">残りのデータ</string>
     <string name="referral_username">参照元のユーザー名</string>
@@ -674,5 +675,21 @@
     <string name="update_available_message_generic">Windscribeの新しいバージョンが利用可能です。</string>
     <string name="update_later">後で更新</string>
     <string name="update_now">今すぐ更新</string>
+    <string name="captcha_refreshing">新しいCAPTCHAコードを読み込み中</string>
+    <string name="captcha_enter_code">上に表示されているコードを入力してください</string>
+    <string name="captcha_code_hint">CAPTCHAコード</string>
+    <string name="captcha_art_description">画像として描かれたCAPTCHAコードです。新しいコードを取得するには「更新」を使用してください。</string>
+    <string name="captcha_puzzle_background">CAPTCHAパズル。パズルピースを空いている場所にドラッグしてください。</string>
+    <string name="captcha_puzzle_piece">パズルピース</string>
+    <string name="captcha_move_piece_left">パズルピースを左に移動</string>
+    <string name="captcha_move_piece_right">パズルピースを右に移動</string>
+    <string name="captcha_refresh">CAPTCHAを更新</string>
+    <string name="captcha_verify">確認</string>
+    <string name="captcha_unavailable">CAPTCHAを読み込めませんでした。もう一度お試しください。</string>
+    <string name="accessibility_vpn_connection">VPN接続</string>
+    <string name="accessibility_status_connected">接続済み</string>
+    <string name="accessibility_status_connected_split_routing">接続済み、スプリットトンネリングが有効</string>
+    <string name="accessibility_status_connecting">接続中</string>
+    <string name="accessibility_status_disconnected">切断されました</string>
 
 </resources>

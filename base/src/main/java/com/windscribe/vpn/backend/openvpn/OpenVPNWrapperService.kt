@@ -7,6 +7,7 @@ package com.windscribe.vpn.backend.openvpn
 import android.content.Intent
 import android.net.VpnService
 import com.windscribe.vpn.apppreference.PreferencesHelper
+import com.windscribe.vpn.backend.ProxyDNSManager
 import com.windscribe.vpn.backend.Util
 import com.windscribe.vpn.backend.VPNState.Status.Connecting
 import com.windscribe.vpn.backend.utils.ExcludedIpHolder
@@ -54,6 +55,9 @@ class OpenVPNWrapperService :
 
     @Inject
     lateinit var advanceParameterRepository: AdvanceParameterRepository
+
+    @Inject
+    lateinit var proxyDNSManager: ProxyDNSManager
 
     private var logger = LoggerFactory.getLogger("vpn")
 
@@ -146,4 +150,6 @@ class OpenVPNWrapperService :
     }
 
     override fun shouldEnablePacketLogging(): Boolean = advanceParameterRepository.showCdLog()
+
+    override fun getControlDPort(): Int = proxyDNSManager.getListenPort()
 }

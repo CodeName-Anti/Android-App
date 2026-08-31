@@ -346,8 +346,9 @@
     <string name="Error">Kesalahan</string>
     <string name="text_account_set_up">Tandatangan</string>
     <string name="xpress_login">Login Malas</string>
-    <string name="web_login_description">Pergi ke </string>
-    <string name="app_login_description">Menggunakan aplikasi Android Windscribe Anda di ponsel atau tablet Anda, buka Preferensi (Kiri atas), di bawah \"Akun\" pilih \"Login Malas\" dan masukkan kode di bawah ini.</string>
+    <string name="scan_lazy_login_qr_code">Pindai kode QR ini dengan ponsel Anda untuk masuk.</string>
+    <string name="web_login_description">Pindai kode QR atau masukkan kode di aplikasi seluler Windscribe di <b>Account → Lazy Login</b>.</string>
+    <string name="app_login_manual_entry">Masukkan di aplikasi seluler di <b>Account → Lazy Login</b></string>
     <string name="or">ATAU</string>
     <string name="generate_code">Hasilkan Kode</string>
     <string name="manual_login">Login Manual</string>
@@ -396,7 +397,7 @@ Lokasi terakhir yang dipilih.</string>
     <string name="appearance_description">Terang atau gelap. Pilih satu sisi, dan pilih dengan bijak.</string>
     <string name="auto_connect_on_boot_description">Secara otomatis terhubung ke lokasi terakhir yang terhubung saat perangkat dimulai.</string>
     <string name="gps_spoofing_description">Menipu koordinat GPS perangkat Anda.</string>
-    <string name="lazy_login_description">Masuk ke aplikasi TV Windscribe dengan kode pendek.</string>
+    <string name="lazy_login_description">Masuk ke aplikasi TV Windscribe atau masukkan kode di aplikasi ini.</string>
     <string name="get_10gb_data">Dapatkan data 10GB/ Bulan dan dapatkan kemampuan untuk mengatur ulang kata sandi Anda.</string>
     <string name="data_left_in_your_plan">Data Tersisa</string>
     <string name="referral_username">Merujuk Nama Pengguna</string>
@@ -674,5 +675,21 @@ Untuk keamanan maksimal, hindari menggunakan perangkat ini di jaringan yang tida
     <string name="update_available_message_generic">Versi baru Windscribe tersedia.</string>
     <string name="update_later">Perbarui Nanti</string>
     <string name="update_now">Perbarui Sekarang</string>
+    <string name="captcha_refreshing">Memuat kode CAPTCHA baru</string>
+    <string name="captcha_enter_code">Ketik kode yang ditampilkan di atas</string>
+    <string name="captcha_code_hint">Kode CAPTCHA</string>
+    <string name="captcha_art_description">Kode CAPTCHA yang digambar sebagai gambar. Gunakan Muat Ulang untuk kode baru.</string>
+    <string name="captcha_puzzle_background">Puzzle CAPTCHA. Geser potongan puzzle ke celah.</string>
+    <string name="captcha_puzzle_piece">Potongan puzzle</string>
+    <string name="captcha_move_piece_left">Geser potongan puzzle ke kiri</string>
+    <string name="captcha_move_piece_right">Geser potongan puzzle ke kanan</string>
+    <string name="captcha_refresh">Muat ulang CAPTCHA</string>
+    <string name="captcha_verify">Verifikasi</string>
+    <string name="captcha_unavailable">CAPTCHA tidak dapat dimuat. Silakan coba lagi.</string>
+    <string name="accessibility_vpn_connection">Koneksi VPN</string>
+    <string name="accessibility_status_connected">Terhubung</string>
+    <string name="accessibility_status_connected_split_routing">Terhubung, terowongan terpisah aktif</string>
+    <string name="accessibility_status_connecting">Menghubungkan</string>
+    <string name="accessibility_status_disconnected">Terputus</string>
 
 </resources>

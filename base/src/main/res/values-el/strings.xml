@@ -349,8 +349,9 @@
     <string name="Error">Σφάλμα</string>
     <string name="text_account_set_up">Εγγραφή</string>
     <string name="xpress_login">Εύκολη Σύνδεση</string>
-    <string name="web_login_description">Πηγαίνετε στο **https://windscribe.com/lazy** σε οποιαδήποτε συσκευή και εισάγετε τον παρακάτω κωδικό.</string>
-    <string name="app_login_description">Χρησιμοποιώντας την εφαρμογή Windscribe Android στο τηλέφωνο ή το tablet σας, μεταβείτε στις Προτιμήσεις (Πάνω αριστερά), στην ενότητα «Λογαριασμός» επιλέξτε «Εύκολη Σύνδεση» και εισάγετε τον παρακάτω κωδικό.</string>
+    <string name="scan_lazy_login_qr_code">Σαρώστε αυτόν τον κωδικό QR με το τηλέφωνό σας για να συνδεθείτε.</string>
+    <string name="web_login_description">Σαρώστε τον κωδικό QR ή εισάγετε τον κωδικό στην εφαρμογή Windscribe για κινητά στο <b>Λογαριασμός → Εύκολη Σύνδεση</b>.</string>
+    <string name="app_login_manual_entry">Εισάγετε στην εφαρμογή για κινητά στο <b>Λογαριασμός → Εύκολη Σύνδεση</b></string>
     <string name="or">Ή</string>
     <string name="generate_code">Δημιουργία κωδικού</string>
     <string name="manual_login">Χειροκίνητη σύνδεση</string>
@@ -402,7 +403,7 @@
     <string name="appearance_description">Φωτεινό ή Σκοτεινό. Διαλέξτε μια πλευρά, και διαλέξτε σοφά.</string>
     <string name="auto_connect_on_boot_description">Αυτόματη σύνδεση στην τελευταία συνδεδεμένη τοποθεσία κατά την εκκίνηση της συσκευής.</string>
     <string name="gps_spoofing_description">Πλαστογράφηση των συντεταγμένων GPS της συσκευής σας.</string>
-    <string name="lazy_login_description">Σύνδεση στις τηλεοπτικές εφαρμογές του Windscribe με έναν σύντομο κωδικό.</string>
+    <string name="lazy_login_description">Συνδεθείτε στις τηλεοπτικές εφαρμογές του Windscribe ή εισάγετε τον κωδικό σε αυτήν την εφαρμογή.</string>
     <string name="get_10gb_data">Αποκτήστε 10GB/ Μήνα δεδομένα και τη δυνατότητα να επαναφέρετε τον κωδικό πρόσβασής σας.</string>
     <string name="data_left_in_your_plan">Απομένων όγκος δεδομένων</string>
     <string name="referral_username">Όνομα χρήστη παραπομπής</string>
@@ -673,5 +674,21 @@
     <string name="update_available_message_generic">Μια νέα έκδοση του Windscribe είναι διαθέσιμη.</string>
     <string name="update_later">Ενημέρωση αργότερα</string>
     <string name="update_now">Ενημέρωση τώρα</string>
+    <string name="captcha_refreshing">Φόρτωση νέου κωδικού CAPTCHA</string>
+    <string name="captcha_enter_code">Πληκτρολογήστε τον κωδικό που εμφανίζεται πιο πάνω</string>
+    <string name="captcha_code_hint">Κωδικός CAPTCHA</string>
+    <string name="captcha_art_description">Κωδικός CAPTCHA σχεδιασμένος ως εικόνα. Χρησιμοποιήστε την Ανανέωση για νέο κωδικό.</string>
+    <string name="captcha_puzzle_background">Puzzle CAPTCHA. Σύρτε το κομμάτι του puzzle στο κενό.</string>
+    <string name="captcha_puzzle_piece">Κομμάτι puzzle</string>
+    <string name="captcha_move_piece_left">Μετακίνηση κομματιού puzzle αριστερά</string>
+    <string name="captcha_move_piece_right">Μετακίνηση κομματιού puzzle δεξιά</string>
+    <string name="captcha_refresh">Ανανέωση CAPTCHA</string>
+    <string name="captcha_verify">Επαλήθευση</string>
+    <string name="captcha_unavailable">Δεν ήταν δυνατή η φόρτωση του CAPTCHA. Δοκιμάστε ξανά.</string>
+    <string name="accessibility_vpn_connection">Σύνδεση VPN</string>
+    <string name="accessibility_status_connected">Συνδεδεμένο</string>
+    <string name="accessibility_status_connected_split_routing">Συνδεδεμένο, διαχωρισμένη διοχέτευση ενεργή</string>
+    <string name="accessibility_status_connecting">Γίνεται σύνδεση</string>
+    <string name="accessibility_status_disconnected">Αποσυνδέθηκε</string>
 
 </resources>

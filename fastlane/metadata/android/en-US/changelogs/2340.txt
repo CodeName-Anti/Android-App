@@ -11,3 +11,4 @@ v4.3(Mobile)
 * Ctlrd library upgraded to v1.5.4
 * WireGuard updated to v0.2.19
 * include the -s -w flags in the LD_FLAGS to build wgtunnel to smaller binary.
+* Fixed password validation not allowing spaces.

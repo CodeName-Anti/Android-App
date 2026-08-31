@@ -19,6 +19,13 @@ data class DNSDetails(
     val address: String? = null,
     val ip: String? = null,
     val type: DnsType,
+    /**
+     * Snapshot of the ctrld listen port taken when the profile was created, which is BEFORE ctrld
+     * selects the port it binds. It is therefore not authoritative and must not be used to reach
+     * the resolver - read the live port from the VPN service instead (getControlDPort()). Retained
+     * only because this class is Serializable and is persisted in saved VPN profiles.
+     */
+    @Deprecated("Not authoritative; use the VPN service's live getControlDPort().")
     val controlDPort: Int = 5355,
 ) : Serializable {
     val getTypeValue: String

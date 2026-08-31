@@ -24,4 +24,13 @@ object HashUtils {
         // Truncate to last 16 bytes (128 bits = 32 hex characters)
         return "0x" + hashBytes.takeLast(16).joinToString("") { "%02x".format(it) }
     }
+
+    private val ACCOUNT_HASH_FORMAT = Regex("^0x[0-9a-f]{32}$")
+
+    /**
+     * True if [value] has the shape produced by [sha256FromInputStream], i.e. it is an account
+     * hash. Hashed accounts authenticate with username == password == this value, so a username
+     * matching here is a live credential and must never be disclosed as an identifier.
+     */
+    fun isAccountHash(value: String): Boolean = ACCOUNT_HASH_FORMAT.matches(value)
 }

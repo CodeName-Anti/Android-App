@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.windscribe.mobile.ui.helper.AccessibilityHelper
 import com.windscribe.vpn.BuildConfig
 import com.windscribe.vpn.api.IApiCallManager
 import com.windscribe.vpn.api.response.AuthToken
@@ -21,7 +22,9 @@ import com.windscribe.vpn.repository.UserRepository
 import com.windscribe.vpn.repository.getNetworkError
 import com.windscribe.vpn.services.FirebaseManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -41,6 +44,8 @@ sealed class LoginState {
 
     data class Captcha(
         val request: CaptchaRequest,
+        val error: String? = null,
+        val refreshing: Boolean = false,
     ) : LoginState()
 
     object Success : LoginState()
@@ -50,28 +55,17 @@ sealed class LoginState {
     ) : LoginState()
 }
 
-data class CaptchaRequest(
-    val background: String,
-    val top: Int,
-    val slider: String,
-    val secureToken: String,
-)
-
-data class CaptchaSolution(
-    val leftOffset: Float,
-    val trail: Map<String, List<Float>>,
-    val token: String,
-)
-
 @HiltViewModel
 class LoginViewModel
     @Inject
     constructor(
+        @ApplicationContext private val appContext: Context,
         private val apiCallManager: IApiCallManager,
         private val preferenceHelper: PreferencesHelper,
         private val firebaseManager: FirebaseManager,
         private val userRepository: UserRepository,
     ) : ViewModel() {
+        private var captchaRefreshJob: Job? = null
         private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
         val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
 
@@ -159,6 +153,22 @@ class LoginViewModel
             validateInput()
         }
 
+        /** Asks the API for a fresh challenge, keeping any error already shown to the user. */
+        fun refreshCaptcha(error: String? = null) {
+            if (captchaRefreshJob?.isActive == true) {
+                return
+            }
+            captchaRefreshJob =
+                viewModelScope.launch(Dispatchers.IO) {
+                    // Marks the challenge on screen as stale so the dialog can show and announce
+                    // that a new one is on its way.
+                    (_loginState.value as? LoginState.Captcha)?.let {
+                        updateState(it.copy(error = error, refreshing = true))
+                    }
+                    startLoginProcess(captchaError = error)
+                }
+        }
+
         fun onTwoFactorHintClicked() {
             viewModelScope.launch {
                 _showTwoFactorInfoDialog.emit(true)
@@ -244,10 +254,10 @@ class LoginViewModel
                 result<UserLoginResponse> {
                     apiCallManager.logUserIn(
                         username.trim(),
-                        password.trim(),
+                        password,
                         twoFactorCode.trim(),
                         captchaSolution.token,
-                        "${captchaSolution.leftOffset}",
+                        captchaSolution.solution,
                         trailX,
                         trailY,
                     )
@@ -257,6 +267,11 @@ class LoginViewModel
                     val networkError = getNetworkError(result.code)
                     if (networkError != null) {
                         handleNetworkError(networkError)
+                    } else if (result.code == NetworkErrorCodes.ERROR_INVALID_CAPTCHA) {
+                        _loginButtonEnabled.emit(true)
+                        startLoginProcess(
+                            captchaError = SessionErrorHandler.instance.getErrorMessage(result.code, result.errorMessage),
+                        )
                     } else {
                         _loginButtonEnabled.emit(true)
                         handleApiError(result.code, result.errorMessage)
@@ -270,14 +285,18 @@ class LoginViewModel
             }
         }
 
-        private suspend fun startLoginProcess() {
+        private suspend fun startLoginProcess(captchaError: String? = null) {
             logger.info("Trying to log in with provided credentials...")
             if (BuildConfig.DEV) {
                 logger.info("DEV build: skipping auth-token step to bypass captcha for E2E tests.")
                 handleAuthToken(AuthToken(token = "", captcha = null))
                 return
             }
-            val authResult = result<AuthToken> { apiCallManager.authTokenLogin(username, false) }
+            val useTextCaptcha = AccessibilityHelper.isScreenReaderEnabled(appContext)
+            if (useTextCaptcha) {
+                logger.info("Screen reader detected, requesting text captcha.")
+            }
+            val authResult = result<AuthToken> { apiCallManager.authTokenLogin(username, useTextCaptcha) }
             when (authResult) {
                 is CallResult.Error -> {
                     val networkError = getNetworkError(authResult.code)
@@ -292,30 +311,33 @@ class LoginViewModel
 
                 is CallResult.Success -> {
                     logger.info("Received auth token successfully")
-                    handleAuthToken(authResult.data)
+                    handleAuthToken(authResult.data, captchaError)
                 }
             }
         }
 
-        private suspend fun handleAuthToken(authToken: AuthToken) {
+        private suspend fun handleAuthToken(
+            authToken: AuthToken,
+            captchaError: String? = null,
+        ) {
             val captcha = authToken.captcha
             val token = authToken.token
             if (captcha != null) {
-                logger.info("Received captcha: ${captcha.top}")
-                val request =
-                    CaptchaRequest(
-                        captcha.background!!,
-                        captcha.top!!,
-                        captcha.slider!!,
-                        token,
-                    )
-                updateState(LoginState.Captcha(request))
+                val request = captcha.toRequest(token)
+                if (request == null) {
+                    logger.warn("Captcha payload was missing the fields needed to render it.")
+                    updateState(LoginState.Error(AuthError.LocalizedInputError(com.windscribe.vpn.R.string.captcha_unavailable)))
+                    _loginButtonEnabled.emit(true)
+                    return
+                }
+                logger.info("Received captcha: ${request::class.simpleName}")
+                updateState(LoginState.Captcha(request, captchaError))
             } else {
                 val result =
                     result<UserLoginResponse> {
                         apiCallManager.logUserIn(
                             username.trim(),
-                            password.trim(),
+                            password,
                             twoFactorCode.trim(),
                             token,
                             null,

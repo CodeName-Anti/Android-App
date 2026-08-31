@@ -64,6 +64,7 @@ import com.windscribe.mobile.ui.common.openUrl
 import com.windscribe.mobile.ui.connection.ToastMessage
 import com.windscribe.mobile.ui.helper.MultiDevicePreview
 import com.windscribe.mobile.ui.helper.PreviewWithNav
+import com.windscribe.mobile.ui.helper.copyTextToClipboard
 import com.windscribe.mobile.ui.helper.hapticClickable
 import com.windscribe.mobile.ui.nav.LocalNavController
 import com.windscribe.mobile.ui.nav.Screen
@@ -474,12 +475,13 @@ private fun AccountInfo(accountState: AccountState) {
                                 RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
                             },
                     ).hapticClickable {
-                        val clipboard =
-                            context.getSystemService(
-                                android.content.Context.CLIPBOARD_SERVICE,
-                            ) as android.content.ClipboardManager
-                        val clip = android.content.ClipData.newPlainText(if (isHashedAccount) "Hash" else "Username", username)
-                        clipboard.setPrimaryClip(clip)
+                        copyTextToClipboard(
+                            context,
+                            label = if (isHashedAccount) "Hash" else "Username",
+                            text = username,
+                            // A hashed account's username is also its password.
+                            sensitive = isHashedAccount,
+                        )
                     }.padding(14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {

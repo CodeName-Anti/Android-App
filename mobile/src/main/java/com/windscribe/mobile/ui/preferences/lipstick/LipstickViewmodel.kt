@@ -341,6 +341,10 @@ class LipstickViewmodelImpl
                         return
                     }
                     val outputFile = getSoundFile(context, false, documentFile.name!!)
+                    if (outputFile == null) {
+                        logger.error("Rejected disconnected custom sound: unusable file name.")
+                        return
+                    }
                     val output = FileOutputStream(outputFile)
                     it.copyTo(output)
                     output.close()
@@ -364,6 +368,10 @@ class LipstickViewmodelImpl
                         return
                     }
                     val outputFile = getSoundFile(context, true, documentFile.name!!)
+                    if (outputFile == null) {
+                        logger.error("Rejected connected custom sound: unusable file name.")
+                        return
+                    }
                     val output = FileOutputStream(outputFile)
                     it.copyTo(output)
                     output.close()

@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import com.windscribe.vpn.Windscribe.Companion.appContext
+import com.windscribe.vpn.backend.ProxyDNSManager
 import com.windscribe.vpn.backend.Util
 import com.windscribe.vpn.backend.VPNState
 import com.windscribe.vpn.backend.VPNState.Status.Connecting
@@ -61,6 +62,9 @@ class CharonVpnServiceWrapper : CharonVpnService() {
 
     @Inject
     lateinit var advanceParameterRepository: AdvanceParameterRepository
+
+    @Inject
+    lateinit var proxyDNSManager: ProxyDNSManager
 
     private var logger = LoggerFactory.getLogger("vpn")
 
@@ -261,4 +265,6 @@ class CharonVpnServiceWrapper : CharonVpnService() {
     }
 
     override fun shouldEnablePacketLogging(): Boolean = advanceParameterRepository.showCdLog()
+
+    override fun getControlDPort(): Int = proxyDNSManager.getListenPort()
 }

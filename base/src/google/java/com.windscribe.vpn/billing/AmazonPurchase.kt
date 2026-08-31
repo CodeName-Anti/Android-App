@@ -10,7 +10,7 @@ class AmazonPurchase(
 ) {
     override fun toString(): String =
         "AmazonPurchase{" +
-            "receiptId='" + receiptId + '\'' +
-            ", userId='" + userId + '\'' +
+            "receiptId='" + receiptId.truncatedBillingToken() + '\'' +
+            ", userId='[REDACTED]'" +
             '}'
 }
